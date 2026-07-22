@@ -37,16 +37,8 @@ export default function Buttons() {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
           
-          // 1. Բացում է քարտեզը նոր թաբում հենց իր լոկացիայով
+          // Բացում է Google Maps-ը նոր թաբում՝ օգտատիրոջ իրական կոորդինատներով
           window.open(`https://www.google.com/maps?q=${lat},${lon}`, '_blank');
-          
-          // 2. Ընտրովի. կարող եք ուղարկել ձեզ WhatsApp-ով (փոխարինեք համարը ձեր հեռախոսահամարով, օրինակ՝ 374XXXXXXXX)
-          const myPhoneNumber = "374XXXXXXXX"; 
-          const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
-          const whatsappUrl = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=Իմ%20գտնվելու%20վայրը՝%20${encodeURIComponent(mapLink)}`;
-          
-          // Սա կբացի նաև WhatsApp-ը, որպեսզի միանգամից ուղարկի լոկացիան ձեզ
-          window.open(whatsappUrl, '_blank');
         },
         () => {
           alert("Խնդրում ենք թույլատրել տեղադրության (Location) հասանելիությունը:");
