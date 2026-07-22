@@ -31,24 +31,21 @@ export default function Buttons() {
   const setActiveCategory = useCategoryStore((state) => state.setActiveCategory);
 
   const handleOpenMap = () => {
-    // Փորձում ենք վերցնել լոկացիան, բայց եթե օգտատերը մերժում է կամ ինքնավար բրաուզերն արգելափակում է, 
-    // միանգամից բացվում է Google Maps-ը ձեր նշված կետով կամ ընդհանուր որոնմամբ՝ առանց սխալների կամ "Close" ալերթների:
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
-          // Բացում է քարտեզը՝ օգտատիրոջ կոորդինատներից դեպի Google Maps
-          window.open(`https://www.google.com/maps?q=${lat},${lon}`, '_blank');
+          // Ուղղակի տեղափոխում ենք էջը Google Maps-ի հղումով (window.open-ի փոխարեն)
+          window.location.href = `https://www.google.com/maps?q=${lat},${lon}`;
         },
         () => {
-          // Եթե թույլտվությունը մերժվեց կամ արգելափակվեց, ուղղակի բացում ենք Google Maps-ի հղումը
-          window.open(`https://www.google.com/maps`, '_blank');
+          window.location.href = `https://www.google.com/maps`;
         },
         { enableHighAccuracy: true, timeout: 5000 }
       );
     } else {
-      window.open(`https://www.google.com/maps`, '_blank');
+      window.location.href = `https://www.google.com/maps`;
     }
   };
 
