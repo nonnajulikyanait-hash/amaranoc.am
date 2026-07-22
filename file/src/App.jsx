@@ -5,7 +5,7 @@ import Navlinks from "./components/navlinks";
 import Buttons from "./components/buttons";
 import Filtersidebar from "./components/filtersidebar";
 import Haytararutyun from "./components/haytararutyun";
-import nkarner from "./components/nkarner"; 
+import Nkarner from "./components/nkarner"; 
 import Footer from "./components/footer";
 import Grancvel from "./components/grancvel";
 import Gaxtniutyun from "./components/gaxtniutyun";
@@ -15,6 +15,7 @@ import AdminChat from "./components/adminchat";
 import Zexcher from "./components/zexcher"; 
 import Carayutyun from "./components/carayutyun"; 
 import Mermasin from "./components/mermasin"; 
+
 
 
 
@@ -50,7 +51,7 @@ function App() {
       <Suspense fallback={<div className="text-center p-20 text-gray-500">Բեռնվում է...</div>}>
         <div className="w-full min-h-screen bg-white">
           <Routes>
-            <Route path="/" element={<><logo /><Navlinks /><Buttons /><Haytararutyun /><nkarner /> <Footer/></>} />
+            <Route path="/" element={<><logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
             
             {nkarComponents.map((Component, index) => (
               <Route 
