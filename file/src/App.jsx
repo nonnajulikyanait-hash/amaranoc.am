@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { lazy, Suspense } from "react";
-import Logo from "./components/logo";
+import logo from "./components/logo";
 import Navlinks from "./components/navlinks";
 import Buttons from "./components/buttons";
 import Filtersidebar from "./components/filtersidebar";
@@ -49,19 +49,19 @@ function App() {
       <Suspense fallback={<div className="text-center p-20 text-gray-500">Բեռնվում է...</div>}>
         <div className="w-full min-h-screen bg-white">
           <Routes>
-            <Route path="/" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
+            <Route path="/" element={<><logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
             
             {nkarComponents.map((Component, index) => (
               <Route 
                 key={index + 1} 
                 path={`/nkar${index + 1}`} 
-                element={<><Logo /><Navlinks /><Component /></>} 
+                element={<><logo /><Navlinks /><Component /></>} 
               />
             ))}
 
-            <Route path="/zexcher" element={<><Logo /><Navlinks /><Zexcher /> <Haytararutyun /> <Footer/> </>} />
-            <Route path="/carayutyun" element={<><Logo /><Navlinks /><Carayutyun />  </>} />
-            <Route path="/mermasin" element={<><Logo /><Navlinks /><Mermasin /> <Haytararutyun /> <Footer/>  </>} />
+            <Route path="/zexcher" element={<><logo /><Navlinks /><Zexcher /> <Haytararutyun /> <Footer/> </>} />
+            <Route path="/carayutyun" element={<><logo /><Navlinks /><Carayutyun />  </>} />
+            <Route path="/mermasin" element={<><logo /><Navlinks /><Mermasin /> <Haytararutyun /> <Footer/>  </>} />
             <Route path="/grancvel" element={<Grancvel />} />
             <Route path="/grancum2" element={<Grancum2 />} />
             <Route path="/gaxtniutyun" element={<Gaxtniutyun />} />
