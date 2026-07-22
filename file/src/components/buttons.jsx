@@ -66,7 +66,7 @@ export default function Buttons() {
           onClick={handleOpenMapAndShare} 
           className="flex items-center gap-2 border border-gray-300 rounded-full pl-5 pr-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-500 transition-colors"
         >
-          <Map size={17} /> Քարտեզ (Նոր թաբում)
+          <Map size={17} /> Քարտեզ
         </button>
       </div>
       <div className="w-full max-w-5xl mx-auto px-4 mt-4">
