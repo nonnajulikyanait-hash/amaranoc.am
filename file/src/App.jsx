@@ -17,6 +17,7 @@ import Carayutyun from "./components/carayutyun";
 import Mermasin from "./components/mermasin"; 
 
 
+
 // 34 էջերի lazy ներմուծում
 const Nkar1 = lazy(() => import("./components/nkar1")); const Nkar2 = lazy(() => import("./components/nkar2"));
 const Nkar3 = lazy(() => import("./components/nkar3")); const Nkar4 = lazy(() => import("./components/nkar4"));
