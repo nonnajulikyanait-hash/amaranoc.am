@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import useFavoritesStore from '../useFavourites.js';
+import useFavouritesStore from "../UseFavourites.js";
 import { useCategoryStore } from './buttons.jsx';
 
 // Բոլոր 34 տվյալները

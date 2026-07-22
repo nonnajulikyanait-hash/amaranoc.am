@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import useFavoritesStore from '../useFavourites.js'; 
+import useFavouritesStore from "../UseFavourites.js";
 
 export default function Logo() {
   const favoritesCount = useFavoritesStore((state) => state.favoritesCount);
