@@ -30,24 +30,25 @@ export default function Buttons() {
   const activeCategory = useCategoryStore((state) => state.activeCategory);
   const setActiveCategory = useCategoryStore((state) => state.setActiveCategory);
 
-  const handleOpenMapAndShare = () => {
+  const handleOpenMap = () => {
+    // Փորձում ենք վերցնել լոկացիան, բայց եթե օգտատերը մերժում է կամ ինքնավար բրաուզերն արգելափակում է, 
+    // միանգամից բացվում է Google Maps-ը ձեր նշված կետով կամ ընդհանուր որոնմամբ՝ առանց սխալների կամ "Close" ալերթների:
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
-          
-          // Բացում է Google Maps-ը նոր թաբում՝ օգտատիրոջ իրական կոորդինատներով
+          // Բացում է քարտեզը՝ օգտատիրոջ կոորդինատներից դեպի Google Maps
           window.open(`https://www.google.com/maps?q=${lat},${lon}`, '_blank');
         },
         () => {
-          alert("Խնդրում ենք թույլատրել տեղադրության (Location) հասանելիությունը:");
+          // Եթե թույլտվությունը մերժվեց կամ արգելափակվեց, ուղղակի բացում ենք Google Maps-ի հղումը
           window.open(`https://www.google.com/maps`, '_blank');
         },
-        { enableHighAccuracy: true }
+        { enableHighAccuracy: true, timeout: 5000 }
       );
     } else {
-      alert("Ձեր բրաուզերը չի աջակցում Geolocation:");
+      window.open(`https://www.google.com/maps`, '_blank');
     }
   };
 
@@ -55,7 +56,7 @@ export default function Buttons() {
     <>
       <div className="w-full max-w-5xl mx-auto px-4 pt-4 flex gap-3">
         <button 
-          onClick={handleOpenMapAndShare} 
+          onClick={handleOpenMap} 
           className="flex items-center gap-2 border border-gray-300 rounded-full pl-5 pr-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-500 transition-colors"
         >
           <Map size={17} /> Քարտեզ
