@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { create } from 'zustand';
-import { Map, Share2, X } from 'lucide-react';
+import { Map, X } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// Շտկում ենք Leaflet-ի մարկերի նկարի հայտնի բագը React-ում
+// Շտկում ենք Leaflet-ի մարկերի նկարի բագը React-ում
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -35,12 +35,11 @@ const categories = [
   { name: "Բնակարաններ", icon: <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="4" y="3" width="9" height="18" rx="1" strokeLinecap="round" strokeLinejoin="round" /><rect x="13" y="8" width="7" height="13" rx="1" strokeLinecap="round" strokeLinejoin="round" /><path d="M7 7h.01M10 7h.01M7 11h.01M10 11h.01M7 15h.01M10 15h.01" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 12h.01M16 16h.01" strokeLinecap="round" strokeLinejoin="round" /></svg> },
 ];
 
-// Օգնական կոմպոնենտ՝ քարտեզի կենտրոնը թարմացնելու համար, երբ լոկացիան գտնվում է
 function MapUpdater({ center }) {
   const map = useMap();
   useEffect(() => {
     if (center) {
-      map.setView(center, 15);
+      map.setView(center, 13);
     }
   }, [center, map]);
   return null;
@@ -54,6 +53,9 @@ export default function Buttons() {
   const [userLocation, setUserLocation] = useState(null);
   const [isMapOpen, setIsMapOpen] = useState(false);
 
+  // Այստեղ գրեք ձեր կամ ձեր օբյեկտի հաստատուն կոորդինատները (օրինակ՝ Երևանի կենտրոնը կամ ձեր ամառանոցը)
+  const ownerLocation = [40.1792, 44.5091]; 
+
   const handleShowOnSiteMap = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -61,7 +63,7 @@ export default function Buttons() {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
           setUserLocation([lat, lon]);
-          setIsMapOpen(true); // Բացում է մեր ներսի քարտեզի պատուհանը
+          setIsMapOpen(true);
         },
         () => {
           alert("Խնդրում ենք թույլատրել տեղադրության (Location) հասանելիությունը:");
@@ -84,7 +86,6 @@ export default function Buttons() {
         </button>
       </div>
 
-      {/* Կատեգորիաների հորիզոնական սլայդեր */}
       <div className="w-full max-w-5xl mx-auto px-4 mt-4">
         <div className="flex items-center gap-3 border-b border-gray-200 pb-4">
           <button onClick={() => scrollRef.current?.scrollBy({ left: -200, behavior: "smooth" })} className="w-9 h-9 border rounded-full">{"<"}</button>
@@ -100,12 +101,11 @@ export default function Buttons() {
         </div>
       </div>
 
-      {/* Քարտեզի մոդալ պատուհան (Modal) հենց կայքի ներսում */}
       {isMapOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="relative w-full max-w-3xl h-[450px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+          <div className="relative w-full max-w-3xl h-[480px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-bold text-gray-800">Ձեր գտնվելու վայրը քարտեզին</h3>
+              <h3 className="font-bold text-gray-800">Քարտեզ (Ձեր և Այցելուի վայրերը)</h3>
               <button onClick={() => setIsMapOpen(false)} className="p-1 rounded-full hover:bg-gray-100">
                 <X size={20} />
               </button>
@@ -114,9 +114,17 @@ export default function Buttons() {
               {userLocation && (
                 <MapContainer center={userLocation} zoom={13} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={userLocation}>
-                    <Popup>Դուք գտնվում եք այստեղ</Popup>
+                  
+                  {/* Մարկեր 1: Ձեր (սեփականատիրոջ) կետը */}
+                  <Marker position={ownerLocation}>
+                    <Popup>Մեր օբյեկտը / Ձեր լոկացիան</Popup>
                   </Marker>
+
+                  {/* Մարկեր 2: Կայքը բացած այցելուի իրական լոկացիան */}
+                  <Marker position={userLocation}>
+                    <Popup>Ձեր գտնվելու վայրը</Popup>
+                  </Marker>
+
                   <MapUpdater center={userLocation} />
                 </MapContainer>
               )}
