@@ -34,14 +34,15 @@ const categories = [
   { name: "Բնակարաններ", icon: <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="4" y="3" width="9" height="18" rx="1" strokeLinecap="round" strokeLinejoin="round" /><rect x="13" y="8" width="7" height="13" rx="1" strokeLinecap="round" strokeLinejoin="round" /><path d="M7 7h.01M10 7h.01M7 11h.01M10 11h.01M7 15h.01M10 15h.01" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 12h.01M16 16h.01" strokeLinecap="round" strokeLinejoin="round" /></svg> },
 ];
 
-function MapUpdater({ center }) {
+function MapUpdater({ pcLocation, phoneLocation }) {
   const map = useMap();
   useEffect(() => {
-    if (center) {
-      // Ռեալ ժամանակում տեղաշարժվելիս քարտեզը սահուն հետևում է կետին
-      map.setView(center, map.getZoom(), { animate: true });
+    if (phoneLocation) {
+      map.setView(phoneLocation, 15, { animate: true });
+    } else if (pcLocation) {
+      map.setView(pcLocation, 15, { animate: true });
     }
-  }, [center, map]);
+  }, [pcLocation, phoneLocation, map]);
   return null;
 }
 
@@ -50,36 +51,54 @@ export default function Buttons() {
   const activeCategory = useCategoryStore((state) => state.activeCategory);
   const setActiveCategory = useCategoryStore((state) => state.setActiveCategory);
 
-  const [userLocation, setUserLocation] = useState(null);
+  const [pcLocation, setPcLocation] = useState(null);
+  const [phoneLocation, setPhoneLocation] = useState(null);
   const [isMapOpen, setIsMapOpen] = useState(false);
   const watchIdRef = useRef(null);
 
-  const handleShowOnSiteMap = () => {
-    setIsMapOpen(true);
-    
+  // 1. Ստանում ենք համակարգչի կամ ընթացիկ սարքի հիմնական լոկացիան մուտք գործելիս
+  useEffect(() => {
     if (navigator.geolocation) {
-      // watchPosition-ը անընդհատ հետևում է շարժմանը (Live)
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const loc = [pos.coords.latitude, pos.coords.longitude];
+          setPcLocation(loc);
+          localStorage.setItem('pc_location', JSON.stringify(loc));
+        },
+        (err) => console.error("PC Location error:", err),
+        { enableHighAccuracy: true }
+      );
+    }
+
+    // Ստուգում ենք localStorage-ից մյուս սարքի (հեռախոսի) ուղարկված լոկացիան
+    const interval = setInterval(() => {
+      const savedPhoneLoc = localStorage.getItem('phone_live_location');
+      if (savedPhoneLoc) {
+        setPhoneLocation(JSON.parse(savedPhoneLoc));
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleOpenMap = () => {
+    setIsMapOpen(true);
+
+    // Եթե սա հեռախոսն է կամ ակտիվ սարք, միացնում ենք Live watchPosition
+    if (navigator.geolocation) {
       watchIdRef.current = navigator.geolocation.watchPosition(
         (pos) => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          setUserLocation([lat, lon]);
-          
-          // Այստեղ ցանկության դեպքում կարող եք տվյալները ուղարկել բազա (օրինակ՝ Firebase), 
-          // որպեսզի ուրիշ սարքից մուտք գործած մարդը տեսնի այս օգտատիրոջ շարժը:
+          const currentPos = [pos.coords.latitude, pos.coords.longitude];
+          setPhoneLocation(currentPos);
+          // Գրում ենք LocalStorage, որպեսզի համակարգիչը կամ այլ սարք տեսնի շարժը
+          localStorage.setItem('phone_live_location', JSON.stringify(currentPos));
         },
-        (err) => {
-          console.error("GPS Error:", err);
-          alert("Թույլատրեք լոկացիան, որպեսզի Live հետևենք շարժմանը:");
-        },
+        (err) => console.error("WatchPosition error:", err),
         { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
       );
-    } else {
-      alert("Ձեր բրաուզերը չի աջակցում Geolocation:");
     }
   };
 
-  // Եթե փակում ենք քարտեզը, դադարեցնում ենք հետևելը, որ մարտկոցը կամ հիշողությունը չծանրաբեռնվի
   const handleCloseMap = () => {
     setIsMapOpen(false);
     if (watchIdRef.current !== null) {
@@ -92,10 +111,10 @@ export default function Buttons() {
     <>
       <div className="w-full max-w-5xl mx-auto px-4 pt-4 flex gap-3">
         <button 
-          onClick={handleShowOnSiteMap} 
-          className="flex items-center gap-2 border border-gray-300 rounded-full pl-5 pr-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-500 transition-colors"
+          onClick={handleOpenMap} 
+          className="flex items-center gap-2 border border-gray-300 rounded-full pl-5 pr-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-500 transition-colors shadow-sm"
         >
-          <Map size={17} /> Live Քարտեզ
+          <Map size={17} /> Բացել Live Քարտեզը
         </button>
       </div>
 
@@ -116,28 +135,37 @@ export default function Buttons() {
 
       {isMapOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="relative w-full max-w-3xl h-[480px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+          <div className="relative w-full max-w-3xl h-[500px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-bold text-gray-800">Live Շարժվող Լոկացիա</h3>
+              <h3 className="font-bold text-gray-800">Համակարգչի և Հեռախոսի Live Քարտեզ</h3>
               <button onClick={handleCloseMap} className="p-1 rounded-full hover:bg-gray-100">
                 <X size={20} />
               </button>
             </div>
             <div className="flex-1 w-full relative">
-              {userLocation ? (
-                <MapContainer center={userLocation} zoom={16} style={{ height: '100%', width: '100%' }}>
+              {(pcLocation || phoneLocation) ? (
+                <MapContainer center={phoneLocation || pcLocation} zoom={15} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
-                  {/* Մարկեր, որը շարժվում է օգտատիրոջ հետ */}
-                  <Marker position={userLocation}>
-                    <Popup>Դուք շարժվում եք այստեղ (Live)</Popup>
-                  </Marker>
+                  {/* Մարկեր 1: Համակարգչի լոկացիա */}
+                  {pcLocation && (
+                    <Marker position={pcLocation}>
+                      <Popup>Համակարգչի հիմնական վայրը</Popup>
+                    </Marker>
+                  )}
 
-                  <MapUpdater center={userLocation} />
+                  {/* Մարկեր 2: Հեռախոսի Live շարժվող լոկացիա */}
+                  {phoneLocation && (
+                    <Marker position={phoneLocation}>
+                      <Popup>Հեռախոսի Live շարժվող վայրը</Popup>
+                    </Marker>
+                  )}
+
+                  <MapUpdater pcLocation={pcLocation} phoneLocation={phoneLocation} />
                 </MapContainer>
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-500">
-                  Որոնվում է իրական և շարժվող լոկացիան...
+                  Ստացվում է լոկացիաները...
                 </div>
               )}
             </div>
