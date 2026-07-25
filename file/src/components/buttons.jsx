@@ -5,7 +5,6 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// Շտկում ենք Leaflet-ի մարկերի նկարի բագը React-ում
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -39,7 +38,8 @@ function MapUpdater({ center }) {
   const map = useMap();
   useEffect(() => {
     if (center) {
-      map.setView(center, 14);
+      // Ռեալ ժամանակում տեղաշարժվելիս քարտեզը սահուն հետևում է կետին
+      map.setView(center, map.getZoom(), { animate: true });
     }
   }, [center, map]);
   return null;
@@ -52,23 +52,39 @@ export default function Buttons() {
 
   const [userLocation, setUserLocation] = useState(null);
   const [isMapOpen, setIsMapOpen] = useState(false);
+  const watchIdRef = useRef(null);
 
   const handleShowOnSiteMap = () => {
+    setIsMapOpen(true);
+    
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
+      // watchPosition-ը անընդհատ հետևում է շարժմանը (Live)
+      watchIdRef.current = navigator.geolocation.watchPosition(
         (pos) => {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
           setUserLocation([lat, lon]);
-          setIsMapOpen(true);
+          
+          // Այստեղ ցանկության դեպքում կարող եք տվյալները ուղարկել բազա (օրինակ՝ Firebase), 
+          // որպեսզի ուրիշ սարքից մուտք գործած մարդը տեսնի այս օգտատիրոջ շարժը:
         },
-        () => {
-          alert("Խնդրում ենք թույլատրել տեղադրության (Location) հասանելիությունը բրաուզերում:");
+        (err) => {
+          console.error("GPS Error:", err);
+          alert("Թույլատրեք լոկացիան, որպեսզի Live հետևենք շարժմանը:");
         },
-        { enableHighAccuracy: true, timeout: 5000 }
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
       );
     } else {
       alert("Ձեր բրաուզերը չի աջակցում Geolocation:");
+    }
+  };
+
+  // Եթե փակում ենք քարտեզը, դադարեցնում ենք հետևելը, որ մարտկոցը կամ հիշողությունը չծանրաբեռնվի
+  const handleCloseMap = () => {
+    setIsMapOpen(false);
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
     }
   };
 
@@ -79,7 +95,7 @@ export default function Buttons() {
           onClick={handleShowOnSiteMap} 
           className="flex items-center gap-2 border border-gray-300 rounded-full pl-5 pr-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-500 transition-colors"
         >
-          <Map size={17} /> Քարտեզ
+          <Map size={17} /> Live Քարտեզ
         </button>
       </div>
 
@@ -102,23 +118,27 @@ export default function Buttons() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="relative w-full max-w-3xl h-[480px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-bold text-gray-800">Ձեր գտնվելու վայրը</h3>
-              <button onClick={() => setIsMapOpen(false)} className="p-1 rounded-full hover:bg-gray-100">
+              <h3 className="font-bold text-gray-800">Live Շարժվող Լոկացիա</h3>
+              <button onClick={handleCloseMap} className="p-1 rounded-full hover:bg-gray-100">
                 <X size={20} />
               </button>
             </div>
             <div className="flex-1 w-full relative">
-              {userLocation && (
-                <MapContainer center={userLocation} zoom={14} style={{ height: '100%', width: '100%' }}>
+              {userLocation ? (
+                <MapContainer center={userLocation} zoom={16} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
-                  {/* Միայն այցելուի իրական լոկացիան */}
+                  {/* Մարկեր, որը շարժվում է օգտատիրոջ հետ */}
                   <Marker position={userLocation}>
-                    <Popup>Դուք այստեղ եք</Popup>
+                    <Popup>Դուք շարժվում եք այստեղ (Live)</Popup>
                   </Marker>
 
                   <MapUpdater center={userLocation} />
                 </MapContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-500">
+                  Որոնվում է իրական և շարժվող լոկացիան...
+                </div>
               )}
             </div>
           </div>
