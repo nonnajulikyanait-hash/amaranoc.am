@@ -35,11 +35,12 @@ const categories = [
   { name: "Բնակարաններ", icon: <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="4" y="3" width="9" height="18" rx="1" strokeLinecap="round" strokeLinejoin="round" /><rect x="13" y="8" width="7" height="13" rx="1" strokeLinecap="round" strokeLinejoin="round" /><path d="M7 7h.01M10 7h.01M7 11h.01M10 11h.01M7 15h.01M10 15h.01" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 12h.01M16 16h.01" strokeLinecap="round" strokeLinejoin="round" /></svg> },
 ];
 
+// Այս բաղադրիչն ապահովում է, որ քարտեզը ռեալ ժամանակում թարմացնի կենտրոնը, երբ լոկացիան ստացվի
 function MapUpdater({ center }) {
   const map = useMap();
   useEffect(() => {
     if (center) {
-      map.setView(center, 14);
+      map.setView(center, 15);
     }
   }, [center, map]);
   return null;
@@ -52,23 +53,29 @@ export default function Buttons() {
 
   const [userLocation, setUserLocation] = useState(null);
   const [isMapOpen, setIsMapOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleShowOnSiteMap = () => {
+    setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
           setUserLocation([lat, lon]);
+          setLoading(false);
           setIsMapOpen(true);
         },
-        () => {
-          alert("Խնդրում ենք թույլատրել տեղադրության (Location) հասանելիությունը բրաուզերում:");
+        (err) => {
+          setLoading(false);
+          alert("Խնդրում ենք թույլատրել տեղադրության (Location) հասանելիությունը բրաուզերում, որպեսզի կարողանանք ցույց տալ ձեր իրական վայրը:");
+          console.error(err);
         },
-        { enableHighAccuracy: true, timeout: 5000 }
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     } else {
-      alert("Ձեր բրաուզերը չի աջակցում Geolocation:");
+      setLoading(false);
+      alert("Ձեր բրաուզերը չի աջակցում GPS / Geolocation:");
     }
   };
 
@@ -77,9 +84,10 @@ export default function Buttons() {
       <div className="w-full max-w-5xl mx-auto px-4 pt-4 flex gap-3">
         <button 
           onClick={handleShowOnSiteMap} 
-          className="flex items-center gap-2 border border-gray-300 rounded-full pl-5 pr-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-500 transition-colors"
+          disabled={loading}
+          className="flex items-center gap-2 border border-gray-300 rounded-full pl-5 pr-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-500 transition-colors disabled:opacity-50"
         >
-          <Map size={17} /> Քարտեզ
+          <Map size={17} /> {loading ? "Որոնվում է իրական լոկացիան..." : "Քարտեզ"}
         </button>
       </div>
 
@@ -98,28 +106,26 @@ export default function Buttons() {
         </div>
       </div>
 
-      {isMapOpen && (
+      {isMapOpen && userLocation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="relative w-full max-w-3xl h-[480px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-bold text-gray-800">Ձեր գտնվելու վայրը</h3>
+              <h3 className="font-bold text-gray-800">Ձեր իրական գտնվելու վայրը (Ռեալ ժամանակում)</h3>
               <button onClick={() => setIsMapOpen(false)} className="p-1 rounded-full hover:bg-gray-100">
                 <X size={20} />
               </button>
             </div>
             <div className="flex-1 w-full relative">
-              {userLocation && (
-                <MapContainer center={userLocation} zoom={14} style={{ height: '100%', width: '100%' }}>
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  
-                  {/* Միայն այցելուի իրական լոկացիան */}
-                  <Marker position={userLocation}>
-                    <Popup>Դուք այստեղ եք</Popup>
-                  </Marker>
+              <MapContainer center={userLocation} zoom={15} style={{ height: '100%', width: '100%' }}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                
+                {/* Ձեր բրաուզերից ստացված հենց այս պահի ռեալ կետը */}
+                <Marker position={userLocation}>
+                  <Popup>Դուք այստեղ եք (Իրական լոկացիա)</Popup>
+                </Marker>
 
-                  <MapUpdater center={userLocation} />
-                </MapContainer>
-              )}
+                <MapUpdater center={userLocation} />
+              </MapContainer>
             </div>
           </div>
         </div>
