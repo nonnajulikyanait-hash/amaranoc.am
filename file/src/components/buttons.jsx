@@ -1,20 +1,37 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { create } from 'zustand';
 import { Map, X } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { db } from './firebase';
+import { ref, set, onValue } from "firebase/database";
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
+// Ստեղծում ենք հատուկ ֆունկցիա, որպեսզի քարտեզի վրա նկարը լինի կլոր և գեղեցիկ
+const createCustomIcon = (imageUrl) => {
+  return L.divIcon({
+    className: 'custom-user-marker',
+    html: `<div style="
+      width: 40px; 
+      height: 40px; 
+      border-radius: 50%; 
+      overflow: hidden; 
+      border: 3px solid #ff5a5f; 
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      background: white;
+    ">
+      <img src="${imageUrl || 'https://via.placeholder.com/40'}" style="width: 100%; height: 100%; object-fit: cover;" />
+    </div>`,
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+    popupAnchor: [0, -20]
+  });
+};
 
-export const useCategoryStore = create((set) => ({
+export const useCategoryStore = create((setStore) => ({
   activeCategory: null,
-  setActiveCategory: (category) => set((state) => ({ activeCategory: state.activeCategory === category ? null : category })),
+  setActiveCategory: (category) => setStore((state) => ({ activeCategory: state.activeCategory === category ? null : category })),
 }));
 
 const categories = [
@@ -34,15 +51,13 @@ const categories = [
   { name: "Բնակարաններ", icon: <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="4" y="3" width="9" height="18" rx="1" strokeLinecap="round" strokeLinejoin="round" /><rect x="13" y="8" width="7" height="13" rx="1" strokeLinecap="round" strokeLinejoin="round" /><path d="M7 7h.01M10 7h.01M7 11h.01M10 11h.01M7 15h.01M10 15h.01" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 12h.01M16 16h.01" strokeLinecap="round" strokeLinejoin="round" /></svg> },
 ];
 
-function MapUpdater({ pcLocation, phoneLocation }) {
+function MapUpdater({ center }) {
   const map = useMap();
   useEffect(() => {
-    if (phoneLocation) {
-      map.setView(phoneLocation, 15, { animate: true });
-    } else if (pcLocation) {
-      map.setView(pcLocation, 15, { animate: true });
+    if (center) {
+      map.setView(center, 15, { animate: true });
     }
-  }, [pcLocation, phoneLocation, map]);
+  }, [center, map]);
   return null;
 }
 
@@ -56,44 +71,52 @@ export default function Buttons() {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const watchIdRef = useRef(null);
 
-  // 1. Ստանում ենք համակարգչի կամ ընթացիկ սարքի հիմնական լոկացիան մուտք գործելիս
+  // Այստեղ կարող եք փոխել ձեր Google-ի պրոֆիլի նկարի հղումով
+  const userPhotoUrl = "https://lh3.googleusercontent.com/a/ACg8ocI...ՁԵՐ_ՆԿԱՐԻ_ՀՂՈՒՄԸ_ԱՅՍՏԵՂ..."; 
+
   useEffect(() => {
+    // 1. Համակարգչի կամ ընթացիկ սարքի Live հետևում (watchPosition)
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
+      const pcWatchId = navigator.geolocation.watchPosition(
         (pos) => {
           const loc = [pos.coords.latitude, pos.coords.longitude];
           setPcLocation(loc);
-          localStorage.setItem('pc_location', JSON.stringify(loc));
+          // Կարող եք նաև համակարգչի լոկացիան գրել բազա, եթե ուզում եք երկկողմանի լինի
+          set(ref(db, 'locations/pcUser'), { lat: loc[0], lon: loc[1] });
         },
-        (err) => console.error("PC Location error:", err),
-        { enableHighAccuracy: true }
+        (err) => console.error("PC Live location error:", err),
+        { enableHighAccuracy: true, maximumAge: 0 }
       );
+
+      return () => navigator.geolocation.clearWatch(pcWatchId);
     }
+  }, []);
 
-    // Ստուգում ենք localStorage-ից մյուս սարքի (հեռախոսի) ուղարկված լոկացիան
-    const interval = setInterval(() => {
-      const savedPhoneLoc = localStorage.getItem('phone_live_location');
-      if (savedPhoneLoc) {
-        setPhoneLocation(JSON.parse(savedPhoneLoc));
+  useEffect(() => {
+    // 2. Լսում ենք հեռախոսի լոկացիան Firebase-ից իրական ժամանակում (Real-time)
+    const phoneRef = ref(db, 'locations/phoneUser');
+    const unsubscribe = onValue(phoneRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setPhoneLocation([data.lat, data.lon]);
       }
-    }, 1000);
+    });
 
-    return () => clearInterval(interval);
+    return () => unsubscribe();
   }, []);
 
   const handleOpenMap = () => {
     setIsMapOpen(true);
 
-    // Եթե սա հեռախոսն է կամ ակտիվ սարք, միացնում ենք Live watchPosition
+    // Եթե բացում եք հեռախոսից, այն սկսում է անընդհատ ուղարկել իր շարժը բազա
     if (navigator.geolocation) {
       watchIdRef.current = navigator.geolocation.watchPosition(
         (pos) => {
-          const currentPos = [pos.coords.latitude, pos.coords.longitude];
-          setPhoneLocation(currentPos);
-          // Գրում ենք LocalStorage, որպեսզի համակարգիչը կամ այլ սարք տեսնի շարժը
-          localStorage.setItem('phone_live_location', JSON.stringify(currentPos));
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          set(ref(db, 'locations/phoneUser'), { lat, lon });
         },
-        (err) => console.error("WatchPosition error:", err),
+        (err) => console.error("Phone WatchPosition error:", err),
         { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
       );
     }
@@ -106,6 +129,8 @@ export default function Buttons() {
       watchIdRef.current = null;
     }
   };
+
+  const customIcon = createCustomIcon(userPhotoUrl);
 
   return (
     <>
@@ -137,7 +162,7 @@ export default function Buttons() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="relative w-full max-w-3xl h-[500px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-bold text-gray-800">Համակարգչի և Հեռախոսի Live Քարտեզ</h3>
+              <h3 className="font-bold text-gray-800">Real-time Live Քարտեզ</h3>
               <button onClick={handleCloseMap} className="p-1 rounded-full hover:bg-gray-100">
                 <X size={20} />
               </button>
@@ -147,21 +172,21 @@ export default function Buttons() {
                 <MapContainer center={phoneLocation || pcLocation} zoom={15} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
-                  {/* Մարկեր 1: Համակարգչի լոկացիա */}
+                  {/* Համակարգչի կետը՝ ձեր նկարով */}
                   {pcLocation && (
-                    <Marker position={pcLocation}>
-                      <Popup>Համակարգչի հիմնական վայրը</Popup>
+                    <Marker position={pcLocation} icon={customIcon}>
+                      <Popup>Համակարգչի Live լոկացիա</Popup>
                     </Marker>
                   )}
 
-                  {/* Մարկեր 2: Հեռախոսի Live շարժվող լոկացիա */}
+                  {/* Հեռախոսի Live կետը՝ ձեր նկարով */}
                   {phoneLocation && (
-                    <Marker position={phoneLocation}>
-                      <Popup>Հեռախոսի Live շարժվող վայրը</Popup>
+                    <Marker position={phoneLocation} icon={customIcon}>
+                      <Popup>Հեռախոսի Live շարժվող լոկացիա</Popup>
                     </Marker>
                   )}
 
-                  <MapUpdater pcLocation={pcLocation} phoneLocation={phoneLocation} />
+                  <MapUpdater center={phoneLocation || pcLocation} />
                 </MapContainer>
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-500">
