@@ -22,11 +22,12 @@
 
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA5Av-xVDrDWRXqJdpWVT1LMspx3m2NPYQ",
   authDomain: "aranoc-am.firebaseapp.com",
-  databaseURL: "https://aranoc-am-default-rtdb.firebaseio.com", // Սա պետք է ավելացնեք, որպեսզի բազան աշխատի
+  databaseURL: "https://aranoc-am-default-rtdb.firebaseio.com",
   projectId: "aranoc-am",
   storageBucket: "aranoc-am.appspot.com",
   messagingSenderId: "453033838051",
@@ -36,3 +37,4 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
+export const auth = getAuth(app);
