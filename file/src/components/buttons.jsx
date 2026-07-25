@@ -7,7 +7,7 @@ import L from 'leaflet';
 import { db } from "../firebase";
 import { ref, set, onValue } from "firebase/database";
 
-// Ստեղծում ենք հատուկ ֆունկցիա, որպեսզի քարտեզի վրա նկարը լինի կլոր և գեղեցիկ
+// Կլոր մարկերի ստեղծման ֆունկցիա
 const createCustomIcon = (imageUrl) => {
   return L.divIcon({
     className: 'custom-user-marker',
@@ -65,30 +65,53 @@ export default function Buttons() {
   const activeCategory = useCategoryStore((state) => state.activeCategory);
   const setActiveCategory = useCategoryStore((state) => state.setActiveCategory);
 
-  const [currentLocation, setCurrentLocation] = useState(null);
+  const [pcLocation, setPcLocation] = useState(null);
+  const [phoneLocation, setPhoneLocation] = useState(null);
   const [isMapOpen, setIsMapOpen] = useState(false);
   const watchIdRef = useRef(null);
 
-  // Ձեր պրոֆիլի նկարի հղումը
   const userPhotoUrl = "https://lh3.googleusercontent.com/a/ACg8ocI...ՁԵՐ_ՆԿԱՐԻ_ՀՂՈՒՄԸ_ԱՅՍՏԵՂ..."; 
 
+  // 1. Համակարգիչը միշտ ուղարկում է իրենը որպես `pcUser`
   useEffect(() => {
-    // Լսում ենք բազայից լոկացիան իրական ժամանակում
-    const locRef = ref(db, 'locations/phoneUser');
-    const unsubscribe = onValue(locRef, (snapshot) => {
+    if (navigator.geolocation) {
+      const pcWatchId = navigator.geolocation.watchPosition(
+        (pos) => {
+          const loc = [pos.coords.latitude, pos.coords.longitude];
+          setPcLocation(loc);
+          set(ref(db, 'locations/pcUser'), { lat: loc[0], lon: loc[1] });
+        },
+        (err) => console.error("PC location error:", err),
+        { enableHighAccuracy: true, maximumAge: 0 }
+      );
+      return () => navigator.geolocation.clearWatch(pcWatchId);
+    }
+  }, []);
+
+  // 2. Լսում ենք ԵՐԿՈՒ սարքերի լոկացիաները բազայից իրական ժամանակում
+  useEffect(() => {
+    const pcRef = ref(db, 'locations/pcUser');
+    const unsubPc = onValue(pcRef, (snapshot) => {
       const data = snapshot.val();
-      if (data) {
-        setCurrentLocation([data.lat, data.lon]);
-      }
+      if (data) setPcLocation([data.lat, data.lon]);
     });
 
-    return () => unsubscribe();
+    const phoneRef = ref(db, 'locations/phoneUser');
+    const unsubPhone = onValue(phoneRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) setPhoneLocation([data.lat, data.lon]);
+    });
+
+    return () => {
+      unsubPc();
+      unsubPhone();
+    };
   }, []);
 
   const handleOpenMap = () => {
     setIsMapOpen(true);
 
-    // Երբ բացում ենք քարտեզը, սարքը սկսում է հետևել շարժին և ուղարկել բազա
+    // Եթե բացում եք հեռախոսից, այն կարող է ուղարկել որպես `phoneUser`
     if (navigator.geolocation) {
       watchIdRef.current = navigator.geolocation.watchPosition(
         (pos) => {
@@ -96,7 +119,7 @@ export default function Buttons() {
           const lon = pos.coords.longitude;
           set(ref(db, 'locations/phoneUser'), { lat, lon });
         },
-        (err) => console.error("Geolocation error:", err),
+        (err) => console.error("Phone location error:", err),
         { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
       );
     }
@@ -111,6 +134,7 @@ export default function Buttons() {
   };
 
   const customIcon = createCustomIcon(userPhotoUrl);
+  const centerPoint = pcLocation || phoneLocation;
 
   return (
     <>
@@ -148,19 +172,29 @@ export default function Buttons() {
               </button>
             </div>
             <div className="flex-1 w-full relative">
-              {currentLocation ? (
-                <MapContainer center={currentLocation} zoom={15} style={{ height: '100%', width: '100%' }}>
+              {centerPoint ? (
+                <MapContainer center={centerPoint} zoom={15} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
-                  <Marker position={currentLocation} icon={customIcon}>
-                    <Popup>Իմ Live շարժվող լոկացիան</Popup>
-                  </Marker>
+                  {/* Համակարգչի մարկեր */}
+                  {pcLocation && (
+                    <Marker position={pcLocation} icon={customIcon}>
+                      <Popup>Համակարգչի Live լոկացիա</Popup>
+                    </Marker>
+                  )}
 
-                  <MapUpdater center={currentLocation} />
+                  {/* Հեռախոսի մարկեր */}
+                  {phoneLocation && (
+                    <Marker position={phoneLocation} icon={customIcon}>
+                      <Popup>Հեռախոսի Live լոկացիա</Popup>
+                    </Marker>
+                  )}
+
+                  <MapUpdater center={centerPoint} />
                 </MapContainer>
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-500">
-                  Ստացվում է լոկացիան... Համոզվեք, որ թույլատրել եք լոկացիան։
+                  Ստացվում է լոկացիաները...
                 </div>
               )}
             </div>
