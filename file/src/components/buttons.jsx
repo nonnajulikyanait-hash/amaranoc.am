@@ -1,7 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { create } from 'zustand';
 import { Map, Share2, X } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Շտկում ենք Leaflet-ի մարկերի նկարի հայտնի բագը React-ում
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 export const useCategoryStore = create((set) => ({
   activeCategory: null,
@@ -25,37 +35,41 @@ const categories = [
   { name: "Բնակարաններ", icon: <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="4" y="3" width="9" height="18" rx="1" strokeLinecap="round" strokeLinejoin="round" /><rect x="13" y="8" width="7" height="13" rx="1" strokeLinecap="round" strokeLinejoin="round" /><path d="M7 7h.01M10 7h.01M7 11h.01M10 11h.01M7 15h.01M10 15h.01" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 12h.01M16 16h.01" strokeLinecap="round" strokeLinejoin="round" /></svg> },
 ];
 
+// Օգնական կոմպոնենտ՝ քարտեզի կենտրոնը թարմացնելու համար, երբ լոկացիան գտնվում է
+function MapUpdater({ center }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center) {
+      map.setView(center, 15);
+    }
+  }, [center, map]);
+  return null;
+}
+
 export default function Buttons() {
   const scrollRef = useRef(null);
   const activeCategory = useCategoryStore((state) => state.activeCategory);
   const setActiveCategory = useCategoryStore((state) => state.setActiveCategory);
 
-  const handleOpenMapAndSend = () => {
+  const [userLocation, setUserLocation] = useState(null);
+  const [isMapOpen, setIsMapOpen] = useState(false);
+
+  const handleShowOnSiteMap = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
-          
-          // Ձեր WhatsApp համարը
-          const myPhoneNumber = "37493261138"; 
-          const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
-          const whatsappUrl = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=Իմ%20գտնվելու%20վայրը՝%20${encodeURIComponent(mapLink)}`;
-          
-          // Բացում ենք WhatsApp-ը (որպեսզի լոկացիան գա ձեզ)
-          window.open(whatsappUrl, '_blank');
-          
-          // Միաժամանակ բացում ենք նաև Google Maps-ը օգտատիրոջ համար
-          window.location.href = mapLink;
+          setUserLocation([lat, lon]);
+          setIsMapOpen(true); // Բացում է մեր ներսի քարտեզի պատուհանը
         },
         () => {
-          // Եթե լոկացիա չթույլատրեց, համենայն դեպքերում բացում ենք ընդհանուր քարտեզը
-          window.location.href = `https://www.google.com/maps`;
+          alert("Խնդրում ենք թույլատրել տեղադրության (Location) հասանելիությունը:");
         },
         { enableHighAccuracy: true, timeout: 5000 }
       );
     } else {
-      window.location.href = `https://www.google.com/maps`;
+      alert("Ձեր բրաուզերը չի աջակցում Geolocation:");
     }
   };
 
@@ -63,12 +77,14 @@ export default function Buttons() {
     <>
       <div className="w-full max-w-5xl mx-auto px-4 pt-4 flex gap-3">
         <button 
-          onClick={handleOpenMapAndSend} 
+          onClick={handleShowOnSiteMap} 
           className="flex items-center gap-2 border border-gray-300 rounded-full pl-5 pr-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-500 transition-colors"
         >
           <Map size={17} /> Քարտեզ
         </button>
       </div>
+
+      {/* Կատեգորիաների հորիզոնական սլայդեր */}
       <div className="w-full max-w-5xl mx-auto px-4 mt-4">
         <div className="flex items-center gap-3 border-b border-gray-200 pb-4">
           <button onClick={() => scrollRef.current?.scrollBy({ left: -200, behavior: "smooth" })} className="w-9 h-9 border rounded-full">{"<"}</button>
@@ -83,6 +99,31 @@ export default function Buttons() {
           <button onClick={() => scrollRef.current?.scrollBy({ left: 200, behavior: "smooth" })} className="w-9 h-9 border rounded-full">{">"}</button>
         </div>
       </div>
+
+      {/* Քարտեզի մոդալ պատուհան (Modal) հենց կայքի ներսում */}
+      {isMapOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="relative w-full max-w-3xl h-[450px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h3 className="font-bold text-gray-800">Ձեր գտնվելու վայրը քարտեզին</h3>
+              <button onClick={() => setIsMapOpen(false)} className="p-1 rounded-full hover:bg-gray-100">
+                <X size={20} />
+              </button>
+            </div>
+            <div className="flex-1 w-full relative">
+              {userLocation && (
+                <MapContainer center={userLocation} zoom={13} style={{ height: '100%', width: '100%' }}>
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <Marker position={userLocation}>
+                    <Popup>Դուք գտնվում եք այստեղ</Popup>
+                  </Marker>
+                  <MapUpdater center={userLocation} />
+                </MapContainer>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
