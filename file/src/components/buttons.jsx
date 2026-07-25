@@ -39,7 +39,7 @@ function MapUpdater({ center }) {
   const map = useMap();
   useEffect(() => {
     if (center) {
-      map.setView(center, 13);
+      map.setView(center, 14);
     }
   }, [center, map]);
   return null;
@@ -53,9 +53,6 @@ export default function Buttons() {
   const [userLocation, setUserLocation] = useState(null);
   const [isMapOpen, setIsMapOpen] = useState(false);
 
-  // Այստեղ գրեք ձեր կամ ձեր օբյեկտի հաստատուն կոորդինատները (օրինակ՝ Երևանի կենտրոնը կամ ձեր ամառանոցը)
-  const ownerLocation = [40.1792, 44.5091]; 
-
   const handleShowOnSiteMap = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -66,7 +63,7 @@ export default function Buttons() {
           setIsMapOpen(true);
         },
         () => {
-          alert("Խնդրում ենք թույլատրել տեղադրության (Location) հասանելիությունը:");
+          alert("Խնդրում ենք թույլատրել տեղադրության (Location) հասանելիությունը բրաուզերում:");
         },
         { enableHighAccuracy: true, timeout: 5000 }
       );
@@ -105,24 +102,19 @@ export default function Buttons() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="relative w-full max-w-3xl h-[480px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-bold text-gray-800">Քարտեզ (Ձեր և Այցելուի վայրերը)</h3>
+              <h3 className="font-bold text-gray-800">Ձեր գտնվելու վայրը</h3>
               <button onClick={() => setIsMapOpen(false)} className="p-1 rounded-full hover:bg-gray-100">
                 <X size={20} />
               </button>
             </div>
             <div className="flex-1 w-full relative">
               {userLocation && (
-                <MapContainer center={userLocation} zoom={13} style={{ height: '100%', width: '100%' }}>
+                <MapContainer center={userLocation} zoom={14} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
-                  {/* Մարկեր 1: Ձեր (սեփականատիրոջ) կետը */}
-                  <Marker position={ownerLocation}>
-                    <Popup>Մեր օբյեկտը / Ձեր լոկացիան</Popup>
-                  </Marker>
-
-                  {/* Մարկեր 2: Կայքը բացած այցելուի իրական լոկացիան */}
+                  {/* Միայն այցելուի իրական լոկացիան */}
                   <Marker position={userLocation}>
-                    <Popup>Ձեր գտնվելու վայրը</Popup>
+                    <Popup>Դուք այստեղ եք</Popup>
                   </Marker>
 
                   <MapUpdater center={userLocation} />
