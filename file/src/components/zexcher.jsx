@@ -34,11 +34,12 @@ export default function Zexcher() {
 
   const handleShowMore = () => {
     setVisibleCount((prev) => Math.min(prev + 9, hotOffers.length));
+    // Թեթև իջեցնում ենք էջը ներքև, որպեսզի օգտատերը տեսնի նոր բացված քարտերը և չկտրվի ֆուտերից
+    window.scrollBy({ top: 400, behavior: 'smooth' });
   };
 
   return (
-    <div className="w-full min-h-screen bg-white font-sans py-12 px-4 sm:px-6 lg:px-8 relative">
-      {/* Media query style for very small screens */}
+    <div className="w-full min-h-screen bg-white font-sans py-10 px-4 sm:px-6 lg:px-8 relative">
       <style>{`
         @media (max-width: 400px) {
           .mobile-tight-padding { padding-left: 10px !important; padding-right: 10px !important; }
@@ -49,7 +50,7 @@ export default function Zexcher() {
       <div className="max-w-6xl mx-auto mobile-tight-padding">
         
         {/* --- ՍԵԿՑԻԱ 1. ՀԱՏՈՒԿ ԶԵՂՉԵՐ --- */}
-        <div className="flex items-center justify-center gap-4 mb-10">
+        <div className="flex items-center justify-center gap-4 mb-8">
           <div className="flex-1 h-[1px] bg-gray-300 max-w-[200px] hidden sm:block"></div>
           <h2 className="text-3xl sm:text-4xl font-black text-[#1a202c] tracking-wide uppercase text-center">
             Հատուկ Զեղչեր
@@ -58,7 +59,7 @@ export default function Zexcher() {
         </div>
 
         {/* ԶԵՂՉԻ ՔԱՐՏԵՐ */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {[
             { discount: "-15%", title: "Զեղչ կախված ամրագրման օրերի քանակից", desc: "Ստացիր 5-15% զեղչ կատարելով ամրագրում 5-ից մինչև 20 օր:", bg: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
             { discount: "-10%", title: "Ամենահայտնի Reel-ը սոցիալական հարթակում", desc: "Վիդեո տարբերակով ներկայացրու քո լավագույն օրերից մեկը amaranoc.am-ի առանձնատներից մեկում և ստացիր 10% զեղչ։", bg: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" },
@@ -75,7 +76,7 @@ export default function Zexcher() {
         </div>
 
         {/* --- ՍԵԿՑԻԱ 2. ՆՎԵՐ ՔԱՐՏԵՐ --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-gray-50/50 rounded-3xl p-6 sm:p-10 border border-gray-100 mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-gray-50/50 rounded-3xl p-6 sm:p-10 border border-gray-100 mb-12">
           <div className="lg:col-span-5">
             <h2 className="text-3xl font-black text-[#1a202c] mb-4 uppercase tracking-wide leading-tight">
               Պատվիրի՛ր <span className="text-[#fca34d]">Նվեր Քարտ</span> <br /> Քո կամ ընկերներիդ համար
@@ -125,7 +126,7 @@ export default function Zexcher() {
         </div>
 
         {/* ՖԻԼՏՐԻ ՊԱՆԵԼ */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex flex-col gap-2">
             <span className="text-xs font-bold text-gray-500">Տարադրամ</span>
             <div className="flex items-center gap-2">
@@ -169,7 +170,7 @@ export default function Zexcher() {
         </div>
 
         {visibleCount < hotOffers.length && (
-          <div className="flex justify-center mt-12 mb-6">
+          <div className="flex justify-center mt-8 mb-4">
             <button 
               onClick={handleShowMore}
               className="bg-[#fca34d] hover:bg-[#e5923c] text-white font-bold text-sm px-10 py-3 rounded-full shadow-md hover:shadow-lg transition-all transform active:scale-95"
