@@ -5,7 +5,7 @@ import { Map, X } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { db } from './firebase';
+import { db } from "../firebase";
 import { ref, set, onValue } from "firebase/database";
 
 // Ստեղծում ենք հատուկ ֆունկցիա, որպեսզի քարտեզի վրա նկարը լինի կլոր և գեղեցիկ
