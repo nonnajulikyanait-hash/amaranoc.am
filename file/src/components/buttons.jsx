@@ -7,7 +7,6 @@ import L from 'leaflet';
 import { db } from "../firebase";
 import { ref, set, onValue } from "firebase/database";
 
-// Կլոր մարկերի ստեղծման ֆունկցիա
 const createCustomIcon = (imageUrl) => {
   return L.divIcon({
     className: 'custom-user-marker',
@@ -72,7 +71,7 @@ export default function Buttons() {
 
   const userPhotoUrl = "https://lh3.googleusercontent.com/a/ACg8ocI...ՁԵՐ_ՆԿԱՐԻ_ՀՂՈՒՄԸ_ԱՅՍՏԵՂ..."; 
 
-  // 1. Համակարգիչը միշտ ուղարկում է իրենը որպես `pcUser`
+  // Համակարգչի կամ ընթացիկ սարքի Live հետևում և գրում որպես pcUser
   useEffect(() => {
     if (navigator.geolocation) {
       const pcWatchId = navigator.geolocation.watchPosition(
@@ -88,7 +87,7 @@ export default function Buttons() {
     }
   }, []);
 
-  // 2. Լսում ենք ԵՐԿՈՒ սարքերի լոկացիաները բազայից իրական ժամանակում
+  // Լսում ենք ԵՐԿՈՒ սարքերի տվյալները բազայից իրական ժամանակում
   useEffect(() => {
     const pcRef = ref(db, 'locations/pcUser');
     const unsubPc = onValue(pcRef, (snapshot) => {
@@ -111,7 +110,7 @@ export default function Buttons() {
   const handleOpenMap = () => {
     setIsMapOpen(true);
 
-    // Եթե բացում եք հեռախոսից, այն կարող է ուղարկել որպես `phoneUser`
+    // Եթե բացում եք հեռախոսից, այն ակտիվորեն թարմացնում է phoneUser-ը
     if (navigator.geolocation) {
       watchIdRef.current = navigator.geolocation.watchPosition(
         (pos) => {
@@ -134,7 +133,7 @@ export default function Buttons() {
   };
 
   const customIcon = createCustomIcon(userPhotoUrl);
-  const centerPoint = pcLocation || phoneLocation;
+  const centerPoint = phoneLocation || pcLocation;
 
   return (
     <>
@@ -176,17 +175,15 @@ export default function Buttons() {
                 <MapContainer center={centerPoint} zoom={15} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
-                  {/* Համակարգչի մարկեր */}
                   {pcLocation && (
                     <Marker position={pcLocation} icon={customIcon}>
                       <Popup>Համակարգչի Live լոկացիա</Popup>
                     </Marker>
                   )}
 
-                  {/* Հեռախոսի մարկեր */}
                   {phoneLocation && (
                     <Marker position={phoneLocation} icon={customIcon}>
-                      <Popup>Հեռախոսի Live լոկացիա</Popup>
+                      <Popup>Հեռախոսի Live շարժվող լոկացիա</Popup>
                     </Marker>
                   )}
 
@@ -194,7 +191,7 @@ export default function Buttons() {
                 </MapContainer>
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-500">
-                  Ստացվում է լոկացիաները...
+                  Ստացվում է լոկացիաները... Համոզվեք, որ թույլատրել եք լոկացիան։
                 </div>
               )}
             </div>
