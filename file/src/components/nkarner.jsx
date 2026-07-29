@@ -27,7 +27,8 @@ function Modal({ item, onClose }) {
             <p>🏠 {item.category}</p>
           </div>
           <div className="mt-6 text-2xl font-bold text-[#fca34d]">{fmt(item.price)} ֏</div>
-          <Link to={`/nkar${item.id}`} className="mt-4 block w-full text-center py-3 bg-[#fca34d] text-white font-bold rounded-xl">Ամրագրել</Link>
+          {/* Ուղղված է՝ /nkar${item.id}-ից դարձել է /nkar/${item.id} */}
+          <Link to={`/nkar/${item.id}`} className="mt-4 block w-full text-center py-3 bg-[#fca34d] text-white font-bold rounded-xl">Ամրագրել</Link>
         </div>
       </div>
     </div>
