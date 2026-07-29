@@ -5,14 +5,16 @@ import { itemsData } from '../data';
 export default function HouseDetail() {
   const { id } = useParams();
   
-  // Մաքրում ենք id-ն, որ ստանանք մաքուր թիվ (օրինակ՝ "nkar1" -> 1)
-  const cleanId = Number(String(id).replace('nkar', ''));
-  const house = itemsData.find((item) => item.id === cleanId);
+  // Ավելի ապահով մաքրում. հանում է բոլոր ոչ-թվային նշանները (օրինակ՝ "nkar1" -> 1)
+  const cleanId = Number(String(id || '').replace(/\D/g, ''));
+  
+  // Գտնում ենք տվյալը itemsData-ից (օգտագործելով == որպեսզի տիպերի խնդիր չառաջանա)
+  const house = itemsData.find((item) => Number(item.id) === cleanId);
 
   if (!house) {
     return (
-      <div className="max-w-4xl mx-auto py-20 px-4 text-center mt-24">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Ամառանոցը չի գտնվել</h2>
+      <div className="max-w-4xl mx-auto py-20 px-4 text-center mt-24 text-gray-800">
+        <h2 className="text-2xl font-bold mb-4">Ամառանոցը չի գտնվել</h2>
         <Link to="/" className="text-orange-500 font-semibold underline">← Վերադառնալ գլխավոր էջ</Link>
       </div>
     );
@@ -63,9 +65,8 @@ export default function HouseDetail() {
         </div>
       </div>
 
-      {/* Բնութագրեր և Օրացույց/Ամրագրում */}
+      {/* Բնութագրեր և Ամրագրում */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* Հիմնական տվյալներ */}
         <div className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
           <h3 className="text-xl font-bold mb-6 border-b pb-3">Հայտարարության մասին</h3>
           <div className="space-y-4 text-sm md:text-base">
@@ -84,7 +85,7 @@ export default function HouseDetail() {
           </div>
         </div>
 
-        {/* Ամրագրման հատված (Օրացույցի տեղը) */}
+        {/* Ամրագրման հատված */}
         <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
           <div>
             <h3 className="text-xl font-bold mb-4">Ընտրեք Ձեր օրերը</h3>
@@ -94,7 +95,7 @@ export default function HouseDetail() {
           </div>
           <button 
             onClick={() => alert('Ամրագրումն հաջողությամբ ուղարկվեց!')}
-            className="w-full py-4 bg-[#fca34d] text-white font-bold rounded-xl text-lg hover:bg-orange-600 transition-all shadow-md"
+            className="w-full py-4 bg-[#fca34d] text-white font-bold rounded-xl text-lg hover:bg-orange-600 transition-all shadow-md cursor-pointer"
           >
             Ամրագրել հիմա
           </button>
