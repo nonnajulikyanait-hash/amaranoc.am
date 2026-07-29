@@ -4,7 +4,10 @@ import useFavouritesStore from "../UseFavourites.js";
 import { useCategoryStore } from './buttons.jsx';
 
 export default function Logo() {
-  const favoritesCount = useFavouritesStore((state) => state.favoritesCount);
+  // Վերցնում ենք ֆավորիտների զանգվածը և հաշվում երկարությունը
+  const favourites = useFavouritesStore((state) => state.favourites || []);
+  const favoritesCount = favourites.length;
+
   const setActiveCategory = useCategoryStore((state) => state.setActiveCategory);
 
   return (
