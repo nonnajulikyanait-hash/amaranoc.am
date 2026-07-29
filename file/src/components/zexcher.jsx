@@ -34,7 +34,6 @@ export default function Zexcher() {
 
   const handleShowMore = () => {
     setVisibleCount((prev) => Math.min(prev + 9, hotOffers.length));
-    // Թեթև իջեցնում ենք էջը ներքև, որպեսզի օգտատերը տեսնի նոր բացված քարտերը և չկտրվի ֆուտերից
     window.scrollBy({ top: 400, behavior: 'smooth' });
   };
 
@@ -147,14 +146,28 @@ export default function Zexcher() {
 
         {/* ՏՆԵՐԻ ՑՈՒՑԱԿ */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {hotOffers.slice(0, visibleCount).map((house, index) => (
-            <div key={house.id} className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow group relative flex flex-col">
-              <Link to={`/nkar${index + 1}`} className="h-56 w-full bg-gray-200 bg-cover bg-center relative flex flex-col justify-between p-4 cursor-pointer" style={{ backgroundImage: `url("${house.image}")` }}>
-                <button className="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-gray-600 hover:text-red-500 shadow-sm z-10 self-end">
+          {hotOffers.slice(0, visibleCount).map((house) => (
+            <Link 
+              to={`/nkar${house.id}`} 
+              key={house.id} 
+              className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow group relative flex flex-col cursor-pointer"
+            >
+              {/* Նկարի հատված */}
+              <div 
+                className="h-56 w-full bg-gray-200 bg-cover bg-center relative flex flex-col justify-between p-4" 
+                style={{ backgroundImage: `url("${house.image}")` }}
+              >
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault(); // Որպեսզի սրտիկին սեղմելիս լինկը չաշխատի ու էջ չփոխվի
+                  }} 
+                  className="w-8 h-8 rounded-full bg-white/85 backdrop-blur-sm flex items-center justify-center text-gray-600 hover:text-red-500 shadow-sm z-10 self-end transition-colors"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
                 </button>
-              </Link>
+              </div>
 
+              {/* Տեղեկատվական հատված */}
               <div className="p-4 flex flex-col gap-3 flex-1 justify-between">
                 <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
                   <div className="flex items-center gap-1"><span>{house.location}</span></div>
@@ -165,7 +178,7 @@ export default function Zexcher() {
                   {house.rating && <div className="bg-[#fca34d] text-white text-[11px] font-bold px-2 py-0.5 rounded">{house.rating}</div>}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

@@ -13,7 +13,7 @@ const createCustomIcon = (imageUrl) => {
     className: 'custom-user-marker',
     html: `<div style="
       width: 40px; 
-      height: 40px; 
+      height: 40px;
       border-radius: 50%; 
       overflow: hidden; 
       border: 3px solid #ff5a5f; 
