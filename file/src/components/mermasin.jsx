@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Mermasin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +21,6 @@ export default function Mermasin() {
         }
       `}</style>
       
-      {/* --- ՍԵԿՑԻԱ 1. ՎԵՐԵՎԻ ՄԵԾ ԲԱՆՆԵՐԸ --- */}
       <div className="w-full h-[60vh] md:h-[75vh] relative bg-gray-100">
         <img src="https://amaranoc.am/_next/image?url=%2Fimages%2Fabout-us%2Ffirst_image.jpg&w=3840&q=75" alt="Banner" className="w-full h-full object-cover" />
         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-black/30 to-transparent pointer-events-none"></div>
@@ -28,7 +28,7 @@ export default function Mermasin() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col gap-20 mobile-tight">
         
-        {/* --- ՍԵԿՑԻԱ 2. ՄԵՐ ՄԱՍԻՆ --- */}
+        {/* --- ՍԵԿՑԻԱ 1. ՄԵՐ ՄԱՍԻՆ --- */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           <div className="md:col-span-6 h-[350px] md:h-[420px] rounded-[2rem] overflow-hidden shadow-sm">
             <img src="https://amaranoc.am/_next/image?url=%2Fimages%2Fabout-us%2Fabout_us.jpg&w=3840&q=75" alt="Our Villa" className="w-full h-full object-cover" />
@@ -72,7 +72,7 @@ export default function Mermasin() {
           <div className="md:col-span-6 bg-[#f8f9fa] rounded-[2rem] p-8 md:p-10 border border-gray-100 flex flex-col justify-center min-h-[350px] md:h-[420px]">
             <h2 className="text-xl font-black text-[#1a202c] uppercase tracking-wide leading-tight mb-4 mobile-title">Ինչու համագործակցել Amaranoc.am -ի հետ</h2>
             <div className="border-l-2 border-gray-900 pl-5">
-              <p className="text-sm text-gray-700 leading-relaxed text-justify font-medium mobile-text">Amaranoc.am-ի ընտրությունը երաշխավորում է շքեղության, անհատականացված սպասարկման բարձր մակարդակ և իհարկե վստահության հիմքի վրա կառուցված կայուն համագործակցություն. Գերազանցության հանդեպ մեր բարձր ձգտումը և հավատարմությունը, էքսկլուզիվ առաջարկների լայն ընտրությունը և մեր յուրաքանչյուր հյուրի նախասիրությունների նկատմամբ մանրակրկիտ ուշադրությունը մեզ առանձնացնում են ոլորտում բոլորից՝ դարձնելով առաջատար; Մենք առաջարկում ենք որակ և ստեղծում ենք հարմարավետության բարձր զգացում, որոնք գերազանցում են ձեր բոլոր սպասելիքները; Մենք բարձր ենք գնահատում մեր գործընկերների և մեր հաճախորդների վստահությունը:</p>
+              <p className="text-sm text-gray-700 leading-relaxed text-justify font-medium mobile-text">Amaranoc.am-ի ընտրությունը երաշխավորում է շքեղության, անհատականացված սպասարկման բարձր մակարդակ և իհարկե վստահության հիմքի վրա կառուցված կայուն համագործակցություն. Գերազանցության հանդեպ մեր բարձր ձգտումը և հավատարմությունը, էքսկլյուզիվ առաջարկների լայն ընտրությունը և մեր յուրաքանչյուր հյուրի նախասիրությունների նկատմամբ մանրակրկիտ ուշադրությունը մեզ առանձնացնում են ոլորտում բոլորից՝ դարձնելով առաջատար; Մենք առաջարկում ենք որակ և ստեղծում ենք հարմարավետության բարձր զգացում, որոնք գերազանցում են ձեր բոլոր սպասելիքները; Մենք բարձր ենք գնահատում մեր գործընկերների և մեր հաճախորդների վստահությունը:</p>
             </div>
           </div>
         </div>
@@ -147,15 +147,18 @@ export default function Mermasin() {
         </div>
       </div>
 
-      {/* --- ՄՈԴԱԼ --- */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
           <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl relative text-center">
             <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-black text-xl">✕</button>
             <p className="text-gray-700 font-medium mb-6 mt-2">Կարծիք թողնելու համար հարկավոր է մուտք գործել հարթակ</p>
-            <button className="bg-[#f59e0b] hover:bg-orange-500 text-white font-bold px-12 py-3 rounded-full transition-all">
-                <a href="http://localhost:5173/grancvel"> Մուտք</a>
-            </button>
+            <Link 
+              to="/grancvel" 
+              onClick={() => setIsModalOpen(false)}
+              className="inline-block bg-[#f59e0b] hover:bg-orange-500 text-white font-bold px-12 py-3 rounded-full transition-all"
+            >
+              Մուտք
+            </Link>
           </div>
         </div>
       )}

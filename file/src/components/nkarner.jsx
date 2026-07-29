@@ -27,7 +27,6 @@ function Modal({ item, onClose }) {
             <p>🏠 {item.category}</p>
           </div>
           <div className="mt-6 text-2xl font-bold text-[#fca34d]">{fmt(item.price)} ֏</div>
-          {/* Ուղղված է՝ /nkar${item.id}-ից դարձել է /nkar/${item.id} */}
           <Link to={`/nkar/${item.id}`} className="mt-4 block w-full text-center py-3 bg-[#fca34d] text-white font-bold rounded-xl">Ամրագրել</Link>
         </div>
       </div>
@@ -36,21 +35,29 @@ function Modal({ item, onClose }) {
 }
 
 export default function Nkarner() {
-  const [favorites, setFavorites] = useState([]);
   const [selectedLocs, setSelectedLocs] = useState([]);
   const [modalItem, setModalItem] = useState(null);
+  
+  // Zustand store-ից վերցնում ենք ֆավորիտների ցանկը, թարմացնող ֆունկցիան և ֆավորիտների քանակը
+  const favourites = useFavouritesStore((state) => state.favourites || state.favorites || []);
+  const toggleFavourite = useFavouritesStore((state) => state.toggleFavourite || state.toggleFavorite || state.addFavourite);
   
   const activeCategory = useCategoryStore((state) => state.activeCategory);
   const allLocations = useMemo(() => [...new Set(itemsData.map((i) => i.title))].sort(), []);
 
+  // Ստուգում ենք՝ տվյալ իդ-ով ապրանքը ֆավորիտներում կա, թե ոչ
+  const isFavourite = (id) => {
+    return favourites.some((fav) => (typeof fav === 'object' ? fav.id === id : fav === id));
+  };
+
   const filtered = useMemo(() => {
     return itemsData.filter((item) => {
-      if (activeCategory === "Պահանջված" && !favorites.includes(item.id)) return false;
+      if (activeCategory === "Պահանջված" && !isFavourite(item.id)) return false;
       if (activeCategory && activeCategory !== "Պահանջված" && item.category !== activeCategory) return false;
       if (selectedLocs.length > 0 && !selectedLocs.includes(item.title)) return false;
       return true;
     });
-  }, [activeCategory, favorites, selectedLocs]);
+  }, [activeCategory, favourites, selectedLocs]);
 
   const toggleLocation = (loc) => {
     setSelectedLocs(prev => prev.includes(loc) ? prev.filter(l => l !== loc) : [...prev, loc]);
@@ -72,18 +79,46 @@ export default function Nkarner() {
 
       <main className="flex-1">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((item) => (
-            <div key={item.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-2 cursor-pointer hover:shadow-lg transition-all" onClick={() => setModalItem(item)}>
-              <div className="h-48 w-full bg-gray-200 rounded-xl mb-3 overflow-hidden">
-                <img src={item.img} className="w-full h-full object-cover" alt={item.title} />
+          {filtered.map((item) => {
+            const liked = isFavourite(item.id);
+            return (
+              <div 
+                key={item.id} 
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 p-2 cursor-pointer hover:shadow-lg transition-all relative" 
+                onClick={() => setModalItem(item)}
+              >
+                <div className="h-48 w-full bg-gray-200 rounded-xl mb-3 overflow-hidden relative">
+                  <img src={item.img} className="w-full h-full object-cover" alt={item.title} />
+                  
+                  {/* Սրտիկի կոճակը նկարի վրա */}
+                  <button 
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Որպեսզի սրտիկին սեղմելիս մոդալը չբացվի
+                      toggleFavourite(item);
+                    }}
+                    className="absolute top-3 right-3 w-9 h-9 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-md transition-transform active:scale-90 hover:bg-white"
+                  >
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      className={`w-5 h-5 transition-colors duration-200 ${liked ? 'text-red-500 fill-red-500' : 'text-gray-600 fill-transparent'}`} 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor" 
+                      strokeWidth="2"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="p-2">
+                  <h3 className="font-bold">{item.title}</h3>
+                  <p className="text-sm text-gray-500">{item.category}</p>
+                  <div className="font-bold text-[#fca34d] mt-1">{fmt(item.price)} ֏</div>
+                </div>
               </div>
-              <div className="p-2">
-                <h3 className="font-bold">{item.title}</h3>
-                <p className="text-sm text-gray-500">{item.category}</p>
-                <div className="font-bold text-[#fca34d] mt-1">{fmt(item.price)} ֏</div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </main>
 
