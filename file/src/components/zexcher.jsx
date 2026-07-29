@@ -148,7 +148,7 @@ export default function Zexcher() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {hotOffers.slice(0, visibleCount).map((house) => (
             <Link 
-              to={`/nkar${house.id}`} 
+              to={`/nkar/${house.id}`}
               key={house.id} 
               className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow group relative flex flex-col cursor-pointer"
             >
