@@ -35,16 +35,15 @@ export default function Zexcher() {
   const handleShowMore = () => {
     setVisibleCount((prev) => {
       const nextCount = Math.min(prev + 9, hotOffers.length);
-      // Ավտոմատ սահում է ներքև նոր ավելացած տների ուղղությամբ
       setTimeout(() => {
-        window.scrollBy({ top: 450, behavior: 'smooth' });
-      }, 100);
+        window.scrollBy({ top: 500, behavior: 'smooth' });
+      }, 50);
       return nextCount;
     });
   };
 
   return (
-    <div className="w-full min-h-screen bg-white font-sans pt-24 sm:pt-28 pb-10 px-4 sm:px-6 lg:px-8 relative">
+    <div className="w-full bg-white font-sans py-6 px-4 sm:px-6 lg:px-8 relative">
       <style>{`
         @media (max-width: 400px) {
           .mobile-tight-padding { padding-left: 10px !important; padding-right: 10px !important; }
