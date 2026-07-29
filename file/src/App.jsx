@@ -25,9 +25,9 @@ function App() {
           <Routes>
             <Route path="/" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
             
-            {/* Ուղղված է․ համապատասխանեցվել է Zexcher.jsx-ի /nkar${house.id} հղմանը */}
+            {/* ԱՅՍՏԵՂ ՈՒՂՂՎԱԾ Է՝ /nkar/:id */}
             <Route 
-              path="/nkar:id" 
+              path="/nkar/:id" 
               element={<><Logo /><Navlinks /><HouseDetail /></>} 
             />
 
