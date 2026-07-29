@@ -69,7 +69,6 @@ export default function Buttons() {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const watchIdRef = useRef(null);
 
-  // Ստեղծում ենք կամ վերցնում ենք եզակի ID տվյալ սարքի/բրաուզերի համար
   const [myUserId] = useState(() => {
     let id = localStorage.getItem('my_map_user_id');
     if (!id) {
@@ -81,7 +80,6 @@ export default function Buttons() {
 
   const userPhotoUrl = "https://lh3.googleusercontent.com/a/ACg8ocI...ՁԵՐ_ՆԿԱՐԻ_ՀՂՈՒՄԸ_ԱՅՍՏԵՂ..."; 
 
-  // 1. Մշտապես կարդում ենք ԲՈԼՈՐ օգտատերերի դիրքերը բազայից (որ միանան, բոլորն իրար տեսնեն)
   useEffect(() => {
     const usersRef = ref(db, 'locations/users');
     const unsub = onValue(usersRef, (snapshot) => {
@@ -96,14 +94,14 @@ export default function Buttons() {
     return () => unsub();
   }, []);
 
-  // 2. Երբ քարտեզը բացվում է (յուզերի մուտքը քարտեզ), ակտիվանում է watchPosition-ը և շարժվելուն պես թարմացնում ՀԵՆՑ իրենը Firebase-ում
+
   const handleOpenMap = () => {
     setIsMapOpen(true);
 
     if (navigator.geolocation) {
       const userRef = ref(db, `locations/users/${myUserId}`);
       
-      // Եթե դուրս գա, ջնջվի բազայից
+
       onDisconnect(userRef).remove();
 
       watchIdRef.current = navigator.geolocation.watchPosition(
@@ -124,13 +122,13 @@ export default function Buttons() {
       navigator.geolocation.clearWatch(watchIdRef.current);
       watchIdRef.current = null;
     }
-    // Փակելիս կարող ենք հեռացնել տվյալ յուզերին բազայից
+   
     remove(ref(db, `locations/users/${myUserId}`));
   };
 
   const customIcon = createCustomIcon(userPhotoUrl);
   
-  // Որոշում ենք քարտեզի կենտրոնը. առաջնահերթ հենց իմ դիրքն է, եթե չկա՝ բազայում գտնվող առաջին հասանելի յուզերինը
+  
   const allUserEntries = Object.entries(usersLocations);
   const myCurrentData = usersLocations[myUserId];
   const centerPoint = myCurrentData 
@@ -177,7 +175,7 @@ export default function Buttons() {
                 <MapContainer center={centerPoint} zoom={15} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
-                  {/* Քարտեզի վրա գծում ենք ԲՈԼՈՐ միացած օգտատերերին, և հենց նրանք շարժվում են, կլորները միաժամանակ շարժվում են */}
+                   
                   {allUserEntries.map(([uid, loc]) => (
                     <Marker key={uid} position={[loc.lat, loc.lon]} icon={customIcon}>
                       <Popup>{uid === myUserId ? "Իմ լոկացիան" : `Օգտատեր (${uid.slice(0, 6)})`}</Popup>

@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 
 export default function Carayutyun() {
-  // Լռելյայն ակտիվ ենք դնում առաջին տաբը
   const [activeTab, setActiveTab] = useState('Սպասարկում');
   const [selectedService, setSelectedService] = useState(null);
 
-  // Միավորված բոլոր կատեգորիաները
   const categories = [
     { id: 'Սպասարկում', label: 'Սպասարկում', image: 'https://api.amaranoc.am/service.svg' },
     { id: 'Շոու', label: 'Շոու', image: 'https://api.amaranoc.am/services1.svg' },
@@ -16,7 +14,6 @@ export default function Carayutyun() {
     { id: 'Ուղևորափոխադրում', label: 'Ուղևորափոխադրում', image: 'https://api.amaranoc.am/services6.svg' },
   ];
 
-  // Միավորված բոլոր ծառայությունները՝ ըստ կատեգորիաների (Tabs)
   const servicesByTab = {
     'Սպասարկում': [
       {
@@ -261,14 +258,13 @@ export default function Carayutyun() {
     ]
   };
 
-  // Ստանում ենք ընթացիկ տաբի ծառայությունները (եթե դատարկ է, վերադարձնում է դատարկ զանգված)
+
   const currentServices = servicesByTab[activeTab] || [];
 
   return (
     <div className="w-full bg-white font-sans py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
 
-        {/* Կատեգորիաների սլայդեր */}
         <div className="relative flex items-center border-b border-gray-100 pb-4 mb-8">
           <button className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors mr-4 shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
@@ -298,7 +294,6 @@ export default function Carayutyun() {
           </div>
         </div>
 
-        {/* Ծառայությունների Grid */}
         {currentServices.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {currentServices.map((service) => (
@@ -340,14 +335,13 @@ export default function Carayutyun() {
             ))}
           </div>
         ) : (
-          /* Դատարկ էջի վիճակ (Empty State) */
+          
           <div className="text-center py-20 text-gray-400 text-sm">
             Այս կատեգորիայում ծառայություններ չկան
           </div>
         )}
       </div>
 
-      {/* ======= MODAL (Մանրամասն պատուհան) ======= */}
       {selectedService && (
         <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
@@ -368,14 +362,12 @@ export default function Carayutyun() {
               </button>
             </div>
 
-            {/* Modal Body */}
             <div className="px-6 pb-4">
               <p className="text-gray-600 leading-relaxed text-sm">
                 {selectedService.fullDescription || selectedService.description}
               </p>
             </div>
 
-            {/* Modal Footer */}
             <div className="flex items-center justify-between px-6 py-5 border-t border-gray-50">
               <div className="flex items-center gap-1 font-black text-lg text-[#1a202c]">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 text-gray-400 transform rotate-90">

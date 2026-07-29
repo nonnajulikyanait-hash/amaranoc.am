@@ -33,7 +33,7 @@ export default function AdminChat() {
       await addDoc(messagesRef, {
         text: message,
         createdAt: new Date(),
-        sender: "admin" // ⚠️ ՍԱ ԿԱՐԵՎՈՐ Է. Այստեղ արդեն ադմինն է գրում
+        sender: "admin" 
       });
       
       setMessage(''); 
@@ -53,15 +53,14 @@ export default function AdminChat() {
         <span className="text-xs bg-gray-700 px-2 py-1 rounded text-gray-300">Room 1</span>
       </div>
 
-      {/* Chat Messages */}
       <div className="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col gap-3">
         {messages.map((msg) => (
           <div
             key={msg.id}
             className={`max-w-[75%] p-3 rounded-2xl text-sm ${
               msg.sender === 'admin'
-                ? 'bg-[#fca34d] text-white self-end rounded-br-none' // Ադմինի նամակները (Աջից)
-                : 'bg-white text-gray-800 self-start rounded-bl-none shadow-sm border border-gray-100' // Օգտատիրոջ նամակները (Ձախից)
+                ? 'bg-[#fca34d] text-white self-end rounded-br-none' 
+                : 'bg-white text-gray-800 self-start rounded-bl-none shadow-sm border border-gray-100' 
             }`}
           >
             <div className="text-[10px] text-gray-400 mb-0.5 font-bold">
@@ -72,7 +71,6 @@ export default function AdminChat() {
         ))}
       </div>
 
-      {/* Input Form */}
       <form onSubmit={handleSendMessage} className="p-4 bg-white border-t border-gray-150 flex gap-2">
         <input
           type="text"

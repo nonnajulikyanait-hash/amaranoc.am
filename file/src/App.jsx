@@ -25,7 +25,6 @@ function App() {
           <Routes>
             <Route path="/" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
             
-            {/* ԱՅՍՏԵՂ ՈՒՂՂՎԱԾ Է՝ /nkar/:id */}
             <Route 
               path="/nkar/:id" 
               element={<><Logo /><Navlinks /><HouseDetail /></>} 
@@ -39,7 +38,6 @@ function App() {
             <Route path="/gaxtniutyun" element={<Gaxtniutyun />} />
             <Route path="/admin-panel-chat" element={<AdminChat />} />
 
-            {/* Սխալ հղումների բռնման համար */}
             <Route path="*" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
           </Routes>
           <Chat />

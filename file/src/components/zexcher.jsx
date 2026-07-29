@@ -33,12 +33,18 @@ export default function Zexcher() {
   });
 
   const handleShowMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 9, hotOffers.length));
-    window.scrollBy({ top: 400, behavior: 'smooth' });
+    setVisibleCount((prev) => {
+      const nextCount = Math.min(prev + 9, hotOffers.length);
+      // Ավտոմատ սահում է ներքև նոր ավելացած տների ուղղությամբ
+      setTimeout(() => {
+        window.scrollBy({ top: 450, behavior: 'smooth' });
+      }, 100);
+      return nextCount;
+    });
   };
 
   return (
-    <div className="w-full min-h-screen bg-white font-sans py-10 px-4 sm:px-6 lg:px-8 relative">
+    <div className="w-full min-h-screen bg-white font-sans pt-24 sm:pt-28 pb-10 px-4 sm:px-6 lg:px-8 relative">
       <style>{`
         @media (max-width: 400px) {
           .mobile-tight-padding { padding-left: 10px !important; padding-right: 10px !important; }
