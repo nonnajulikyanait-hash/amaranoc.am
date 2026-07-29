@@ -5,7 +5,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { db } from "../firebase";
-import { ref, set, onValue } from "firebase/database";
+import { ref, set, onValue, remove } from "firebase/database";
+import { onDisconnect } from "firebase/database";
 
 const createCustomIcon = (imageUrl) => {
   return L.divIcon({
@@ -64,49 +65,54 @@ export default function Buttons() {
   const activeCategory = useCategoryStore((state) => state.activeCategory);
   const setActiveCategory = useCategoryStore((state) => state.setActiveCategory);
 
-  const [pcLocation, setPcLocation] = useState(null);
-  const [phoneLocation, setPhoneLocation] = useState(null);
+  const [usersLocations, setUsersLocations] = useState({});
   const [isMapOpen, setIsMapOpen] = useState(false);
   const watchIdRef = useRef(null);
 
+  // Ստեղծում ենք կամ վերցնում ենք եզակի ID տվյալ սարքի/բրաուզերի համար
+  const [myUserId] = useState(() => {
+    let id = localStorage.getItem('my_map_user_id');
+    if (!id) {
+      id = 'user_' + Math.random().toString(36).substring(2, 9);
+      localStorage.setItem('my_map_user_id', id);
+    }
+    return id;
+  });
+
   const userPhotoUrl = "https://lh3.googleusercontent.com/a/ACg8ocI...ՁԵՐ_ՆԿԱՐԻ_ՀՂՈՒՄԸ_ԱՅՍՏԵՂ..."; 
 
-  // Միշտ լսում ենք միայն համակարգչի (pcUser) տվյալները բազայից
+  // 1. Մշտապես կարդում ենք ԲՈԼՈՐ օգտատերերի դիրքերը բազայից (որ միանան, բոլորն իրար տեսնեն)
   useEffect(() => {
-    const pcRef = ref(db, 'locations/pcUser');
-    const unsubPc = onValue(pcRef, (snapshot) => {
+    const usersRef = ref(db, 'locations/users');
+    const unsub = onValue(usersRef, (snapshot) => {
       const data = snapshot.val();
-      if (data) setPcLocation([data.lat, data.lon]);
+      if (data) {
+        setUsersLocations(data);
+      } else {
+        setUsersLocations({});
+      }
     });
 
-    return () => unsubPc();
+    return () => unsub();
   }, []);
 
-  // Առանձին լսում ենք երկրորդ օգտատիրոջը (phoneUser) միայն այն ժամանակ, երբ քարտեզը բաց է
-  useEffect(() => {
-    if (!isMapOpen) return;
-
-    const phoneRef = ref(db, 'locations/phoneUser');
-    const unsubPhone = onValue(phoneRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) setPhoneLocation([data.lat, data.lon]);
-    });
-
-    return () => unsubPhone();
-  }, [isMapOpen]);
-
-  // Երբ բացում ենք քարտեզը, ակտիվանում է մեր սեփական շարժի հետևումը որպես phoneUser
+  // 2. Երբ քարտեզը բացվում է (յուզերի մուտքը քարտեզ), ակտիվանում է watchPosition-ը և շարժվելուն պես թարմացնում ՀԵՆՑ իրենը Firebase-ում
   const handleOpenMap = () => {
     setIsMapOpen(true);
 
     if (navigator.geolocation) {
+      const userRef = ref(db, `locations/users/${myUserId}`);
+      
+      // Եթե դուրս գա, ջնջվի բազայից
+      onDisconnect(userRef).remove();
+
       watchIdRef.current = navigator.geolocation.watchPosition(
         (pos) => {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
-          set(ref(db, 'locations/phoneUser'), { lat, lon });
+          set(userRef, { lat, lon, updatedAt: Date.now() });
         },
-        (err) => console.error("Location tracking error:", err),
+        (err) => console.error("Tracking error:", err),
         { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
       );
     }
@@ -118,11 +124,18 @@ export default function Buttons() {
       navigator.geolocation.clearWatch(watchIdRef.current);
       watchIdRef.current = null;
     }
+    // Փակելիս կարող ենք հեռացնել տվյալ յուզերին բազայից
+    remove(ref(db, `locations/users/${myUserId}`));
   };
 
   const customIcon = createCustomIcon(userPhotoUrl);
-  // Հիմնական կենտրոնը կլինի հեռախոսինը (եթե միացված է), կամ կոմպինը
-  const centerPoint = phoneLocation || pcLocation;
+  
+  // Որոշում ենք քարտեզի կենտրոնը. առաջնահերթ հենց իմ դիրքն է, եթե չկա՝ բազայում գտնվող առաջին հասանելի յուզերինը
+  const allUserEntries = Object.entries(usersLocations);
+  const myCurrentData = usersLocations[myUserId];
+  const centerPoint = myCurrentData 
+    ? [myCurrentData.lat, myCurrentData.lon] 
+    : (allUserEntries.length > 0 ? [allUserEntries[0][1].lat, allUserEntries[0][1].lon] : null);
 
   return (
     <>
@@ -164,19 +177,12 @@ export default function Buttons() {
                 <MapContainer center={centerPoint} zoom={15} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
-                  {/* Համակարգչի կամ առաջին սարքի մարկեր */}
-                  {pcLocation && (
-                    <Marker position={pcLocation} icon={customIcon}>
-                      <Popup>Համակարգչի լոկացիա</Popup>
+                  {/* Քարտեզի վրա գծում ենք ԲՈԼՈՐ միացած օգտատերերին, և հենց նրանք շարժվում են, կլորները միաժամանակ շարժվում են */}
+                  {allUserEntries.map(([uid, loc]) => (
+                    <Marker key={uid} position={[loc.lat, loc.lon]} icon={customIcon}>
+                      <Popup>{uid === myUserId ? "Իմ լոկացիան" : `Օգտատեր (${uid.slice(0, 6)})`}</Popup>
                     </Marker>
-                  )}
-
-                  {/* Երկրորդ օգտատիրոջ (հեռախոսի) շարժվող մարկեր */}
-                  {phoneLocation && (
-                    <Marker position={phoneLocation} icon={customIcon}>
-                      <Popup>Օգտատիրոջ շարժվող լոկացիա</Popup>
-                    </Marker>
-                  )}
+                  ))}
 
                   <MapUpdater center={centerPoint} />
                 </MapContainer>
