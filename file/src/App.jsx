@@ -38,6 +38,9 @@ function App() {
             <Route path="/grancum2" element={<Grancum2 />} />
             <Route path="/gaxtniutyun" element={<Gaxtniutyun />} />
             <Route path="/admin-panel-chat" element={<AdminChat />} />
+
+            {/* Ավելացված է սխալ հղումների բռնման համար (Wildcard Route) */}
+            <Route path="*" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
           </Routes>
           <Chat />
         </div>
