@@ -15,7 +15,7 @@ import AdminChat from "./components/adminchat";
 import Zexcher from "./components/zexcher"; 
 import Carayutyun from "./components/carayutyun"; 
 import Mermasin from "./components/mermasin"; 
-import HouseDetail from "./components/housedetail"; // Մեկ ընդհանուր դինամիկ էջը
+import HouseDetail from "./components/housedetail"; // Թողնված է փոքրատառով, ինչպես քո ֆայլն է
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
             
-            {/* Մեկ ընդհանուր Route, որը սպասարկում է բոլոր 34 ամառանոցներին ըստ ID-ի */}
+            {/* Մեկ ընդհանուր Route, որը սպասարկում է բոլոր ամառանոցներին ըստ ID-ի */}
             <Route 
               path="/nkar:id" 
               element={<><Logo /><Navlinks /><HouseDetail /></>} 
