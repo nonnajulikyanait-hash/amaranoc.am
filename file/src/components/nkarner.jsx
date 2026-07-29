@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import useFavouritesStore from "../UseFavourites.js";
 import { useCategoryStore } from './buttons.jsx';
-import { itemsData } from './data'; 
+import { itemsData } from '../data';
 
 const fmt = (n) => n.toLocaleString('hy-AM');
 
