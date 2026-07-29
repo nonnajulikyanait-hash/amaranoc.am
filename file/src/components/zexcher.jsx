@@ -159,7 +159,7 @@ export default function Zexcher() {
               >
                 <button 
                   onClick={(e) => {
-                    e.preventDefault(); // Որպեսզի սրտիկին սեղմելիս լինկը չաշխատի ու էջ չփոխվի
+                    e.preventDefault(); 
                   }} 
                   className="w-8 h-8 rounded-full bg-white/85 backdrop-blur-sm flex items-center justify-center text-gray-600 hover:text-red-500 shadow-sm z-10 self-end transition-colors"
                 >
