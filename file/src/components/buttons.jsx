@@ -71,23 +71,7 @@ export default function Buttons() {
 
   const userPhotoUrl = "https://lh3.googleusercontent.com/a/ACg8ocI...ՁԵՐ_ՆԿԱՐԻ_ՀՂՈՒՄԸ_ԱՅՍՏԵՂ..."; 
 
-  // Համակարգչի կամ ընթացիկ սարքի Live հետևում և գրում որպես pcUser
-  useEffect(() => {
-    if (navigator.geolocation) {
-      const pcWatchId = navigator.geolocation.watchPosition(
-        (pos) => {
-          const loc = [pos.coords.latitude, pos.coords.longitude];
-          setPcLocation(loc);
-          set(ref(db, 'locations/pcUser'), { lat: loc[0], lon: loc[1] });
-        },
-        (err) => console.error("PC location error:", err),
-        { enableHighAccuracy: true, maximumAge: 0 }
-      );
-      return () => navigator.geolocation.clearWatch(pcWatchId);
-    }
-  }, []);
-
-  // Լսում ենք ԵՐԿՈՒ սարքերի տվյալները բազայից իրական ժամանակում
+  // Միշտ լսում ենք միայն համակարգչի (pcUser) տվյալները բազայից
   useEffect(() => {
     const pcRef = ref(db, 'locations/pcUser');
     const unsubPc = onValue(pcRef, (snapshot) => {
@@ -95,22 +79,26 @@ export default function Buttons() {
       if (data) setPcLocation([data.lat, data.lon]);
     });
 
+    return () => unsubPc();
+  }, []);
+
+  // Առանձին լսում ենք երկրորդ օգտատիրոջը (phoneUser) միայն այն ժամանակ, երբ քարտեզը բաց է
+  useEffect(() => {
+    if (!isMapOpen) return;
+
     const phoneRef = ref(db, 'locations/phoneUser');
     const unsubPhone = onValue(phoneRef, (snapshot) => {
       const data = snapshot.val();
       if (data) setPhoneLocation([data.lat, data.lon]);
     });
 
-    return () => {
-      unsubPc();
-      unsubPhone();
-    };
-  }, []);
+    return () => unsubPhone();
+  }, [isMapOpen]);
 
+  // Երբ բացում ենք քարտեզը, ակտիվանում է մեր սեփական շարժի հետևումը որպես phoneUser
   const handleOpenMap = () => {
     setIsMapOpen(true);
 
-    // Եթե բացում եք հեռախոսից, այն ակտիվորեն թարմացնում է phoneUser-ը
     if (navigator.geolocation) {
       watchIdRef.current = navigator.geolocation.watchPosition(
         (pos) => {
@@ -118,7 +106,7 @@ export default function Buttons() {
           const lon = pos.coords.longitude;
           set(ref(db, 'locations/phoneUser'), { lat, lon });
         },
-        (err) => console.error("Phone location error:", err),
+        (err) => console.error("Location tracking error:", err),
         { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
       );
     }
@@ -133,6 +121,7 @@ export default function Buttons() {
   };
 
   const customIcon = createCustomIcon(userPhotoUrl);
+  // Հիմնական կենտրոնը կլինի հեռախոսինը (եթե միացված է), կամ կոմպինը
   const centerPoint = phoneLocation || pcLocation;
 
   return (
@@ -175,15 +164,17 @@ export default function Buttons() {
                 <MapContainer center={centerPoint} zoom={15} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
+                  {/* Համակարգչի կամ առաջին սարքի մարկեր */}
                   {pcLocation && (
                     <Marker position={pcLocation} icon={customIcon}>
-                      <Popup>Համակարգչի Live լոկացիա</Popup>
+                      <Popup>Համակարգչի լոկացիա</Popup>
                     </Marker>
                   )}
 
+                  {/* Երկրորդ օգտատիրոջ (հեռախոսի) շարժվող մարկեր */}
                   {phoneLocation && (
                     <Marker position={phoneLocation} icon={customIcon}>
-                      <Popup>Հեռախոսի Live շարժվող լոկացիա</Popup>
+                      <Popup>Օգտատիրոջ շարժվող լոկացիա</Popup>
                     </Marker>
                   )}
 
