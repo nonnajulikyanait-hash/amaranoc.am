@@ -15,7 +15,7 @@ import AdminChat from "./components/adminchat";
 import Zexcher from "./components/zexcher"; 
 import Carayutyun from "./components/carayutyun"; 
 import Mermasin from "./components/mermasin"; 
-import HouseDetail from "./components/housedetail"; // Թողնված է փոքրատառով, ինչպես քո ֆայլն է
+import HouseDetail from "./components/housedetail"; 
 
 function App() {
   return (
@@ -25,9 +25,9 @@ function App() {
           <Routes>
             <Route path="/" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
             
-            {/* Մեկ ընդհանուր Route, որը սպասարկում է բոլոր ամառանոցներին ըստ ID-ի */}
+            {/* Ուղղված է․ ավելացվել է շեղբը (/) ID-ից առաջ */}
             <Route 
-              path="/nkar:id" 
+              path="/nkar/:id" 
               element={<><Logo /><Navlinks /><HouseDetail /></>} 
             />
 
@@ -39,7 +39,7 @@ function App() {
             <Route path="/gaxtniutyun" element={<Gaxtniutyun />} />
             <Route path="/admin-panel-chat" element={<AdminChat />} />
 
-            {/* Ավելացված է սխալ հղումների բռնման համար (Wildcard Route) */}
+            {/* Սխալ հղումների բռնման համար */}
             <Route path="*" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
           </Routes>
           <Chat />
