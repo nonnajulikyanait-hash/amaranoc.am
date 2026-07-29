@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { itemsData } from './data'; // Ներմուծում ենք տվյալները
+import { itemsData } from "../data";
 
 export default function HouseDetail() {
   const { id } = useParams(); // Վերցնում ենք id-ն URL-ից (օրինակ՝ /nkar1 -> id = 1)
