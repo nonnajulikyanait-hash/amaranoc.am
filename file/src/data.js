@@ -398,10 +398,10 @@ export const itemsData = [
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780147361149--0.3288212813557818image.webp&w=1920&q=75",
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780147361149--0.3288212813557818image.webp&w=1920&q=75",
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780146674085--0.26567996533342275image.webp&w=1920&q=75",
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780145895364--0.9918448887272826image.webp&w=1920&q=75",
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780144361341--0.6661204408209285image.webp&w=1920&q=75",
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780147361149--0.3288212813557818image.webp&w=1920&q=75"
+      "",
+      "",
+      "",
+      ""
     ]
   },
   { 

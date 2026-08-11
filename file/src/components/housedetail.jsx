@@ -5,8 +5,10 @@ import { itemsData } from '../data';
 export default function HouseDetail() {
   const { id } = useParams();
   
-  // Ավելի ապահով մաքրում. հանում է բոլոր ոչ-թվային նշանները
+  // Մաքրում ենք id-ն՝ թողնելով միայն թվերը, և դարձնում number
   const cleanId = Number(String(id || '').replace(/\D/g, ''));
+  
+  // Որոնում ենք զանգվածում (համեմատությունը խիստ տիպերով դարձնելու համար երկուսն էլ դարձնում ենք Number)
   const house = itemsData.find((item) => Number(item.id) === cleanId);
 
   const [selectedCurrencyId, setSelectedCurrencyId] = useState(0);
@@ -22,6 +24,7 @@ export default function HouseDetail() {
     return (
       <div className="max-w-4xl mx-auto py-20 px-4 text-center mt-24 text-gray-800">
         <h2 className="text-2xl font-bold mb-4">Ամառանոցը չի գտնվել</h2>
+        <p className="text-gray-500 mb-4">Փնտրվող ID: {id} (Մաքրված: {cleanId})</p>
         <Link to="/" className="text-orange-500 font-semibold underline">← Վերադառնալ գլխավոր էջ</Link>
       </div>
     );
@@ -36,7 +39,7 @@ export default function HouseDetail() {
 
   const details = [
     { label: "Կոդ", value: `AM${house.id}` },
-    { label: "Հասցե", value: house.location || "Օհանավան" },
+    { label: "Հասցե", value: house.title || "Օհանավան" },
     { label: "Գիշերակաց", value: "Այո" },
     { label: "Շինության մակերես", value: "120 քմ" },
     { label: "Ընդհանուր մակերես", value: "600 քմ" },
