@@ -5,10 +5,7 @@ import { itemsData } from '../data';
 export default function HouseDetail() {
   const { id } = useParams();
   
-  // Մաքրում ենք id-ն՝ թողնելով միայն թվերը, և դարձնում number
   const cleanId = Number(String(id || '').replace(/\D/g, ''));
-  
-  // Որոնում ենք զանգվածում (համեմատությունը խիստ տիպերով դարձնելու համար երկուսն էլ դարձնում ենք Number)
   const house = itemsData.find((item) => Number(item.id) === cleanId);
 
   const [selectedCurrencyId, setSelectedCurrencyId] = useState(0);
@@ -113,17 +110,17 @@ export default function HouseDetail() {
           </div>
         </div>
 
-        {/* --- 2. ՖՈՏՈԳԱԼԵՐԵԱ --- */}
+        {/* --- 2. ՖՈՏՈԳԱԼԵՐԵԱ (ՈՒՂՂՎԱԾ) --- */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 rounded-3xl overflow-hidden mb-8 relative">
           <div className="md:col-span-6 h-[300px] md:h-[500px] relative group">
-            <img src={house.img} alt={house.title} className="w-full h-full object-cover" />
+            <img src={house.images?.[0] || house.img} alt={house.title} className="w-full h-full object-cover" />
           </div>
           <div className="md:col-span-6 grid grid-cols-2 gap-3 h-[300px] md:h-[500px] relative">
-            <img src={house.img} alt="Pool 1" className="w-full h-full object-cover" />
-            <img src={house.img} alt="Villa Exterior" className="w-full h-full object-cover" />
-            <img src={house.img} alt="A-Frame House" className="w-full h-full object-cover" />
+            <img src={house.images?.[1] || house.img} alt="Pool 1" className="w-full h-full object-cover" />
+            <img src={house.images?.[2] || house.img} alt="Villa Exterior" className="w-full h-full object-cover" />
+            <img src={house.images?.[3] || house.img} alt="A-Frame House" className="w-full h-full object-cover" />
             <div className="relative w-full h-full">
-              <img src={house.img} alt="Pool Interior" className="w-full h-full object-cover" />
+              <img src={house.images?.[4] || house.images?.[0] || house.img} alt="Pool Interior" className="w-full h-full object-cover" />
               <button className="absolute bottom-4 right-4 bg-white hover:bg-gray-100 text-gray-900 font-bold text-xs px-4 py-2 rounded-lg shadow-md transition">Տեսնել բոլորը</button>
             </div>
           </div>
