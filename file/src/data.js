@@ -21,11 +21,10 @@ export const itemsData = [
     category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1772031992147--0.08273550679993247image.webp&w=1920&q=75", 
     images: [
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1772031992147--0.08273550679993247image.webp&w=1920&q=75", 
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1753798511041--0.09397230687990277image.webp&w=1920&q=75", 
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1768380706620--0.5416288751044531image.webp&w=1920&q=75", 
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1759149473223--0.33907271602966693image.webp&w=1920&q=75", 
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1762850175455--0.6550219483737489image.webp&w=1920&q=75"
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1772031870801--0.4223948999945075image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1772031870813--0.5826133475248165image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1770113277903--0.1517516416909066image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1772031870840--0.9486596639600804image_optimized.webp&w=3840&q=75", 
     ] 
   },
   { 
