@@ -30,7 +30,7 @@ function App() {
               element={<><Logo /><Navlinks /><HouseDetail /></>} 
             />
 
-            <Route path="/zexcher" element={<><Logo /><Navlinks /><Zexcher /> <Haytararutyun /> <Footer/> </>} />
+            <Route path="/zexcher" element={<><Logo /><Navlinks /><Zexcher /> </>} />
             <Route path="/carayutyun" element={<><Logo /><Navlinks /><Carayutyun />  </>} />
             <Route path="/mermasin" element={<><Logo /><Navlinks /><Mermasin /> <Haytararutyun /> <Footer/>  </>} />
             <Route path="/grancvel" element={<Grancvel />} />
