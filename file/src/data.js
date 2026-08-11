@@ -465,7 +465,7 @@ export const itemsData = [
     id: 34, 
     title: "Դիլիջան", 
     capacity: 50, 
-    price: 690000, 
+    price: 69000, 
     category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1784803125153--0.7872134415969816image_optimized.webp&w=3840&q=75", 
     images: [
