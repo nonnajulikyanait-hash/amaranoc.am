@@ -4,7 +4,7 @@ export const itemsData = [
     title: "Դիլիջան", 
     capacity: 20, 
     price: 75000, 
-    category: "Փակ լողավազան", 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1778744544176--0.9742892469611801image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1778744546579--0.5813661360631432image_optimized.webp&w=3840&q=75", 
