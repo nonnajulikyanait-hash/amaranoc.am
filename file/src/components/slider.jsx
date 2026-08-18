@@ -10,7 +10,12 @@ import 'swiper/css/pagination';
 
 import HouseCard from './housecard'; // Քո սարքած քարտը
 
-function HouseSlider({ houses }) {
+function HouseSlider({ houses = [] }) {
+  // Եթե houses-ը դեռ չկա կամ դատարկ է, կարող ենք ցույց տալ բեռնման նշան կամ պարզապես դատարկություն
+  if (!houses || houses.length === 0) {
+    return <div className="text-center py-10 text-gray-500">Բեռնվում են հայտարարությունները...</div>;
+  }
+
   return (
     <div className="w-full max-w-7xl mx-auto py-10 px-4">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Թարմ հայտարարություններ</h2>
