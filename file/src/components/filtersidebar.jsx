@@ -27,14 +27,14 @@ export default function FilterSidebar() {
 
   return (
     <aside 
-      className="w-full bg-white border border-gray-200 rounded-3xl p-5 shadow-sm font-sans flex flex-col"
-      style={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 transparent' }}
+      className="w-full bg-white border border-gray-200 rounded-3xl p-5 shadow-sm font-sans sticky top-6 overflow-y-auto"
+      style={{ height: 'calc(100vh - 100px)', scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 transparent' }}
     >
       
-      {/* ՎԱՅՐ - Սահմանափակված բարձրությամբ և առանձին սքրոլով */}
-      <div className="border-b border-gray-100 pb-4 mb-4">
-        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider m-0 mb-2">ՎԱՅՐ</h4>
-        <div className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin' }}>
+      {/* ՎԱՅՐ */}
+      <div className="border-b border-gray-100 pb-5 mb-5">
+        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider m-0 mb-3">ՎԱՅՐ</h4>
+        <div className="flex flex-col gap-2.5 max-h-48 overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin' }}>
           {[
             'Աշտարակ', 'Ապարան', 'Արզնի', 'Բազմաղբյուր', 'Բջնի', 
             'Գառնի', 'Դիլիջան', 'Դատել', 'Երևան', 'Ջրվեժ', 
@@ -55,9 +55,9 @@ export default function FilterSidebar() {
       </div>
 
       {/* Արժեք */}
-      <div className="border-b border-gray-100 pb-4 mb-4">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-2">Արժեք</h4>
-        <div className="flex gap-1 mb-2">
+      <div className="border-b border-gray-100 pb-5 mb-5">
+        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Արժեք</h4>
+        <div className="flex gap-1 mb-3">
           {['֏', '$', '€', '₽'].map((curr) => (
             <button 
               key={curr}
@@ -92,8 +92,8 @@ export default function FilterSidebar() {
       </div>
 
       {/* Մարդկանց թույլատրելի քանակը գիշերակացով */}
-      <div className="border-b border-gray-100 pb-4 mb-4">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-2">Մարդկանց թույլատրելի քանակը</h4>
+      <div className="border-b border-gray-100 pb-5 mb-5">
+        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Մարդկանց թույլատրելի քանակը</h4>
         <div className="flex items-center border border-gray-200 rounded-lg w-32 overflow-hidden bg-gray-50">
           <button 
             onClick={() => guestCount > 0 && setGuestCount(guestCount - 1)}
@@ -117,8 +117,8 @@ export default function FilterSidebar() {
       </div>
 
       {/* Գիշերակացի առկայություն */}
-      <div className="border-b border-gray-100 pb-4 mb-4">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-2">Գիշերակացի առկայություն</h4>
+      <div className="border-b border-gray-100 pb-5 mb-5">
+        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Գիշերակացի առկայություն</h4>
         <div className="flex gap-1">
           {['Բոլորը', 'Այո', 'Ոչ'].map((text) => (
             <button 
@@ -137,8 +137,8 @@ export default function FilterSidebar() {
       </div>
 
       {/* Սենյակների քանակ */}
-      <div className="border-b border-gray-100 pb-4 mb-4">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-2">Սենյակների քանակ</h4>
+      <div className="border-b border-gray-100 pb-5 mb-5">
+        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Սենյակների քանակ</h4>
         <div className="grid grid-cols-3 gap-1">
           <button 
             onClick={() => setRoomCount('Բոլորը')}
@@ -163,8 +163,8 @@ export default function FilterSidebar() {
       </div>
 
       {/* Լողավազան */}
-      <div className="border-b border-gray-100 pb-4 mb-4">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-2">Լողավազան</h4>
+      <div className="border-b border-gray-100 pb-5 mb-5">
+        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Լողավազան</h4>
         <div className="flex flex-col gap-1">
           <button 
             onClick={() => setPoolType('Բոլորը')}
@@ -192,7 +192,7 @@ export default function FilterSidebar() {
 
       {/* Առավելություններ */}
       <div>
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-2">Առավելություններ</h4>
+        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Առավելություններ</h4>
         <div className="flex flex-col gap-2 max-h-36 overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin' }}>
           {['Շոգեբաղնիք', 'Ջակուզի', 'Բիլիարդ', 'Սեղանի թենիս', 'Բացօթյա տաղավար', 'Փակ տաղավար', 'Մանղալ', 'Թոնիր'].map((item, i) => (
             <label key={i} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
