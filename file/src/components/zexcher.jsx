@@ -258,37 +258,7 @@ export default function CombinedPage() {
           </div>
         )}
 
-        {/* --- ՍԵԿՑԻԱ 4. ԾԱՌԱՅՈՒԹՅՈՒՆՆԵՐ (CarayutyunPage) --- */}
-        <div className="flex items-center justify-center gap-4 mb-8">
-          <div className="flex-1 h-[1px] bg-gray-300 max-w-[200px] hidden sm:block"></div>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#1a202c] tracking-wide uppercase text-center">
-            Ծառայություններ
-          </h2>
-          <div className="flex-1 h-[1px] bg-gray-300 max-w-[200px] hidden sm:block"></div>
-        </div>
-
-        <div className="relative flex items-center border-b border-gray-100 pb-4 mb-8">
-          <div className="flex items-center gap-4 overflow-x-auto no-scrollbar flex-1 scroll-smooth">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveTab(cat.id)}
-                className={`flex items-center flex-col sm:flex-row gap-2 px-5 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
-                  activeTab === cat.id
-                    ? 'bg-[#fff7ed] text-[#fca34d] border border-[#fca34d]/30 shadow-sm'
-                    : 'bg-white text-gray-600 border border-transparent hover:border-gray-200'
-                }`}
-              >
-                {cat.image ? (
-                  <img src={cat.image} alt={cat.label} className="w-5 h-5 object-contain" />
-                ) : (
-                  <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-[10px]">◎</div>
-                )}
-                <span>{cat.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+        
 
         {currentServices.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
