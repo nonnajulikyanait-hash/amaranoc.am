@@ -63,7 +63,7 @@ export default function HouseDetail() {
   ];
 
   return (
-    <div className="w-full bg-white font-sans pb-[700px] relative">
+    <div className="w-full bg-white font-sans min-h-screen flex flex-col">
       <style>{`
         @media (max-width: 400px) {
           .mobile-tight { padding-left: 15px !important; padding-right: 15px !important; }
@@ -72,7 +72,8 @@ export default function HouseDetail() {
         }
       `}</style>
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mobile-tight">
+      {/* Գլխավոր կոնտեյներ, որը պարունակում է տան ամբողջ ինֆորմացիան */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mobile-tight w-full flex-grow">
         
         {/* --- 1. ԳԼԽԱՄԱՍ --- */}
         <div className="flex flex-col md:flex-row md:items-center justify-between border border-gray-200 rounded-2xl p-4 mb-6 gap-4 shadow-sm">
@@ -200,7 +201,7 @@ export default function HouseDetail() {
         </div>
 
         {/* --- 8. ԿԱՐԾԻՔՆԵՐ --- */}
-        <div className="w-full bg-white py-8 border-t border-gray-100 mb-12">
+        <div className="w-full bg-white py-8 border-t border-gray-100 mb-6">
           <div className="flex items-center justify-center gap-6 mb-8">
             <div className="flex-1 h-[1px] bg-gray-200"></div>
             <h2 className="text-2xl font-black text-gray-900 uppercase tracking-widest text-center mobile-title">Կարծիքներ</h2>
@@ -221,79 +222,46 @@ export default function HouseDetail() {
 
       </div>
 
-      {/* --- ԱՎԵԼԱՑՆԵԼ ՀԱՅՏԱՐԱՐՈՒԹՅՈՒՆ (CreateListingForm) --- */}
+      {/* --- ԱՎԵԼԱՑՆԵԼ ՀԱՅՏԱՐԱՐՈՒԹՅՈՒՆ (Flow ռեժիմով) --- */}
       <section 
-        className="absolute w-full flex justify-center items-center font-sans text-white box-border bg-no-repeat bg-center bg-cover left-0"
+        className="w-full flex justify-center items-center font-sans text-white box-border bg-no-repeat bg-center bg-cover py-20 px-6"
         style={{ 
-          top: '4500px',
-          padding: '150px 60px',
           backgroundImage: "url('https://amaranoc.am/images/footer/home-add-application.png')" 
         }}
       >
         <div 
-          className="backdrop-blur-md rounded-2xl text-center box-border"
+          className="backdrop-blur-md rounded-2xl text-center box-border p-10 md:p-14 max-w-4xl w-full"
           style={{
             backgroundColor: 'rgba(25, 35, 30, 0.65)',
             border: '1px solid rgba(255, 255, 255, 0.15)',
-            padding: '50px 70px',
-            maxWidth: '1100px',
-            width: '100%'
           }}
         >
-          <h2 
-            className="font-bold tracking-wide m-0 text-white"
-            style={{ fontSize: '32px', marginBottom: '20px', color: 'white' }}
-          >
+          <h2 className="font-bold tracking-wide m-0 text-white text-2xl md:text-3xl mb-5">
             ՏԵՂԱԴՐԵԼ ՀԱՅՏԱՐԱՐՈՒԹՅՈՒՆ
           </h2>
-          <p 
-            className="m-0 font-light"
-            style={{ fontSize: '15px', color: '#e2e8f0', marginBottom: '40px' }}
-          >
+          <p className="m-0 font-light text-sm md:text-base text-slate-200 mb-8">
             Մուտքագրեք Ձեր տվյալները նշված դաշտերում և մենք կկապնվենք Ձեզ հետ
           </p>
           
-          <form className="flex gap-4 items-center flex-wrap" onSubmit={(e) => e.preventDefault()}>
+          <form className="flex gap-4 items-center flex-wrap justify-center" onSubmit={(e) => e.preventDefault()}>
             <input 
               type="text" 
               placeholder="Անուն Ազգանուն" 
-              className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60" 
-              style={{
-                minWidth: '200px',
-                border: '1px solid rgba(255, 255, 255, 0.4)',
-                padding: '14px 24px',
-                fontSize: '14px'
-              }}
+              className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60 border border-white/40 px-6 py-3.5 text-sm min-w-[200px]" 
             />
             <input 
               type="tel" 
               placeholder="Հեռախոսահամար" 
-              className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60" 
-              style={{
-                minWidth: '200px',
-                border: '1px solid rgba(255, 255, 255, 0.4)',
-                padding: '14px 24px',
-                fontSize: '14px'
-              }}
+              className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60 border border-white/40 px-6 py-3.5 text-sm min-w-[200px]" 
             />
             <input 
               type="email" 
               placeholder="Էլ. հասցե" 
-              className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60" 
-              style={{
-                minWidth: '200px',
-                border: '1px solid rgba(255, 255, 255, 0.4)',
-                padding: '14px 24px',
-                fontSize: '14px'
-              }}
+              className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60 border border-white/40 px-6 py-3.5 text-sm min-w-[200px]" 
             />
             <button 
               type="submit" 
-              className="text-white border-none rounded-full font-semibold cursor-pointer transition-colors whitespace-nowrap bg-[#ff9f43] hover:bg-[#f39c12]"
-              style={{
-                padding: '14px 35px',
-                fontSize: '15px'
-              }}
+              className="text-white border-none rounded-full font-semibold cursor-pointer transition-colors whitespace-nowrap bg-[#ff9f43] hover:bg-[#f39c12] px-8 py-3.5 text-sm"
             >
               Ուղարկել
             </button>
@@ -301,52 +269,42 @@ export default function HouseDetail() {
         </div>
       </section>
 
-      {/* --- ՆՈՐ FOOTER --- */}
+      {/* --- ՆՈՐ FOOTER (Flow ռեժիմով) --- */}
       <footer 
-        className="absolute text-white text-center font-sans bg-no-repeat left-0 w-full"
+        className="text-white text-center font-sans bg-no-repeat w-full bg-[#0b131f] py-16 px-6 border-t border-slate-800"
         style={{
-          backgroundColor: '#0b131f',
           backgroundImage: 'url("https://amaranoc.am/_next/image?url=%2Fimages%2Ffooter%2Ffooter-background.png&w=3840&q=75")',
           backgroundPosition: 'bottom center',
-          backgroundSize: 'contain',
-          padding: '60px 20px 120px 20px',
-          top: '5070px',
-          height: '70%'
+          backgroundSize: 'cover',
         }}
       >
         <div className="max-w-6xl mx-auto">
-          <h2 
-            className="font-bold tracking-widest text-white"
-            style={{ fontSize: '26px', marginBottom: '40px', color: 'white' }}
-          >
+          <h2 className="font-bold tracking-widest text-white text-2xl mb-10">
             ԿՈՆՏԱԿՏՆԵՐ
           </h2>
           
-          <div 
-            className="flex justify-center items-center flex-wrap"
-            style={{ gap: '25px', marginBottom: '35px' }}
-          >
-            <div className="flex items-center text-slate-300" style={{ gap: '8px', fontSize: '13px' }}>
+          <div className="flex justify-center items-center flex-wrap gap-6 mb-8 text-slate-300 text-xs md:text-sm">
+            <div className="flex items-center gap-2">
               <svg className="text-white opacity-80" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              <a href="tel:041-611-611/044-611-611" target='_blank' rel='noreferrer'><span>041-611-611 / 044-611-611</span></a>
+              <a href="tel:041-611-611" target='_blank' rel='noreferrer'><span>041-611-611 / 044-611-611</span></a>
             </div>
 
-            <div className="flex items-center text-slate-300" style={{ gap: '8px', fontSize: '13px' }}>
+            <div className="flex items-center gap-2">
               <svg className="text-white opacity-80" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               <a href="mailto:amaranoc.info@gmail.com" target='_blank' rel='noreferrer'><span>AMARANOC.INFO@GMAIL.COM</span></a>
             </div>
 
-            <div className="flex items-center text-slate-300" style={{ gap: '8px', fontSize: '13px' }}>
+            <div className="flex items-center gap-2">
               <svg className="text-white opacity-80" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
               <a href="https://www.instagram.com/amaranoc.am/?igshid=MzRlODBiNWFlZA%3D%3D" target='_blank' rel='noreferrer'><span>AMARANOC.AM</span></a>
             </div>
 
-            <div className="flex items-center text-slate-300" style={{ gap: '8px', fontSize: '13px' }}>
+            <div className="flex items-center gap-2">
               <svg className="text-white opacity-80" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
               <a href="https://www.facebook.com/aamaranoc.am?mibextid=ZbWKwL" target='_blank' rel='noreferrer'><span>AMARANOC.AM</span></a>
             </div>
 
-            <div className="flex items-center text-slate-300" style={{ gap: '8px', fontSize: '13px' }}>
+            <div className="flex items-center gap-2">
               <svg className="text-white opacity-80" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <span>ԹՈՒՄԱՆՅԱՆ 5</span>
             </div>
@@ -354,16 +312,12 @@ export default function HouseDetail() {
 
           <Link 
             to="/gaxtniutyun" 
-            className="block no-underline text-slate-400 hover:text-white cursor-pointer transition-colors" 
-            style={{ fontSize: '13px', marginBottom: '35px' }}
+            className="block no-underline text-slate-400 hover:text-white cursor-pointer transition-colors text-xs mb-8"
           >
             Գաղտնիության քաղաքականություն
           </Link>
 
-          <p 
-            className="text-slate-500 m-0 tracking-wide" 
-            style={{ fontSize: '12px' }}
-          >
+          <p className="text-slate-500 m-0 tracking-wide text-xs">
             Ամառանոց ՍՊԸ  |  Amaranoc LLC  |  Амараноц ООО
           </p>
         </div>
