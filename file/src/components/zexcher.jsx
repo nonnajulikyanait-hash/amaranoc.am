@@ -8,6 +8,27 @@ export default function Zexcher() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGiftAmount, setSelectedGiftAmount] = useState('80,000 ֏');
 
+  // Approximate exchange rates relative to AMD (Armenian Dram)
+  const exchangeRates = {
+    AMD: 1,
+    USD: 0.0026, // Example rate: 1 USD ≈ 385 AMD
+    EUR: 0.0024, // Example rate: 1 EUR ≈ 415 AMD
+    RUB: 0.24    // Example rate: 1 RUB ≈ 4.15 AMD
+  };
+
+  const currencySymbols = {
+    AMD: '֏',
+    USD: '$',
+    EUR: '€',
+    RUB: '₽'
+  };
+
+  // Helper function to convert and format prices
+  const formatPrice = (basePriceAMD) => {
+    const converted = basePriceAMD * exchangeRates[currency];
+    return `${Math.round(converted).toLocaleString()} ${currencySymbols[currency]}`;
+  };
+
   const hotOffers = Array.from({ length: 34 }, (_, i) => {
     const locations = ["Դիլիջան", "Բջնի", "Աշտարակ", "Ծաղկաձոր", "Նոր Հաճն"];
     const images = [
@@ -26,7 +47,7 @@ export default function Zexcher() {
       id: i + 1,
       location: locations[i % locations.length],
       capacity: ((i % 4) + 1) * 6,
-      price: ((i % 5 + 2) * 20000).toLocaleString(),
+      priceValue: (i % 5 + 2) * 20000, // Stored as a raw number for calculation
       rating: i % 2 === 0 ? 5 : null,
       image: images[i % images.length]
     };
@@ -144,8 +165,8 @@ export default function Zexcher() {
 
           <div className="flex-1 max-w-2xl flex flex-col gap-1 relative pt-4">
             <input type="range" min="0" max="400000" step="5000" value={priceRange} onChange={(e) => setPriceRange(Number(e.target.value))} className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#fca34d]" />
-            <span className="absolute left-0 -top-2 bg-[#fca34d] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0 ֏</span>
-            <span className="absolute bg-[#fca34d] text-white text-[10px] font-bold px-2 py-0.5 rounded-full transition-all" style={{ right: `${((400000 - priceRange) / 400000) * 100}%`, transform: 'translateX(50%)', top: '-8px' }}>{priceRange.toLocaleString()} ֏</span>
+            <span className="absolute left-0 -top-2 bg-[#fca34d] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0 {currencySymbols[currency]}</span>
+            <span className="absolute bg-[#fca34d] text-white text-[10px] font-bold px-2 py-0.5 rounded-full transition-all" style={{ right: `${((400000 - priceRange) / 400000) * 100}%`, transform: 'translateX(50%)', top: '-8px' }}>{formatPrice(priceRange)}</span>
           </div>
         </div>
 
@@ -179,7 +200,7 @@ export default function Zexcher() {
                   <div className="flex items-center gap-1"><span>{house.capacity} հոգի</span></div>
                 </div>
                 <div className="flex items-center justify-between mt-1">
-                  <div className="flex items-center gap-1 font-black text-base text-[#111827]"><span>{house.price} ֏</span></div>
+                  <div className="flex items-center gap-1 font-black text-base text-[#111827]"><span>{formatPrice(house.priceValue)}</span></div>
                   {house.rating && <div className="bg-[#fca34d] text-white text-[11px] font-bold px-2 py-0.5 rounded">{house.rating}</div>}
                 </div>
               </div>
