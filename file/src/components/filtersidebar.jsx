@@ -1,68 +1,94 @@
 import React, { useState } from 'react';
 
 export default function FilterSidebar() {
+  const [currency, setCurrency] = useState('֏');
   const [guestCount, setGuestCount] = useState(1);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  
+  // Selected filter states
+  const [selectedRegions, setSelectedRegions] = useState([]);
+  const [nightStay, setNightStay] = useState('Բոլորը');
+  const [roomCount, setRoomCount] = useState('Բոլորը');
+  const [bathCount, setBathCount] = useState('Բոլորը');
+  const [poolType, setPoolType] = useState('Բոլորը');
+  const [amenities, setAmenities] = useState([]);
+
+  const toggleCheckboxItem = (item, list, setList) => {
+    if (list.includes(item)) {
+      setList(list.filter((i) => i !== item));
+    } else {
+      setList([...list, item]);
+    }
+  };
 
   return (
-    <aside 
-      className="w-72  bg-white border border-gray-200 rounded-2xl p-5 shadow-sm font-sans"
-      style={{ top: '130px', left: '60px' }}
-    >
-
-      <div className="border-b border-gray-100 pb-5 mb-5 position: relative left: -150px"   >
+    <aside className="w-72 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm font-sans">
+      
+      {/* 1. Տարածաշրջան */}
+      <div className="border-b border-gray-100 pb-5 mb-5">
         <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Տարածաշրջան</h4>
         <div 
           className="flex flex-col gap-2 max-h-36 overflow-y-auto pr-1"
-          style={{
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#cbd5e1 transparent'
-          }}
+          style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 transparent' }}
         >
-          {['Դիլիջան 168', 'Ծաղկաձոր 114', 'Աշտարակ 29', 'Գառնի 29', 'Երևան 25'].map((item, i) => (
+          {['Դիլիջան 185', 'Ծաղկաձոր 111', 'Աշտարակ 46', 'Գառնի 43', 'Երևան 29'].map((item, i) => (
             <label key={i} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 border border-gray-300 rounded cursor-pointer accent-amber-500" />
+              <input 
+                type="checkbox" 
+                checked={selectedRegions.includes(item)}
+                onChange={() => toggleCheckboxItem(item, selectedRegions, setSelectedRegions)}
+                className="w-4 h-4 border border-gray-300 rounded cursor-pointer accent-amber-500" 
+              />
               <span>{item}</span>
             </label>
           ))}
         </div>
       </div>
 
+      {/* 2. Արժեք */}
       <div className="border-b border-gray-100 pb-5 mb-5">
         <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Արժեք</h4>
-
         <div className="flex gap-1 mb-3">
-          {['֏', '$', '€', '₽'].map((curr, idx) => (
+          {['֏', '$', '€', '₽'].map((curr) => (
             <button 
-              key={curr} 
+              key={curr}
+              onClick={() => setCurrency(curr)}
               className={`flex-1 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-                idx === 0 ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                currency === curr 
+                  ? 'bg-amber-500 border-amber-500 text-white' 
+                  : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
               }`}
             >
               {curr}
             </button>
           ))}
         </div>
-
         <div className="flex items-center gap-2">
           <input 
             type="text" 
-            placeholder="Inter" 
+            placeholder="Սկսած" 
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
             className="w-full px-3 py-1 border border-gray-200 rounded-lg text-xs outline-none bg-gray-50 focus:bg-white focus:border-amber-500 transition-colors" 
           />
           <span className="text-gray-400 text-xs">-</span>
           <input 
             type="text" 
-            placeholder="Inter" 
+            placeholder="Մինչև" 
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
             className="w-full px-3 py-1 border border-gray-200 rounded-lg text-xs outline-none bg-gray-50 focus:bg-white focus:border-amber-500 transition-colors" 
           />
         </div>
       </div>
 
+      {/* 3. Մարդկանց թույլատրելի քանակ գիշերակացով */}
       <div className="border-b border-gray-100 pb-5 mb-5">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Մարդկանց թույլատրելի քանակ</h4>
+        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Մարդկանց թույլատրելի քանակը գիշերակացով</h4>
         <div className="flex items-center border border-gray-200 rounded-lg w-32 overflow-hidden bg-gray-50">
           <button 
-            onClick={() => guestCount > 1 && setGuestCount(guestCount - 1)}
+            onClick={() => guestCount > 0 && setGuestCount(guestCount - 1)}
             className="w-10 h-8 flex items-center justify-center bg-transparent border-none text-gray-600 font-bold text-base hover:bg-gray-200 cursor-pointer transition-colors"
           >
             -
@@ -82,14 +108,18 @@ export default function FilterSidebar() {
         </div>
       </div>
 
+      {/* 4. Գիշերակացի առկայություն */}
       <div className="border-b border-gray-100 pb-5 mb-5">
         <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Գիշերակացի առկայություն</h4>
         <div className="flex gap-1">
-          {['Բոլորը', 'Այո', 'Ոչ'].map((text, idx) => (
+          {['Բոլորը', 'Այո', 'Ոչ'].map((text) => (
             <button 
               key={text} 
+              onClick={() => setNightStay(text)}
               className={`flex-1 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-                idx === 0 ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                nightStay === text 
+                  ? 'bg-amber-500 border-amber-500 text-white' 
+                  : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
               }`}
             >
               {text}
@@ -98,16 +128,25 @@ export default function FilterSidebar() {
         </div>
       </div>
 
+      {/* 5. Սենյակների քանակ */}
       <div className="border-b border-gray-100 pb-5 mb-5">
         <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Սենյակների քանակ</h4>
         <div className="grid grid-cols-3 gap-1">
-          <button className="col-span-3 py-1 border bg-amber-500 border-amber-500 text-white rounded-lg text-xs font-medium cursor-pointer">
+          <button 
+            onClick={() => setRoomCount('Բոլորը')}
+            className={`col-span-3 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+              roomCount === 'Բոլորը' ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+            }`}
+          >
             Բոլորը
           </button>
           {['1', '2', '3', '4', '5', '6 և ավելի'].map((num) => (
             <button 
               key={num} 
-              className="py-1 border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 rounded-lg text-xs font-medium cursor-pointer transition-colors"
+              onClick={() => setRoomCount(num)}
+              className={`py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                roomCount === num ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+              }`}
             >
               {num}
             </button>
@@ -115,17 +154,52 @@ export default function FilterSidebar() {
         </div>
       </div>
 
+      {/* 6. Սանհանգույցների քանակ */}
+      <div className="border-b border-gray-100 pb-5 mb-5">
+        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Սանհանգույցների քանակ</h4>
+        <div className="grid grid-cols-3 gap-1">
+          <button 
+            onClick={() => setBathCount('Բոլորը')}
+            className={`col-span-3 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+              bathCount === 'Բոլորը' ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            Բոլորը
+          </button>
+          {['1', '2', '3+'].map((num) => (
+            <button 
+              key={num} 
+              onClick={() => setBathCount(num)}
+              className={`py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                bathCount === num ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              {num}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 7. Լողավազան */}
       <div className="border-b border-gray-100 pb-5 mb-5">
         <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Լողավազան</h4>
         <div className="flex flex-col gap-1">
-          <button className="w-full py-1 border bg-amber-500 border-amber-500 text-white rounded-lg text-xs font-medium cursor-pointer">
+          <button 
+            onClick={() => setPoolType('Բոլորը')}
+            className={`w-full py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+              poolType === 'Բոլորը' ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+            }`}
+          >
             Բոլորը
           </button>
-          <div className="grid grid-cols-2 gap-1">
-            {['Բաց', 'Փակ', 'Տաքացվող', 'Առանց'].map((type) => (
+          <div className="grid grid-cols-2 gap-1 mt-1">
+            {['Բաց', 'Փակ', 'Տաքացվող', 'Առանց լողավազանի'].map((type) => (
               <button 
                 key={type} 
-                className="py-1 border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 rounded-lg text-xs font-medium cursor-pointer transition-colors truncate"
+                onClick={() => setPoolType(type)}
+                className={`py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors truncate px-2 ${
+                  poolType === type ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                }`}
               >
                 {type}
               </button>
@@ -134,18 +208,21 @@ export default function FilterSidebar() {
         </div>
       </div>
 
+      {/* 8. Առավելություններ */}
       <div>
         <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Առավելություններ</h4>
         <div 
           className="flex flex-col gap-2 max-h-36 overflow-y-auto pr-1"
-          style={{
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#cbd5e1 transparent'
-          }}
+          style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 transparent' }}
         >
           {['Շոգեբաղնիք', 'Ջակուզի', 'Բիլիարդ', 'Սեղանի թենիս', 'Բացօթյա տաղավար', 'Փակ տաղավար', 'Մանղալ', 'Թոնիր'].map((item, i) => (
             <label key={i} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 border border-gray-300 rounded cursor-pointer accent-amber-500" />
+              <input 
+                type="checkbox" 
+                checked={amenities.includes(item)}
+                onChange={() => toggleCheckboxItem(item, amenities, setAmenities)}
+                className="w-4 h-4 border border-gray-300 rounded cursor-pointer accent-amber-500" 
+              />
               <span>{item}</span>
             </label>
           ))}
