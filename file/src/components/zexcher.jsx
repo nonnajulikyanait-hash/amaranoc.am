@@ -373,49 +373,7 @@ export default function CombinedPage() {
         </div>
       )}
 
-      {/* --- ԾԱՌԱՅՈՒԹՅԱՆ ՄՈԴԱԼ ՊԱՏՈՒՀԱՆ --- */}
-      {selectedService && (
-        <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-          onClick={(e) => { if (e.target === e.currentTarget) setSelectedService(null); }}
-        >
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 pb-4">
-              <h2 className="text-xl font-black text-[#1a202c]">{selectedService.title}</h2>
-              <button
-                onClick={() => setSelectedService(null)}
-                className="text-gray-400 hover:text-gray-600 transition-colors p-1"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="px-6 pb-4">
-              <p className="text-gray-600 leading-relaxed text-sm">
-                {selectedService.fullDescription || selectedService.description}
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between px-6 py-5 border-t border-gray-50">
-              <div className="flex items-center gap-1 font-black text-lg text-[#1a202c]">
-                <span>{selectedService.price} ֏</span>
-              </div>
-
-              <button
-                onClick={() => {
-                  alert(`Ամրագրվել է՝ ${selectedService.title}`);
-                  setSelectedService(null);
-                }}
-                className="bg-[#fca34d] hover:bg-[#f59332] text-white font-black px-8 py-3 rounded-full transition-all duration-200 shadow-sm"
-              >
-                Ամրագրել
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      
 
       {/* --- ՏԵՂԱԴՐԵԼ ՀԱՅՏԱՐԱՐՈՒԹՅՈՒՆ ԲԱԺԻՆ (CreateListingForm) --- */}
       <section 
@@ -553,7 +511,7 @@ export default function CombinedPage() {
             Գաղտնիության քաղաքականություն
           </Link>
 
-          <p 
+          <p  
             className="text-slate-500 m-0 tracking-wide" 
             style={{ fontSize: '12px' }}
           >
