@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 // ----------------------------------------------------
 // 1. FILTER SIDEBAR COMPONENT
 // ----------------------------------------------------
-function FilterSidebar() {
+export default function FilterSidebar() {
   const [currency, setCurrency] = useState('֏');
   const [guestCount, setGuestCount] = useState(1);
   const [minPrice, setMinPrice] = useState('');
