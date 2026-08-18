@@ -2,16 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function CombinedPage() {
-  // Zexcher վիճակներ
+  // Վիճակներ (State)
   const [currency, setCurrency] = useState('AMD');
   const [priceRange, setPriceRange] = useState(400000);
   const [visibleCount, setVisibleCount] = useState(9);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGiftAmount, setSelectedGiftAmount] = useState('80,000 ֏');
-
-  // Carayutyun վիճակներ
-  const [activeTab, setActiveTab] = useState('Սպասարկում');
-  const [selectedService, setSelectedService] = useState(null);
 
   // Փոխարժեքներ
   const exchangeRates = {
@@ -66,45 +62,6 @@ export default function CombinedPage() {
   const handleShowMore = () => {
     setVisibleCount((prev) => Math.min(prev + 9, hotOffers.length));
   };
-
-  const categories = [
-    { id: 'Սպասարկում', label: 'Սպասարկում', image: 'https://api.amaranoc.am/service.svg' },
-    { id: 'Շոու', label: 'Շոու', image: 'https://api.amaranoc.am/services1.svg' },
-    { id: 'Միջոցառումներ', label: 'Միջոցառումներ', image: 'https://api.amaranoc.am/services2.svg' },
-    { id: 'Տեխնիկա', label: 'Տեխնիկա', image: 'https://api.amaranoc.am/services3.svg' },
-    { id: 'Օրավարձով գույք', label: 'Օրավարձով գույք', image: 'https://api.amaranoc.am/services4.svg' },
-    { id: 'Նկարահանում', label: 'Նկարահանում', image: 'https://api.amaranoc.am/services5.svg' },
-    { id: 'Ուղևորափոխադրում', label: 'Ուղևորափոխադրում', image: 'https://api.amaranoc.am/services6.svg' },
-  ];
-
-  const servicesByTab = {
-    'Սպասարկում': [
-      { id: 1, title: 'Մատուցող', description: 'Յուրաքանչյուր մատուցող կարող է սպասարկել 15-20 անձի։ Ծառայության արժեքը կախված է միջոցառման անցկացման վայրից։', fullDescription: 'Յուրաքանչյուր մատուցող կարող է սպասարկել 15-20 անձի։ Ծառայության արժեքը կախված է միջոցառման անցկացման վայրից։ Ձեր միջոցառման կազմակերպման գործում Ձեզ կօգնեն մեր փորձառու մատուցողները:', price: '20,000', image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724331775249--0.16594454212797016image.webp&w=3840&q=75' },
-      { id: 2, title: 'Բարմեն', description: 'Մեր պրոֆեսիոնալ բարմենները տիրապետում են տարբեր տեսակի խմիչքների պատրաստման հմտություններին։', fullDescription: 'Մեր պրոֆեսիոնալ բարմենները տիրապետում են տարբեր տեսակի խմիչքների պատրաստման հմտություններին։', price: '25,000', image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724330468263--0.5829426973721912image.webp&w=3840&q=75' },
-      { id: 3, title: 'Խոհարար', description: 'Արժեքը կախված է միջոցառման անձանց քանակից և ուտեստների մենյուից։', fullDescription: 'Արժեքը կախված է միջոցառման անձանց քանակից և ուտեստների մենյուից։', price: '35,000', image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724331582281--0.8016246618454268image.webp&w=3840&q=75' },
-    ],
-    'Շոու': [
-      { id: 10, title: 'Դի-Ջեյ', description: 'Դիջեյներն Մեր կազմակերպած միջոցառումների աստղերն են։', fullDescription: 'Դիջեյներն Մեր կազմակերպած միջոցառումների աստղերն են՝ ովքեր ստեղծում են յուրահատուկ մթնոլորտ։', price: '50,000', image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724333364490--0.6874775885987816image.webp&w=1920&q=75' },
-      { id: 11, title: 'Երգիչ', description: 'Amaranoc.am ի երգիչները կստեղծեն յուրահատուկ մթնոլորտ։', fullDescription: 'Amaranoc.am ի երգիչները, իրենց զարմանալի ձայնով և տաղանդով, կստեղծեն յուրահատուկ մթնոլորտ։', price: '150,000', image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724334734516--0.3032056818160267image.webp&w=1920&q=75' },
-    ],
-    'Միջոցառումներ': [
-      { id: 17, title: 'Նշանադրության կազմակերպում', description: 'Կազմակերպում ենք նշանադրության արարողություն։', fullDescription: 'Մեր ընկերությունը կազմակերպում է նշանադրության արարողություն, որը ստեղծում է կախարդական պահեր։', price: '500,000', image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724354544378--0.6598089632874184image.webp&w=1920&q=75' },
-    ],
-    'Տեխնիկա': [
-      { id: 22, title: 'Ծանր ծուխ', description: 'Լավագույն ծանր ծուխը ձեր միջոցառման համար։', fullDescription: 'Լավագույն ծանր ծուխը, որը ձեր միջոցառումն կդարձնի էլ ավելի գեղեցիկ և հիշարժան։', price: '30,000', image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1725722472736--0.09950637526125772image.webp&w=1920&q=75' },
-    ],
-    'Օրավարձով գույք': [
-      { id: 28, title: 'Սեղան և աթոռներ', description: 'Բարձր որակի սեղաններ և աթոռներ վարձակալությամբ։', fullDescription: 'Հնարավորություն է տալիս վարձակալել բարձր որակի սեղաններ և աթոռներ։', price: '5,000', image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726042865918--0.08492032329777777image.webp&w=1920&q=75' },
-    ],
-    'Նկարահանում': [
-      { id: 6, title: 'Ֆոտո Նկարահանում', description: 'Պրոֆեսիոնալ ֆոտո նկարահանման ծառայություն։', fullDescription: 'Մենք առաջարկում ենք պրոֆեսիոնալ ֆոտո նկարահանման ծառայություն փորձառու մասնագետների կողմից։', price: '20,000', image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726045632835--0.6404655108118316image.webp&w=1920&q=75' },
-    ],
-    'Ուղևորափոխադրում': [
-      { id: 9, title: 'Ուղևորափոխադրում', description: 'Բարձրակարգ փոխադրամիջոցներ ձեր հարմարավետության համար։', fullDescription: 'Մենք տրամադրում ենք բարձրակարգ փոխադրամիջոցներ՝ ապահովելով Ձեր հարմարավետությունն ու անվտանգությունը։', price: '20,000', image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&q=80' }
-    ]
-  };
-
-  const currentServices = servicesByTab[activeTab] || [];
 
   return (
     <div className="w-full bg-white font-sans relative">
@@ -258,28 +215,6 @@ export default function CombinedPage() {
           </div>
         )}
 
-
-        {currentServices.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {currentServices.map((service) => (
-              <div key={service.id} className="bg-white rounded-[2rem] overflow-hidden group flex flex-col justify-between border border-gray-100 shadow-sm p-3">
-                <div className="h-52 w-full rounded-[1.8rem] overflow-hidden relative shadow-sm">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-
-              
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-10 text-gray-400 text-sm mb-16">
-            Այս կատեգորիայում ծառայություններ չկան
-          </div>
-        )}
       </div>
 
       {/* --- ՆՎԵՐ ՔԱՐՏԻ ՄՈԴԱԼ ՊԱՏՈՒՀԱՆ --- */}
@@ -321,8 +256,6 @@ export default function CombinedPage() {
           </div>
         </div>
       )}
-
-      
 
       {/* --- ՏԵՂԱԴՐԵԼ ՀԱՅՏԱՐԱՐՈՒԹՅՈՒՆ ԲԱԺԻՆ (CreateListingForm) --- */}
       <section 
