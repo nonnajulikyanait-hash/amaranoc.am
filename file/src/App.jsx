@@ -6,6 +6,7 @@ import Buttons from "./components/buttons";
 import Filtersidebar from "./components/filtersidebar";
 import Haytararutyun from "./components/haytararutyun";
 import Nkarner from "./components/nkarner"; 
+import Slider from "./components/slider"; // Ավելացված Slider ներմուծումը
 import Footer from "./components/footer";
 import Grancvel from "./components/grancvel";
 import Gaxtniutyun from "./components/gaxtniutyun";
@@ -24,7 +25,8 @@ function App() {
       <Suspense fallback={<div className="text-center p-20 text-gray-500">Բեռնվում է...</div>}>
         <div className="w-full min-h-screen bg-white">
           <Routes>
-            <Route path="/" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
+            {/* Գլխավոր էջում ավելացվել է Slider-ը */}
+            <Route path="/" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /><Slider /><Footer/></>} />
             
             <Route 
               path="/nkar/:id" 
@@ -42,7 +44,8 @@ function App() {
             <Route path="/gaxtniutyun" element={<Gaxtniutyun />} />
             <Route path="/admin-panel-chat" element={<AdminChat />} />
 
-            <Route path="*" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /> <Footer/></>} />
+            {/* Ուղղորդում սխալ հղումների դեպքում (նույնպես ավելացվել է Slider) */}
+            <Route path="*" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /><Slider /><Footer/></>} />
           </Routes>
           <Chat />
         </div>
