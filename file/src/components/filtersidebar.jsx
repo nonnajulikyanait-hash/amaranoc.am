@@ -31,12 +31,17 @@ export default function FilterSidebar() {
       style={{ maxHeight: 'calc(100vh - 100px)', scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 transparent' }}
     >
       
-      {/* Տարածաշրջան */}
+      {/* ՎԱՅՐ */}
       <div className="border-b border-gray-100 pb-5 mb-5">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Տարածաշրջան</h4>
-        <div className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin' }}>
-          {['Դիլիջան 185', 'Ծաղկաձոր 111', 'Աշտարակ 46', 'Գառնի 43', 'Երևան 29'].map((item, i) => (
-            <label key={i} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
+        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider m-0 mb-3">ՎԱՅՐ</h4>
+        <div className="flex flex-col gap-2.5 max-h-60 overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin' }}>
+          {[
+            'Աշտարակ', 'Ապարան', 'Արզնի', 'Բազմաղբյուր', 'Բջնի', 
+            'Գառնի', 'Դիլիջան', 'Դատել', 'Երևան', 'Ջրվեժ', 
+            'Էջմիածին', 'Ծաղկաձոր', 'Ձորաղբյուր', 'Մրգաշեն', 
+            'Նոր Հաճն', 'Պռոշյան', 'Ջերմուկ', 'Ստեփանավան', 'Օհանավան'
+          ].map((item, i) => (
+            <label key={i} className="flex items-center gap-2.5 text-xs text-[#2d3748] cursor-pointer hover:text-[#fca34d] transition-colors">
               <input 
                 type="checkbox" 
                 checked={selectedRegions.includes(item)}
