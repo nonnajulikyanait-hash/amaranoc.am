@@ -80,10 +80,16 @@ function HouseCard({ house, formatPrice }) {
           <span>{house.capacity} հոգի</span>
         </div>
         <div className="flex items-center justify-between mt-1">
-          <span className="font-black text-base text-[#111827]">{formatPrice ? formatPrice(house.price) : `${house.price} ֏`}</span>
-          <span className="bg-gray-100 text-gray-600 text-[11px] font-semibold px-2 py-0.5 rounded">{house.category}</span>
+          <span className="font-black text-base text-[#111827]">
+            {formatPrice ? formatPrice(house.price) : `${house.price} ֏`}
+          </span>
+          <span className="bg-gray-100 text-gray-600 text-[11px] font-semibold px-2 py-0.5 rounded">
+            {house.category}
+          </span>
         </div>
       </div>
     </Link>
   );
 }
+
+export default HouseCard;
