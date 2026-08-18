@@ -37,7 +37,12 @@ export default function Home() {
 
   // Տվյալների բազա (տներ)
   const allOffers = Array.from({ length: 34 }, (_, i) => {
-    const locations = ["Դիլիջան", "Ծաղկաձոր", "Աշտարակ", "Գառնի", "Երևան"];
+    const locations = [
+      'Աշտարակ', 'Ապարան', 'Արզնի', 'Բազմաղբյուր', 'Բջնի', 
+      'Գառնի', 'Դիլիջան', 'Դաշտ', 'Երևան', 'Ձորվանց', 
+      'Էջմիածին', 'Ծաղկաձոր', 'Ձորաղբյուր', 'Մրգաշեն', 
+      'Նոր Հաճն', 'Պտղնի', 'Ջերմուկ', 'Ստեփանավան', 'Օհանավան'
+    ];
     const images = [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1778660910917--0.5990204695636232image_optimized.webp&w=3840&q=75",
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1759149473223--0.33907271602966693image_optimized.webp&w=3840&q=75",
@@ -162,14 +167,19 @@ export default function Home() {
           <div className="lg:col-span-1 sticky top-6">
             <aside className="w-full bg-white border border-gray-200 rounded-2xl p-5 shadow-sm font-sans">
               
-              {/* 1. Տարածաշրջան */}
+              {/* 1. Վայր */}
               <div className="border-b border-gray-100 pb-5 mb-5">
-                <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Տարածաշրջան</h4>
+                <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Վայր</h4>
                 <div 
-                  className="flex flex-col gap-2 max-h-36 overflow-y-auto pr-1"
+                  className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-1"
                   style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 transparent' }}
                 >
-                  {['Դիլիջան', 'Ծաղկաձոր', 'Աշտարակ', 'Գառնի', 'Երևան'].map((item, i) => (
+                  {[
+                    'Աշտարակ', 'Ապարան', 'Արզնի', 'Բազմաղբյուր', 'Բջնի', 
+                    'Գառնի', 'Դիլիջան', 'Դաշտ', 'Երևան', 'Ձորվանց', 
+                    'Էջմիածին', 'Ծաղկաձոր', 'Ձորաղբյուր', 'Մրգաշեն', 
+                    'Նոր Հաճն', 'Պտղնի', 'Ջերմուկ', 'Ստեփանավան', 'Օհանավան'
+                  ].map((item, i) => (
                     <label key={i} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
                       <input 
                         type="checkbox" 
