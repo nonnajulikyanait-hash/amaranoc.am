@@ -258,8 +258,7 @@ export default function CombinedPage() {
           </div>
         )}
 
-        
-
+{/* 
         {currentServices.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {currentServices.map((service) => (
@@ -301,7 +300,7 @@ export default function CombinedPage() {
             Այս կատեգորիայում ծառայություններ չկան
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* --- ՆՎԵՐ ՔԱՐՏԻ ՄՈԴԱԼ ՊԱՏՈՒՀԱՆ --- */}
       {isModalOpen && (
