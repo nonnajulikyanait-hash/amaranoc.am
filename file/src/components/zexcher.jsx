@@ -258,7 +258,7 @@ export default function CombinedPage() {
           </div>
         )}
 
-{/* 
+
         {currentServices.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {currentServices.map((service) => (
@@ -271,27 +271,7 @@ export default function CombinedPage() {
                   />
                 </div>
 
-                <div className="pt-4 px-2 pb-2 flex flex-col flex-1 justify-between">
-                  <div>
-                    <h3 className="font-black text-lg text-[#1a202c] mb-2">{service.title}</h3>
-                    <p className="text-xs text-gray-500 leading-relaxed text-justify line-clamp-3">
-                      {service.description}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between mt-5 pt-3 border-t border-gray-50">
-                    <div className="flex items-center gap-1 font-black text-sm text-[#1a202c]">
-                      <span>{service.price} ֏</span>
-                    </div>
-
-                    <button
-                      onClick={() => setSelectedService(service)}
-                      className="border border-gray-200 text-gray-700 hover:bg-[#1a202c] hover:text-white hover:border-[#1a202c] text-[11px] font-bold px-5 py-2 rounded-full transition-all duration-200"
-                    >
-                      Ամրագրել
-                    </button>
-                  </div>
-                </div>
+              
               </div>
             ))}
           </div>
@@ -300,7 +280,7 @@ export default function CombinedPage() {
             Այս կատեգորիայում ծառայություններ չկան
           </div>
         )}
-      </div> */}
+      </div>
 
       {/* --- ՆՎԵՐ ՔԱՐՏԻ ՄՈԴԱԼ ՊԱՏՈՒՀԱՆ --- */}
       {isModalOpen && (
