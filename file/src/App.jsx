@@ -16,6 +16,7 @@ import Zexcher from "./components/zexcher";
 import Carayutyun from "./components/carayutyun"; 
 import Mermasin from "./components/mermasin"; 
 import HouseDetail from "./components/housedetail"; 
+import HouseCard from "./components/housecard"; // Ավելացված է HouseCard-ի ներմուծումը
 
 function App() {
   return (
