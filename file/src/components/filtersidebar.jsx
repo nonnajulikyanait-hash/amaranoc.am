@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// ----------------------------------------------------
-// 1. FILTER SIDEBAR COMPONENT
-// ----------------------------------------------------
-export function FilterSidebar() {
-  const [currency, setCurrency] = useState('֏');
+export default function Home() {
+  const [currency, setCurrency] = useState('AMD');
+  const [visibleCount, setVisibleCount] = useState(9);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedGiftAmount, setSelectedGiftAmount] = useState('80,000 ֏');
+
+  // Ֆիլտրի իրական վիճակները (States)
+  const [selectedRegions, setSelectedRegions] = useState([]);
+  const [sidebarCurrency, setSidebarCurrency] = useState('֏');
   const [guestCount, setGuestCount] = useState(1);
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
-  
-  const [selectedRegions, setSelectedRegions] = useState([]);
   const [nightStay, setNightStay] = useState('Բոլորը');
   const [roomCount, setRoomCount] = useState('Բոլորը');
   const [bathCount, setBathCount] = useState('Բոլորը');
@@ -25,226 +27,6 @@ export function FilterSidebar() {
     }
   };
 
-  return (
-    <aside className="w-full bg-white border border-gray-200 rounded-2xl p-5 shadow-sm font-sans">
-      
-      {/* 1. Տարածաշրջան */}
-      <div className="border-b border-gray-100 pb-5 mb-5">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Տարածաշրջան</h4>
-        <div 
-          className="flex flex-col gap-2 max-h-36 overflow-y-auto pr-1"
-          style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 transparent' }}
-        >
-          {['Դիլիջան 185', 'Ծաղկաձոր 111', 'Աշտարակ 46', 'Գառնի 43', 'Երևան 29'].map((item, i) => (
-            <label key={i} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={selectedRegions.includes(item)}
-                onChange={() => toggleCheckboxItem(item, selectedRegions, setSelectedRegions)}
-                className="w-4 h-4 border border-gray-300 rounded cursor-pointer accent-amber-500" 
-              />
-              <span>{item}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* 2. Արժեք */}
-      <div className="border-b border-gray-100 pb-5 mb-5">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Արժեք</h4>
-        <div className="flex gap-1 mb-3">
-          {['֏', '$', '€', '₽'].map((curr) => (
-            <button 
-              key={curr}
-              onClick={() => setCurrency(curr)}
-              className={`flex-1 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-                currency === curr 
-                  ? 'bg-amber-500 border-amber-500 text-white' 
-                  : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              {curr}
-            </button>
-          ))}
-        </div>
-        <div className="flex items-center gap-2">
-          <input 
-            type="text" 
-            placeholder="Սկսած" 
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-            className="w-full px-3 py-1 border border-gray-200 rounded-lg text-xs outline-none bg-gray-50 focus:bg-white focus:border-amber-500 transition-colors" 
-          />
-          <span className="text-gray-400 text-xs">-</span>
-          <input 
-            type="text" 
-            placeholder="Մինչև" 
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-            className="w-full px-3 py-1 border border-gray-200 rounded-lg text-xs outline-none bg-gray-50 focus:bg-white focus:border-amber-500 transition-colors" 
-          />
-        </div>
-      </div>
-
-      {/* 3. Մարդկանց թույլատրելի քանակ գիշերակացով */}
-      <div className="border-b border-gray-100 pb-5 mb-5">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Մարդկանց թույլատրելի քանակը գիշերակացով</h4>
-        <div className="flex items-center border border-gray-200 rounded-lg w-32 overflow-hidden bg-gray-50">
-          <button 
-            onClick={() => guestCount > 0 && setGuestCount(guestCount - 1)}
-            className="w-10 h-8 flex items-center justify-center bg-transparent border-none text-gray-600 font-bold text-base hover:bg-gray-200 cursor-pointer transition-colors"
-          >
-            -
-          </button>
-          <input 
-            type="text" 
-            value={guestCount} 
-            readOnly 
-            className="w-12 h-8 text-center bg-transparent border-none outline-none text-xs font-semibold text-gray-800"
-          />
-          <button 
-            onClick={() => setGuestCount(guestCount + 1)}
-            className="w-10 h-8 flex items-center justify-center bg-transparent border-none text-gray-600 font-bold text-base hover:bg-gray-200 cursor-pointer transition-colors"
-          >
-            +
-          </button>
-        </div>
-      </div>
-
-      {/* 4. Գիշերակացի առկայություն */}
-      <div className="border-b border-gray-100 pb-5 mb-5">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Գիշերակացի առկայություն</h4>
-        <div className="flex gap-1">
-          {['Բոլորը', 'Այո', 'Ոչ'].map((text) => (
-            <button 
-              key={text} 
-              onClick={() => setNightStay(text)}
-              className={`flex-1 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-                nightStay === text 
-                  ? 'bg-amber-500 border-amber-500 text-white' 
-                  : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              {text}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 5. Սենյակների քանակ */}
-      <div className="border-b border-gray-100 pb-5 mb-5">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Սենյակների քանակ</h4>
-        <div className="grid grid-cols-3 gap-1">
-          <button 
-            onClick={() => setRoomCount('Բոլորը')}
-            className={`col-span-3 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-              roomCount === 'Բոլորը' ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-            }`}
-          >
-            Բոլորը
-          </button>
-          {['1', '2', '3', '4', '5', '6 և ավելի'].map((num) => (
-            <button 
-              key={num} 
-              onClick={() => setRoomCount(num)}
-              className={`py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-                roomCount === num ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              {num}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 6. Սանհանգույցների քանակ */}
-      <div className="border-b border-gray-100 pb-5 mb-5">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Սանհանգույցների քանակ</h4>
-        <div className="grid grid-cols-3 gap-1">
-          <button 
-            onClick={() => setBathCount('Բոլորը')}
-            className={`col-span-3 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-              bathCount === 'Բոլորը' ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-            }`}
-          >
-            Բոլորը
-          </button>
-          {['1', '2', '3+'].map((num) => (
-            <button 
-              key={num} 
-              onClick={() => setBathCount(num)}
-              className={`py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-                bathCount === num ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              {num}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 7. Լողավազան */}
-      <div className="border-b border-gray-100 pb-5 mb-5">
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Լողավազան</h4>
-        <div className="flex flex-col gap-1">
-          <button 
-            onClick={() => setPoolType('Բոլորը')}
-            className={`w-full py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-              poolType === 'Բոլորը' ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-            }`}
-          >
-            Բոլորը
-          </button>
-          <div className="grid grid-cols-2 gap-1 mt-1">
-            {['Բաց', 'Փակ', 'Տաքացվող', 'Առանց լողավազանի'].map((type) => (
-              <button 
-                key={type} 
-                onClick={() => setPoolType(type)}
-                className={`py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors truncate px-2 ${
-                  poolType === type ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 8. Առավելություններ */}
-      <div>
-        <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Առավելություններ</h4>
-        <div 
-          className="flex flex-col gap-2 max-h-36 overflow-y-auto pr-1"
-          style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 transparent' }}
-        >
-          {['Շոգեբաղնիք', 'Ջակուզի', 'Բիլիարդ', 'Սեղանի թենիս', 'Բացօթյա տաղավար', 'Փակ տաղավար', 'Մանղալ', 'Թոնիր'].map((item, i) => (
-            <label key={i} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={amenities.includes(item)}
-                onChange={() => toggleCheckboxItem(item, amenities, setAmenities)}
-                className="w-4 h-4 border border-gray-300 rounded cursor-pointer accent-amber-500" 
-              />
-              <span>{item}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-    </aside>
-  );
-}
-
-
-// ----------------------------------------------------
-// 2. MAIN HOME COMPONENT (Գլխավոր էջ)
-// ----------------------------------------------------
-export default function Home() {
-  const [currency, setCurrency] = useState('AMD');
-  const [visibleCount, setVisibleCount] = useState(9);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedGiftAmount, setSelectedGiftAmount] = useState('80,000 ֏');
-
   const exchangeRates = { AMD: 1, USD: 0.0026, EUR: 0.0024, RUB: 0.24 };
   const currencySymbols = { AMD: '֏', USD: '$', EUR: '€', RUB: '₽' };
 
@@ -253,8 +35,9 @@ export default function Home() {
     return `${Math.round(converted).toLocaleString()} ${currencySymbols[currency]}`;
   };
 
-  const hotOffers = Array.from({ length: 34 }, (_, i) => {
-    const locations = ["Դիլիջան", "Բջնի", "Աշտարակ", "Ծաղկաձոր", "Նոր Հաճն"];
+  // Տվյալների բազա (տներ)
+  const allOffers = Array.from({ length: 34 }, (_, i) => {
+    const locations = ["Դիլիջան", "Ծաղկաձոր", "Աշտարակ", "Գառնի", "Երևան"];
     const images = [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1778660910917--0.5990204695636232image_optimized.webp&w=3840&q=75",
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1759149473223--0.33907271602966693image_optimized.webp&w=3840&q=75",
@@ -265,15 +48,36 @@ export default function Home() {
     return {
       id: i + 1,
       location: locations[i % locations.length],
-      capacity: ((i % 4) + 1) * 6,
+      capacity: ((i % 4) + 1) * 4,
       priceValue: (i % 5 + 2) * 20000,
       rating: i % 2 === 0 ? 5 : null,
       image: images[i % images.length]
     };
   });
 
+  // Ակտիվ ֆիլտրման տրամաբանություն
+  const filteredOffers = allOffers.filter((house) => {
+    // 1. Վայրի ֆիլտր (եթե ընտրված են տարածաշրջաններ)
+    if (selectedRegions.length > 0 && !selectedRegions.includes(house.location)) {
+      return false;
+    }
+    // 2. Նվազագույն գին
+    if (minPrice !== '' && house.priceValue < Number(minPrice)) {
+      return false;
+    }
+    // 3. Առավելագույն գին
+    if (maxPrice !== '' && house.priceValue > Number(maxPrice)) {
+      return false;
+    }
+    // 4. Հյուրերի նվազագույն քանակ
+    if (house.capacity < guestCount) {
+      return false;
+    }
+    return true;
+  });
+
   const handleShowMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 9, hotOffers.length));
+    setVisibleCount((prev) => Math.min(prev + 9, filteredOffers.length));
   };
 
   return (
@@ -351,15 +155,138 @@ export default function Home() {
           <div className="flex-1 h-[1px] bg-gray-300 max-w-[300px] hidden sm:block"></div>
         </div>
 
-        {/* ԳԼԽԱՎՈՐ GRID ԿԱՌՈՒՑՎԱԾՔ (Ձախից՝ Ձեր Ֆիլտրը, Աջից՝ Տները) */}
+        {/* ԳԼԽԱՎՈՐ GRID (Ձախից՝ Ֆիլտր, Աջից՝ Տներ) */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           
-          {/* Ձախ կողմում տեղադրված է Ձեր ֆիլտրը */}
+          {/* ՁԱԽ ԿՈՂՄ՝ ՖԻԼՏՐԻ ՍԻԴԲԱՐ */}
           <div className="lg:col-span-1 sticky top-6">
-            <FilterSidebar />
+            <aside className="w-full bg-white border border-gray-200 rounded-2xl p-5 shadow-sm font-sans">
+              
+              {/* 1. Տարածաշրջան */}
+              <div className="border-b border-gray-100 pb-5 mb-5">
+                <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Տարածաշրջան</h4>
+                <div 
+                  className="flex flex-col gap-2 max-h-36 overflow-y-auto pr-1"
+                  style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 transparent' }}
+                >
+                  {['Դիլիջան', 'Ծաղկաձոր', 'Աշտարակ', 'Գառնի', 'Երևան'].map((item, i) => (
+                    <label key={i} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={selectedRegions.includes(item)}
+                        onChange={() => toggleCheckboxItem(item, selectedRegions, setSelectedRegions)}
+                        className="w-4 h-4 border border-gray-300 rounded cursor-pointer accent-amber-500" 
+                      />
+                      <span>{item}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* 2. Արժեք */}
+              <div className="border-b border-gray-100 pb-5 mb-5">
+                <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Արժեք</h4>
+                <div className="flex gap-1 mb-3">
+                  {['֏', '$', '€', '₽'].map((curr) => (
+                    <button 
+                      key={curr}
+                      onClick={() => setSidebarCurrency(curr)}
+                      className={`flex-1 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                        sidebarCurrency === curr 
+                          ? 'bg-amber-500 border-amber-500 text-white' 
+                          : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      {curr}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="number" 
+                    placeholder="Սկսած" 
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                    className="w-full px-3 py-1 border border-gray-200 rounded-lg text-xs outline-none bg-gray-50 focus:bg-white focus:border-amber-500 transition-colors" 
+                  />
+                  <span className="text-gray-400 text-xs">-</span>
+                  <input 
+                    type="number" 
+                    placeholder="Մինչև" 
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                    className="w-full px-3 py-1 border border-gray-200 rounded-lg text-xs outline-none bg-gray-50 focus:bg-white focus:border-amber-500 transition-colors" 
+                  />
+                </div>
+              </div>
+
+              {/* 3. Մարդկանց քանակ գիշերակացով */}
+              <div className="border-b border-gray-100 pb-5 mb-5">
+                <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Մարդկանց թույլատրելի քանակը գիշերակացով</h4>
+                <div className="flex items-center border border-gray-200 rounded-lg w-32 overflow-hidden bg-gray-50">
+                  <button 
+                    onClick={() => guestCount > 1 && setGuestCount(guestCount - 1)}
+                    className="w-10 h-8 flex items-center justify-center bg-transparent border-none text-gray-600 font-bold text-base hover:bg-gray-200 cursor-pointer transition-colors"
+                  >
+                    -
+                  </button>
+                  <input 
+                    type="text" 
+                    value={guestCount} 
+                    readOnly 
+                    className="w-12 h-8 text-center bg-transparent border-none outline-none text-xs font-semibold text-gray-800"
+                  />
+                  <button 
+                    onClick={() => setGuestCount(guestCount + 1)}
+                    className="w-10 h-8 flex items-center justify-center bg-transparent border-none text-gray-600 font-bold text-base hover:bg-gray-200 cursor-pointer transition-colors"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* 4. Գիշերակացի առկայություն */}
+              <div className="border-b border-gray-100 pb-5 mb-5">
+                <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Գիշերակացի առկայություն</h4>
+                <div className="flex gap-1">
+                  {['Բոլորը', 'Այո', 'Ոչ'].map((text) => (
+                    <button 
+                      key={text} 
+                      onClick={() => setNightStay(text)}
+                      className={`flex-1 py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                        nightStay === text 
+                          ? 'bg-amber-500 border-amber-500 text-white' 
+                          : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      {text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 5. Լողավազան */}
+              <div>
+                <h4 className="text-sm font-semibold text-gray-800 m-0 mb-3">Լողավազան</h4>
+                <div className="grid grid-cols-2 gap-1">
+                  {['Բոլորը', 'Բաց', 'Փակ', 'Տաքացվող'].map((type) => (
+                    <button 
+                      key={type} 
+                      onClick={() => setPoolType(type)}
+                      className={`py-1 border rounded-lg text-xs font-medium cursor-pointer transition-colors truncate px-2 ${
+                        poolType === type ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+            </aside>
           </div>
 
-          {/* Աջ կողմում տների ցուցակն ու փոխարկիչը */}
+          {/* ԱՋ ԿՈՂՄ՝ ՏԱՐԱԴՐԱՄ ԵՎ ՏՆԵՐԻ ՑՑԱԿ */}
           <div className="lg:col-span-3 flex flex-col gap-6">
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex items-center justify-between gap-6">
               <div className="flex flex-col gap-1">
@@ -378,33 +305,39 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {hotOffers.slice(0, visibleCount).map((house) => (
-                <Link 
-                  to={`/nkar/${house.id}`}
-                  key={house.id} 
-                  className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow group relative flex flex-col cursor-pointer"
-                >
-                  <div className="h-56 w-full bg-gray-200 bg-cover bg-center relative flex flex-col justify-between p-4" style={{ backgroundImage: `url("${house.image}")` }}>
-                    <button onClick={(e) => { e.preventDefault(); }} className="w-8 h-8 rounded-full bg-white/85 backdrop-blur-sm flex items-center justify-center text-gray-600 hover:text-red-500 shadow-sm z-10 self-end transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
-                    </button>
-                  </div>
-                  <div className="p-4 flex flex-col gap-3 flex-1 justify-between">
-                    <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
-                      <span>{house.location}</span>
-                      <span>{house.capacity} հոգի</span>
+            {filteredOffers.length === 0 ? (
+              <div className="bg-white rounded-3xl border border-gray-100 p-12 text-center text-gray-500 text-sm shadow-sm">
+                Ձեր ընտրած ֆիլտրերին համապատասխան տներ չգտնվեցին:
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {filteredOffers.slice(0, visibleCount).map((house) => (
+                  <Link 
+                    to={`/nkar/${house.id}`}
+                    key={house.id} 
+                    className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow group relative flex flex-col cursor-pointer"
+                  >
+                    <div className="h-56 w-full bg-gray-200 bg-cover bg-center relative flex flex-col justify-between p-4" style={{ backgroundImage: `url("${house.image}")` }}>
+                      <button onClick={(e) => { e.preventDefault(); }} className="w-8 h-8 rounded-full bg-white/85 backdrop-blur-sm flex items-center justify-center text-gray-600 hover:text-red-500 shadow-sm z-10 self-end transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
+                      </button>
                     </div>
-                    <div className="flex items-center justify-between mt-1">
-                      <span className="font-black text-base text-[#111827]">{formatPrice(house.priceValue)}</span>
-                      {house.rating && <div className="bg-amber-500 text-white text-[11px] font-bold px-2 py-0.5 rounded">{house.rating}</div>}
+                    <div className="p-4 flex flex-col gap-3 flex-1 justify-between">
+                      <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
+                        <span>{house.location}</span>
+                        <span>{house.capacity} հոգի</span>
+                      </div>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="font-black text-base text-[#111827]">{formatPrice(house.priceValue)}</span>
+                        {house.rating && <div className="bg-amber-500 text-white text-[11px] font-bold px-2 py-0.5 rounded">{house.rating}</div>}
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            )}
 
-            {visibleCount < hotOffers.length && (
+            {visibleCount < filteredOffers.length && (
               <div className="flex justify-center mt-6 mb-4">
                 <button onClick={handleShowMore} className="bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm px-10 py-3 rounded-full shadow-md transition-all">
                   Ցուցադրել ավելին
