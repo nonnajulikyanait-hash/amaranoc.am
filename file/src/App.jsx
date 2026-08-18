@@ -16,7 +16,7 @@ import Zexcher from "./components/zexcher";
 import Carayutyun from "./components/carayutyun"; 
 import Mermasin from "./components/mermasin"; 
 import HouseDetail from "./components/housedetail"; 
-import HouseCard from "./components/housecard"; // Ավելացված է HouseCard-ի ներմուծումը
+import HouseCard from "./components/housecard"; 
 
 function App() {
   return (
@@ -30,6 +30,9 @@ function App() {
               path="/nkar/:id" 
               element={<><Logo /><Navlinks /><HouseDetail /></>} 
             />
+
+            {/* Ավելացված երթուղի HouseCard-ի համար */}
+            <Route path="/housecard" element={<><Logo /><Navlinks /><HouseCard /><Footer /></>} />
 
             <Route path="/zexcher" element={<><Logo /><Navlinks /><Zexcher /> </>} />
             <Route path="/carayutyun" element={<><Logo /><Navlinks /><Carayutyun />  </>} />
