@@ -8,12 +8,12 @@ export default function Zexcher() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGiftAmount, setSelectedGiftAmount] = useState('80,000 ֏');
 
-  // Approximate exchange rates relative to AMD (Armenian Dram)
+  // Approximate exchange rates relative to AMD
   const exchangeRates = {
     AMD: 1,
-    USD: 0.0026, // Example rate: 1 USD ≈ 385 AMD
-    EUR: 0.0024, // Example rate: 1 EUR ≈ 415 AMD
-    RUB: 0.24    // Example rate: 1 RUB ≈ 4.15 AMD
+    USD: 0.0026,
+    EUR: 0.0024,
+    RUB: 0.24
   };
 
   const currencySymbols = {
@@ -23,7 +23,6 @@ export default function Zexcher() {
     RUB: '₽'
   };
 
-  // Helper function to convert and format prices
   const formatPrice = (basePriceAMD) => {
     const converted = basePriceAMD * exchangeRates[currency];
     return `${Math.round(converted).toLocaleString()} ${currencySymbols[currency]}`;
@@ -31,6 +30,7 @@ export default function Zexcher() {
 
   const hotOffers = Array.from({ length: 34 }, (_, i) => {
     const locations = ["Դիլիջան", "Բջնի", "Աշտարակ", "Ծաղկաձոր", "Նոր Հաճն"];
+    // Ընդլայնված նկարների զանգված, որպեսզի բոլոր 34 տները չունենան նույն նկարները
     const images = [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1778660910917--0.5990204695636232image_optimized.webp&w=3840&q=75",
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1759149473223--0.33907271602966693image_optimized.webp&w=3840&q=75",
@@ -40,14 +40,20 @@ export default function Zexcher() {
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1758095203425--0.034694092059661896image_optimized.webp&w=3840&q=75",
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1763196873802--0.32875657677659165image_optimized.webp&w=3840&q=75",
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1705829500856--0.9156560389221753image.webp&w=3840&q=75",
-      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1772031992147--0.08273550679993247image_optimized.webp&w=3840&q=75"
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1772031992147--0.08273550679993247image_optimized.webp&w=3840&q=75",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80"
     ];
 
     return {
       id: i + 1,
       location: locations[i % locations.length],
       capacity: ((i % 4) + 1) * 6,
-      priceValue: (i % 5 + 2) * 20000, // Stored as a raw number for calculation
+      priceValue: (i % 5 + 2) * 20000,
       rating: i % 2 === 0 ? 5 : null,
       image: images[i % images.length]
     };
