@@ -3,7 +3,6 @@ import React, { lazy, Suspense } from "react";
 import Logo from "./components/logo";
 import Navlinks from "./components/navlinks";
 import Buttons from "./components/buttons";
-// Filtersidebar-ի իմպորտը հեռացվել է, քանի որ այն չի օգտագործվում 
 import Haytararutyun from "./components/haytararutyun";
 import Nkarner from "./components/nkarner"; 
 import Slider from "./components/slider"; 
