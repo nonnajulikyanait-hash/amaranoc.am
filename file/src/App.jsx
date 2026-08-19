@@ -3,10 +3,10 @@ import React, { lazy, Suspense } from "react";
 import Logo from "./components/logo";
 import Navlinks from "./components/navlinks";
 import Buttons from "./components/buttons";
-import Filtersidebar from "./components/filtersidebar";
+// Filtersidebar-ի իմպորտը հեռացվել է, քանի որ այն չի օգտագործվում 
 import Haytararutyun from "./components/haytararutyun";
 import Nkarner from "./components/nkarner"; 
-import Slider from "./components/slider"; // Ավելացված Slider ներմուծումը
+import Slider from "./components/slider"; 
 import Footer from "./components/footer";
 import Grancvel from "./components/grancvel";
 import Gaxtniutyun from "./components/gaxtniutyun";
@@ -25,7 +25,6 @@ function App() {
       <Suspense fallback={<div className="text-center p-20 text-gray-500">Բեռնվում է...</div>}>
         <div className="w-full min-h-screen bg-white">
           <Routes>
-            {/* Գլխավոր էջում ավելացվել է Slider-ը */}
             <Route path="/" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /><Slider /><Footer/></>} />
             
             <Route 
@@ -33,7 +32,6 @@ function App() {
               element={<><Logo /><Navlinks /><HouseDetail /></>} 
             />
 
-            {/* Ավելացված երթուղի HouseCard-ի համար */}
             <Route path="/housecard" element={<><Logo /><Navlinks /><HouseCard /><Footer /></>} />
 
             <Route path="/zexcher" element={<><Logo /><Navlinks /><Zexcher /> </>} />
@@ -44,7 +42,6 @@ function App() {
             <Route path="/gaxtniutyun" element={<Gaxtniutyun />} />
             <Route path="/admin-panel-chat" element={<AdminChat />} />
 
-            {/* Ուղղորդում սխալ հղումների դեպքում (նույնպես ավելացվել է Slider) */}
             <Route path="*" element={<><Logo /><Navlinks /><Buttons /><Haytararutyun /><Nkarner /><Slider /><Footer/></>} />
           </Routes>
           <Chat />
