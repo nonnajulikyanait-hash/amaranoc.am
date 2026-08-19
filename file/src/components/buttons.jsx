@@ -33,6 +33,12 @@ export const useCategoryStore = create((setStore) => ({
     setStore((state) => ({ activeCategory: state.activeCategory === category ? null : category })),
 }));
 
+// Օրինակ՝ useLanguageStore-ի ստեղծում (եթե արդեն ունեք այն առանձին ֆայլում, կարող եք պարզապես ներմուծել)
+export const useLanguageStore = create((setStore) => ({
+  language: 'am', // լռելյայն հայերեն
+  setLanguage: (lang) => setStore({ language: lang }),
+}));
+
 const categories = [
   { name: "Առանձնատներ", icon: <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 11.5 12 4l9 7.5" strokeLinecap="round" strokeLinejoin="round" /><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9" strokeLinecap="round" strokeLinejoin="round" /><rect x="10" y="13" width="4" height="7" /></svg> },
   { name: "Frame houses", icon: <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 3 3 21h18L12 3Z" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 3v18M7 21l5-12M17 21l-5-12" strokeLinecap="round" strokeLinejoin="round" /></svg> },
@@ -64,6 +70,9 @@ export default function Buttons() {
   const scrollRef = useRef(null);
   const activeCategory = useCategoryStore((state) => state.activeCategory);
   const setActiveCategory = useCategoryStore((state) => state.setActiveCategory);
+  
+  // Ավելացված useLanguageStore-ի կանչը
+  const language = useLanguageStore((state) => state.language);
 
   const [usersLocations, setUsersLocations] = useState({});
   const [isMapOpen, setIsMapOpen] = useState(false);
@@ -135,7 +144,7 @@ export default function Buttons() {
           onClick={handleOpenMap} 
           className="flex items-center gap-2 border border-gray-300 rounded-full pl-5 pr-4 py-3 text-sm font-semibold text-gray-800 hover:border-orange-500 transition-colors shadow-sm"
         >
-          <Map size={17} /> Բացել Live Քարտեզը
+          <Map size={17} /> {language === 'en' ? 'Open Live Map' : language === 'ru' ? 'Открыть Live Карту' : 'Բացել Live Քարտեզը'}
         </button>
       </div>
 
@@ -162,7 +171,9 @@ export default function Buttons() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="relative w-full max-w-3xl h-[500px] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-bold text-gray-800">Real-time Live Քարտեզ</h3>
+              <h3 className="font-bold text-gray-800">
+                {language === 'en' ? 'Real-time Live Map' : language === 'ru' ? 'Real-time Live Карта' : 'Real-time Live Քարտեզ'}
+              </h3>
               <button onClick={handleCloseMap} className="p-1 rounded-full hover:bg-gray-100">
                 <X size={20} />
               </button>
@@ -174,7 +185,11 @@ export default function Buttons() {
                   
                   {allUserEntries.map(([uid, loc]) => (
                     <Marker key={uid} position={[loc.lat, loc.lon]} icon={customIcon}>
-                      <Popup>{uid === myUserId ? "Իմ լոկացիան" : `Օգտատեր (${uid.slice(0, 6)})`}</Popup>
+                      <Popup>
+                        {uid === myUserId 
+                          ? (language === 'en' ? 'My location' : language === 'ru' ? 'Моя локация' : 'Իմ լոկացիան') 
+                          : (language === 'en' ? `User (${uid.slice(0, 6)})` : language === 'ru' ? `Пользователь (${uid.slice(0, 6)})` : `Օգտատեր (${uid.slice(0, 6)})`)}
+                      </Popup>
                     </Marker>
                   ))}
 
@@ -182,7 +197,11 @@ export default function Buttons() {
                 </MapContainer>
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-500 p-4 text-center">
-                  Ստացվում է լոկացիաները... Համոզվեք, որ թույլատրել եք լոկացիան։
+                  {language === 'en' 
+                    ? 'Fetching locations... Make sure you have allowed location access.' 
+                    : language === 'ru' 
+                    ? 'Получение локаций... Убедитесь, что вы разрешили доступ к местоположению.' 
+                    : 'Ստացվում է լոկացիաները... Համոզվեք, որ թույլատրել եք լոկացիան։'}
                 </div>
               )}
             </div>
