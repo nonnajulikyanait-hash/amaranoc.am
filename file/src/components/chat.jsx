@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebase'; 
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
-import { useLanguageStore } from './useLanguageStore';
+import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 export default function Chat() {
+  const { language } = useLanguageStore(); // Ստանում ենք ընթացիկ լեզուն
+
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -12,6 +14,33 @@ export default function Chat() {
 
   const provider = new GoogleAuthProvider();
   const chatId = "room_admin_and_user_1"; 
+
+  // Բազմալեզու բառարան չատի համար
+  const translations = {
+    hy: {
+      supportTitle: "Աջակցություն",
+      voiceCall: "Ձայնային զանգ",
+      videoCall: "Տեսազանգ",
+      googleLogin: "Մուտք գործել Google-ով",
+      messagePlaceholder: "Գրեք հաղորդագրություն..."
+    },
+    ru: {
+      supportTitle: "Поддержка",
+      voiceCall: "Голосовой звонок",
+      videoCall: "Видеозвонок",
+      googleLogin: "Войти через Google",
+      messagePlaceholder: "Напишите сообщение..."
+    },
+    en: {
+      supportTitle: "Support",
+      voiceCall: "Voice Call",
+      videoCall: "Video Call",
+      googleLogin: "Sign in with Google",
+      messagePlaceholder: "Type a message..."
+    }
+  };
+
+  const t = translations[language] || translations.hy;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -74,19 +103,19 @@ export default function Chat() {
         <div className="absolute bottom-18 right-0 w-80 h-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200">
           {/* Header */}
           <div className="bg-[#2d3748] text-white px-4 py-3 text-sm font-bold flex justify-between items-center">
-            <span>Աջակցություն</span>
+            <span>{t.supportTitle}</span>
             <div className="flex gap-3">
               <button 
                 onClick={() => window.open("https://meet.google.com/new", "_blank")}
                 className="hover:text-[#fca34d] transition-colors"
-                title="Ձայնային զանգ"
+                title={t.voiceCall}
               >
                 📞
               </button>
               <button 
                 onClick={() => window.open("https://meet.google.com/new", "_blank")}
                 className="hover:text-[#fca34d] transition-colors"
-                title="Տեսազանգ"
+                title={t.videoCall}
               >
                 📹
               </button>
@@ -97,10 +126,10 @@ export default function Chat() {
             <div className="flex-1 flex items-center justify-center p-4">
               <button 
                 onClick={handleGoogleLogin} 
-                className="bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-50 flex items-center gap-2 shadow-sm"
+                className="bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-50 flex items-center gap-2 shadow-sm cursor-pointer"
               >
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-5 h-5" />
-                 Մուտք գործել Google-ով
+                 {t.googleLogin}
               </button>
             </div> 
           ) : (
@@ -117,9 +146,9 @@ export default function Chat() {
                   value={message} 
                   onChange={(e) => setMessage(e.target.value)} 
                   className="flex-1 border rounded-lg px-3 py-2 text-sm outline-none" 
-                  placeholder="Գրեք հաղորդագրություն..." 
+                  placeholder={t.messagePlaceholder} 
                 />
-                <button type="submit" className="bg-[#2d3748] text-white px-4 py-2 rounded-lg font-bold">🚀</button>
+                <button type="submit" className="bg-[#2d3748] text-white px-4 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">🚀</button>
               </form>
             </>
           )}

@@ -3,58 +3,166 @@ import { Link } from 'react-router-dom';
 import { useLanguageStore } from './useLanguageStore';
 
 export default function CarayutyunPage() {
+  const { language } = useLanguageStore();
+
   const [activeTab, setActiveTab] = useState('Սպասարկում');
   const [selectedService, setSelectedService] = useState(null);
 
-  const categories = [
-    { id: 'Սպասարկում', label: 'Սպասարկում', image: 'https://api.amaranoc.am/service.svg' },
-    { id: 'Շոու', label: 'Շոու', image: 'https://api.amaranoc.am/services1.svg' },
-    { id: 'Միջոցառումներ', label: 'Միջոցառումներ', image: 'https://api.amaranoc.am/services2.svg' },
-    { id: 'Տեխնիկա', label: 'Տեխնիկա', image: 'https://api.amaranoc.am/services3.svg' },
-    { id: 'Օրավարձով գույք', label: 'Օրավարձով գույք', image: 'https://api.amaranoc.am/services4.svg' },
-    { id: 'Նկարահանում', label: 'Նկարահանում', image: 'https://api.amaranoc.am/services5.svg' },
-    { id: 'Ուղևորափոխադրում', label: 'Ուղևորափոխադրում', image: 'https://api.amaranoc.am/services6.svg' },
-  ];
+  // Բազմալեզու բառարաններ
+  const translations = {
+    hy: {
+      categories: [
+        { id: 'Սպասարկում', label: 'Սպասարկում', image: 'https://api.amaranoc.am/service.svg' },
+        { id: 'Շոու', label: 'Շոու', image: 'https://api.amaranoc.am/services1.svg' },
+        { id: 'Միջոցառումներ', label: 'Միջոցառումներ', image: 'https://api.amaranoc.am/services2.svg' },
+        { id: 'Տեխնիկա', label: 'Տեխնիկա', image: 'https://api.amaranoc.am/services3.svg' },
+        { id: 'Օրավարձով գույք', label: 'Օրավարձով գույք', image: 'https://api.amaranoc.am/services4.svg' },
+        { id: 'Նկարահանում', label: 'Նկարահանում', image: 'https://api.amaranoc.am/services5.svg' },
+        { id: 'Ուղևորափոխադրում', label: 'Ուղևորափոխադրում', image: 'https://api.amaranoc.am/services6.svg' },
+      ],
+      noServices: 'Այս կատեգորիայում ծառայություններ չկան',
+      bookBtn: 'Ամրագրել',
+      listingTitle: 'ՏԵՂԱԴՐԵԼ ՀԱՅՏԱՐԱՐՈՒԹՅՈՒՆ',
+      listingSubtitle: 'Մուտքագրեք Ձեր տվյալները նշված դաշտերում և մենք կկապնվենք Ձեզ հետ',
+      namePlaceholder: 'Անուն Ազգանուն',
+      phonePlaceholder: 'Հեռախոսահամար',
+      emailPlaceholder: 'Էլ. հասցե',
+      sendBtn: 'Ուղարկել',
+      contactsTitle: 'ԿՈՆՏԱԿՏՆԵՐ',
+      address: 'ԹՈՒՄԱՆՅԱՆ 5',
+      privacyPolicy: 'Գաղտնիության քաղաքականություն',
+      companyText: 'Ամառանոց ՍՊԸ  |  Amaranoc LLC  |  Амараноц ООО'
+    },
+    ru: {
+      categories: [
+        { id: 'Սպասարկում', label: 'Обслуживание', image: 'https://api.amaranoc.am/service.svg' },
+        { id: 'Շոու', label: 'Шоу', image: 'https://api.amaranoc.am/services1.svg' },
+        { id: 'Միջոցառումներ', label: 'Мероприятия', image: 'https://api.amaranoc.am/services2.svg' },
+        { id: 'Տեխնիկա', label: 'Техника', image: 'https://api.amaranoc.am/services3.svg' },
+        { id: 'Օրավարձով գույք', label: 'Имущество посуточно', image: 'https://api.amaranoc.am/services4.svg' },
+        { id: 'Նկարահանում', label: 'Съемка', image: 'https://api.amaranoc.am/services5.svg' },
+        { id: 'Ուղևորափոխադրում', label: 'Пассажироперевозки', image: 'https://api.amaranoc.am/services6.svg' },
+      ],
+      noServices: 'В этой категории нет услуг',
+      bookBtn: 'Забронировать',
+      listingTitle: 'РАЗМЕСТИТЬ ОБЪЯВЛЕНИЕ',
+      listingSubtitle: 'Введите ваши данные в указанные поля, и мы свяжемся с вами',
+      namePlaceholder: 'Имя Фамилия',
+      phonePlaceholder: 'Номер телефона',
+      emailPlaceholder: 'Эл. почта',
+      sendBtn: 'Отправить',
+      contactsTitle: 'КОНТАКТЫ',
+      address: 'УЛ. ТУМАНЯНА 5',
+      privacyPolicy: 'Политика конфиденциальности',
+      companyText: 'Ամառանոց ՍՊԸ  |  Amaranoc LLC  |  Амараноц ООО'
+    },
+    en: {
+      categories: [
+        { id: 'Սպասարկում', label: 'Service', image: 'https://api.amaranoc.am/service.svg' },
+        { id: 'Շոու', label: 'Show', image: 'https://api.amaranoc.am/services1.svg' },
+        { id: 'Միջոցառումներ', label: 'Events', image: 'https://api.amaranoc.am/services2.svg' },
+        { id: 'Տեխնիկա', label: 'Equipment', image: 'https://api.amaranoc.am/services3.svg' },
+        { id: 'Օրավարձով գույք', label: 'Daily Rentals', image: 'https://api.amaranoc.am/services4.svg' },
+        { id: 'Նկարահանում', label: 'Filming', image: 'https://api.amaranoc.am/services5.svg' },
+        { id: 'Ուղևորափոխադրում', label: 'Transportation', image: 'https://api.amaranoc.am/services6.svg' },
+      ],
+      noServices: 'No services available in this category',
+      bookBtn: 'Book',
+      listingTitle: 'POST AN AD',
+      listingSubtitle: 'Enter your details in the specified fields and we will contact you',
+      namePlaceholder: 'Full Name',
+      phonePlaceholder: 'Phone Number',
+      emailPlaceholder: 'Email Address',
+      sendBtn: 'Send',
+      contactsTitle: 'CONTACTS',
+      address: '5 TUMANYAN ST.',
+      privacyPolicy: 'Privacy Policy',
+      companyText: 'Ամառանոց ՍՊԸ  |  Amaranoc LLC  |  Амараноц ООО'
+    }
+  };
 
+  const t = translations[language] || translations.hy;
+
+  // Ծառայությունների տվյալների բազա՝ բազմալեզու աջակցությամբ
   const servicesByTab = {
     'Սպասարկում': [
       {
         id: 1,
-        title: 'Մատուցող',
-        description: 'Յուրաքանչյուր մատուցող կարող է սպասարկել 15-20 անձի։ Ծառայության արժեքը կախված է միջոցառման անցկացման վայրից։ Ձեր միջոցառման կազմակերպման գործում Ձեզ կօգնեն մեր փորձառու մատուցողները:',
-        fullDescription: 'Յուրաքանչյուր մատուցող կարող է սպասարկել 15-20 անձի։ Ծառայության արժեքը կախված է միջոցառման անցկացման վայրից։ Ձեր միջոցառման կազմակերպման գործում Ձեզ կօգնեն մեր փորձառու մատուցողները: Հաղորդակցման գերազանց հմտություններով և մանրուքների հանդեպ ուշադրությամբ, նրանք կապահովեն հյուրընկալ մթնոլորտ և բարձրակարգ սպասարկում։',
+        title: { hy: 'Մատուցող', ru: 'Официант', en: 'Waiter' },
+        description: { 
+          hy: 'Յուրաքանչյուր մատուցող կարող է սպասարկել 15-20 անձի։ Ծառայության արժեքը կախված է միջոցառման անցկացման վայրից։ Ձեր միջոցառման կազմակերպման գործում Ձեզ կօգնեն մեր փորձառու մատուցողները:', 
+          ru: 'Каждый официант может обслуживать 15-20 человек. Стоимость зависит от места проведения.', 
+          en: 'Each waiter can serve 15-20 people. The cost depends on the venue location.' 
+        },
+        fullDescription: { 
+          hy: 'Յուրաքանչյուր մատուցող կարող է սպասարկել 15-20 անձի։ Ծառայության արժեքը կախված է միջոցառման անցկացման վայրից։ Ձեր միջոցառման կազմակերպման գործում Ձեզ կօգնեն մեր փորձառու մատուցողները: Հաղորդակցման գերազանց հմտություններով և մանրուքների հանդեպ ուշադրությամբ, նրանք կապահովեն հյուրընկալ մթնոլորտ և բարձրակարգ սպասարկում։', 
+          ru: 'Каждый официант может обслуживать 15-20 человек. Стоимость зависит от места проведения мероприятия. Наши опытные официанты обеспечат гостеприимную атмосферу и первоклассный сервис.', 
+          en: 'Each waiter can serve 15-20 people. The cost depends on the venue. Our experienced waiters will ensure a welcoming atmosphere and top-tier service.' 
+        },
         price: '20,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724331775249--0.16594454212797016image.webp&w=3840&q=75'
       },
       {
         id: 2,
-        title: 'Բարմեն',
-        description: 'Մեր պրոֆեսիոնալ բարմենները տիրապետում են տարբեր տեսակի խմիչքների պատրաստման հմտություններին։',
-        fullDescription: 'Մեր պրոֆեսիոնալ բարմենները տիրապետում են տարբեր տեսակի խմիչքների պատրաստման հմտություններին։ Մեր բարմենները պատասխանատու են բարում նստած հաճախորդներին բարձրակարգ սպասարկում մատուցելու համար։',
+        title: { hy: 'Բարմեն', ru: 'Бармен', en: 'Bartender' },
+        description: { 
+          hy: 'Մեր պրոֆեսիոնալ բարմենները տիրապետում են տարբեր տեսակի խմիչքների պատրաստման հմտություններին։', 
+          ru: 'Наши профессиональные бармены владеют навыками приготовления различных напитков.', 
+          en: 'Our professional bartenders are skilled in preparing various drinks.' 
+        },
+        fullDescription: { 
+          hy: 'Մեր պրոֆեսիոնալ բարմենները տիրապետում են տարբեր տեսակի խմիչքների պատրաստման հմտություններին։ Մեր բարմենները պատասխանատու են բարում նստած հաճախորդներին բարձրակարգ սպասարկում մատուցելու համար։', 
+          ru: 'Наши профессиональные бармены владеют навыками приготовления различных напитков и отвечают за первоклассное обслуживание клиентов у барной стойки.', 
+          en: 'Our professional bartenders are skilled in preparing various types of drinks and providing high-class service at the bar.' 
+        },
         price: '25,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724330468263--0.5829426973721912image.webp&w=3840&q=75'
       },
       {
         id: 3,
-        title: 'Խոհարար',
-        description: 'Արժեքը կախված է միջոցառման անձանց քանակից և ուտեստների մենյուից։ Ունենալով հարուստ փորձ և տաղանդ, Մեր խոհարարները ստեղծում են համերի և նրբաճաշակության զարմանալի համադրություններ:',
-        fullDescription: 'Արժեքը կախված է միջոցառման անձանց քանակից և ուտեստների մենյուից։ Ունենալով հարուստ փորձ և տաղանդ, Մեր խոհարարները ստեղծում են համերի և նրբաճաշակության զարմանալի համադրություններ:',
+        title: { hy: 'Խոհարար', ru: 'Повар', en: 'Chef' },
+        description: { 
+          hy: 'Արժեքը կախված է միջոցառման անձանց քանակից և ուտեստների մենյուից։ Ունենալով հարուստ փորձ և տաղանդ, Մեր խոհարարները ստեղծում են համերի և նրբաճաշակության զարմանալի համադրություններ:', 
+          ru: 'Стоимость зависит от количества гостей и меню. Обладая богатым опытом, наши повара создают удивительные сочетания вкусов.', 
+          en: 'The price depends on the number of guests and menu. With rich experience and talent, our chefs create amazing combinations of flavors.' 
+        },
+        fullDescription: { 
+          hy: 'Արժեքը կախված է միջոցառման անձանց քանակից և ուտեստների մենյուից։ Ունենալով հարուստ փորձ և տաղանդ, Մեր խոհարարները ստեղծում են համերի և նրբաճաշակության զարմանալի համադրություններ:', 
+          ru: 'Стоимость зависит от количества гостей и меню. Обладая богатым опытом и талантом, наши повара создают удивительные сочетания вкусов и изысканности.', 
+          en: 'The price depends on the number of guests and menu. With rich experience and talent, our chefs create amazing combinations of flavors and elegance.' 
+        },
         price: '35,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724331582281--0.8016246618454268image.webp&w=3840&q=75'
       },
       {
         id: 4,
-        title: 'Հանդիսավար',
-        description: 'Այս բաժնում մենք կփորձենք օգնել Ձեզ հանդիսավարի (թամադայի), ընտրության հարցում...',
-        fullDescription: 'Այս բաժնում մենք կփորձենք օգնել Ձեզ հանդիսավարի (թամադայի), ընտրության հարցում, քանի որ միայն իսկական հանդիսավարը կարող է իր վարպետությամբ ստեղծել հիասքանչ և տոնական մթնոլորտ։',
+        title: { hy: 'Հանդիսավար', ru: 'Тамада / Ведущий', en: 'Master of Ceremonies' },
+        description: { 
+          hy: 'Այս բաժնում մենք կփորձենք օգնել Ձեզ հանդիսավարի (թամադայի), ընտրության հարցում...', 
+          ru: 'В этом разделе мы поможем вам с выбором ведущего (тамады)...', 
+          en: 'In this section we will try to help you with the choice of the host (tamada)...' 
+        },
+        fullDescription: { 
+          hy: 'Այս բաժնում մենք կփորձենք օգնել Ձեզ հանդիսավարի (թամադայի), ընտրության հարցում, քանի որ միայն իսկական հանդիսավարը կարող է իր վարպետությամբ ստեղծել հիասքանչ և տոնական մթնոլորտ։', 
+          ru: 'В этом разделе мы поможем вам с выбором тамады, так как только настоящий ведущий своим мастерством может создать великолепную и праздничную атмосферу.', 
+          en: 'In this section we will help you choose a host, as only a true host can create a wonderful and festive atmosphere with their mastery.' 
+        },
         price: '60,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724346434036--0.5362400594372552image.webp&w=3840&q=75'
       },
       {
         id: 5,
-        title: 'Փրփուր Փարթի',
-        description: 'Նյութերը սերտիֆիկացված են, աչքերը չեն մռմռացնում, ալերգիա չեն առաջացնում...',
-        fullDescription: 'Նյութերը սերտիֆիկացված են, աչքերը չեն մռմռացնում, ալերգիա չեն առաջացնում, անվնաս են նաև բույսերի և լողավազանի համար:',
+        title: { hy: 'Փրփուր Փարթի', ru: 'Пенная вечеринка', en: 'Foam Party' },
+        description: { 
+          hy: 'Նյութերը սերտիֆիկացված են, աչքերը չեն մռմռացնում, ալերգիա չեն առաջացնում...', 
+          ru: 'Материалы сертифицированы, не щиплют глаза, не вызывают аллергию...', 
+          en: 'Materials are certified, do not sting the eyes, do not cause allergies...' 
+        },
+        fullDescription: { 
+          hy: 'Նյութերը սերտիֆիկացված են, աչքերը չեն մռմռացնում, ալերգիա չեն առաջացնում, անվնաս են նաև բույսերի և լողավազանի համար:', 
+          ru: 'Материалы сертифицированы, не щиплют глаза, не вызывают аллергию, а также безопасны для растений и бассейна.', 
+          en: 'Materials are certified, do not sting eyes, do not cause allergies, and are safe for plants and the pool.' 
+        },
         price: '26,900',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1725721755318--0.3513684578103693image.webp&w=3840&q=75'
       }
@@ -62,49 +170,97 @@ export default function CarayutyunPage() {
     'Շոու': [
       {
         id: 10,
-        title: 'Դի-Ջեյ',
-        description: 'Դիջեյներն Մեր կազմակերպած միջոցառումների աստղերն են՝ ովքեր ստեղծում են յուրահատուկ մթնոլորտ և զվարճանք:',
-        fullDescription: 'Դիջեյներն Մեր կազմակերպած միջոցառումների աստղերն են՝ ովքեր ստեղծում են յուրահատուկ մթնոլորտ և զվարճանք:',
+        title: { hy: 'Դի-Ջեյ', ru: 'Диджей', en: 'DJ' },
+        description: { 
+          hy: 'Դիջեյներն Մեր կազմակերպած միջոցառումների աստղերն են՝ ովքեր ստեղծում են յուրահատուկ մթնոլորտ և զվարճանք:', 
+          ru: 'Диджеи — звезды наших мероприятий, которые создают уникальную атмосферу и развлечения.', 
+          en: 'DJs are the stars of our events who create a unique atmosphere and entertainment.' 
+        },
+        fullDescription: { 
+          hy: 'Դիջեյներն Մեր կազմակերպած միջոցառումների աստղերն են՝ ովքեր ստեղծում են յուրահատուկ մթնոլորտ և զվարճանք:', 
+          ru: 'Диджеи — звезды наших мероприятий, которые создают уникальную атмосферу и развлечения.', 
+          en: 'DJs are the stars of our events who create a unique atmosphere and entertainment.' 
+        },
         price: '50,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724333364490--0.6874775885987816image.webp&w=1920&q=75'
       },
       {
         id: 11,
-        title: 'Երգիչ',
-        description: 'Amaranoc.am ի երգիչները, իրենց զարմանալի ձայնով և տաղանդով, կստեղծեն յուրահատուկ մթնոլորտ։',
-        fullDescription: 'Amaranoc.am ի երգիչները, իրենց զարմանալի ձայնով և տաղանդով, կստեղծեն յուրահատուկ մթնոլորտ։',
+        title: { hy: 'Երգիչ', ru: 'Певец', en: 'Singer' },
+        description: { 
+          hy: 'Amaranoc.am ի երգիչները, իրենց զարմանալի ձայնով և տաղանդով, կստեղծեն յուրահատուկ մթնոլորտ։', 
+          ru: 'Певцы Amaranoc.am своим удивительным голосом и талантом создадут уникальную атмосферу.', 
+          en: 'Amaranoc.am singers, with their amazing voice and talent, will create a unique atmosphere.' 
+        },
+        fullDescription: { 
+          hy: 'Amaranoc.am ի երգիչները, իրենց զարմանալի ձայնով և տաղանդով, կստեղծեն յուրահատուկ մթնոլորտ։', 
+          ru: 'Певцы Amaranoc.am своим удивительным голосом и талантом создадут уникальную атмосферу.', 
+          en: 'Amaranoc.am singers, with their amazing voice and talent, will create a unique atmosphere.' 
+        },
         price: '150,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724334734516--0.3032056818160267image.webp&w=1920&q=75'
       },
       {
         id: 12,
-        title: 'Կրակներով շոու',
-        description: 'Կրակներով շոուն կստեղծի վառ և հիասքանչ ժամանց, որոնք կտպավորվեն մշտեպես Ձեր հիշողության մեջ։',
-        fullDescription: 'Կրակներով շոուն կստեղծի վառ և հիասքանչ ժամանց, որոնք կտպավորվեն մշտեպես Ձեր հիշողության մեջ։',
+        title: { hy: 'Կրակներով շոու', ru: 'Огненное шоу', en: 'Fire Show' },
+        description: { 
+          hy: 'Կրակներով շոուն կստեղծի վառ և հիասքանչ ժամանց, որոնք կտպավորվեն մշտեպես Ձեր հիշողության մեջ։', 
+          ru: 'Огненное шоу создаст яркое и прекрасное зрелище, которое навсегда останется в вашей памяти.', 
+          en: 'The fire show will create bright and wonderful entertainment that will be permanently imprinted in your memory.' 
+        },
+        fullDescription: { 
+          hy: 'Կրակներով շոուն կստեղծի վառ և հիասքանչ ժամանց, որոնք կտպավորվեն մշտեպես Ձեր հիշողության մեջ։', 
+          ru: 'Огненное шоу создаст яркое и прекрасное зрелище, которое навсегда останется в вашей памяти.', 
+          en: 'The fire show will create bright and wonderful entertainment that will be permanently imprinted in your memory.' 
+        },
         price: '50,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724336474729--0.7810543034069704image.webp&w=1920&q=75'
       },
       {
         id: 13,
-        title: 'Ջութակահար',
-        description: 'Մեր տաղանդավոր երաժիշտները կստեղծեն անկրկնելի մթնոլորտ, որը կլցնի Ձեր միջոցառումը երաժշտության հրաշքներով։',
-        fullDescription: 'Մեր տաղանդավոր երաժիշտները կստեղծեն անկրկնելի մթնոլորտ, որը կլցնի Ձեր միջոցառումը երաժշտության հրաշքներով։',
+        title: { hy: 'Ջութակահար', ru: 'Скрипач', en: 'Violinist' },
+        description: { 
+          hy: 'Մեր տաղանդավոր երաժիշտները կստեղծեն անկրկնելի մթնոլորտ, որը կլցնի Ձեր միջոցառումը երաժշտության հրաշքներով։', 
+          ru: 'Наши талантливые музыканты создадут неповторимую атмосферу, наполняющую ваше мероприятие чудесами музыки.', 
+          en: 'Our talented musicians will create an unforgettable atmosphere that will fill your event with the wonders of music.' 
+        },
+        fullDescription: { 
+          hy: 'Մեր տաղանդավոր երաժիշտները կստեղծեն անկրկնելի մթնոլորտ, որը կլցնի Ձեր միջոցառումը երաժշտության հրաշքներով։', 
+          ru: 'Наши талантливые музыканты создадут неповторимую атмосферу, наполняющую ваше мероприятие чудесами музыки.', 
+          en: 'Our talented musicians will create an unforgettable atmosphere that will fill your event with the wonders of music.' 
+        },
         price: '80,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724338250161--0.20494831224542853image.webp&w=1920&q=75'
       },
       {
         id: 15,
-        title: 'Մուլտհերոսներ',
-        description: 'Մեր մուլտհերոսները կախարդական կերպարներ են, ովքեր ժպիտ ու ուրախություն կպարգևեն երեխաներին:',
-        fullDescription: 'Մեր մուլտհերոսները կախարդական կերպարներ են, ովքեր ժպիտ ու ուրախություն կպարգևեն երեխաներին:',
+        title: { hy: 'Մուլտհերոսներ', ru: 'Мультгерои', en: 'Cartoon Characters' },
+        description: { 
+          hy: 'Մեր մուլտհերոսները կախարդական կերպարներ են, ովքեր ժպիտ ու ուրախություն կպարգևեն երեխաներին:', 
+          ru: 'Наши мультгерои — волшебные персонажи, которые подарят улыбки и радость детям.', 
+          en: 'Our cartoon characters are magical figures who will bring smiles and joy to children.' 
+        },
+        fullDescription: { 
+          hy: 'Մեր մուլտհերոսները կախարդական կերպարներ են, ովքեր ժպիտ ու ուրախություն կպարգևեն երեխաներին:', 
+          ru: 'Наши мультгерои — волшебные персонажи, которые подарят улыбки и радость детям.', 
+          en: 'Our cartoon characters are magical figures who will bring smiles and joy to children.' 
+        },
         price: '5,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724343085065--0.7151746565655936image.webp&w=1920&q=75'
       },
       {
         id: 16,
-        title: 'Աճպարար',
-        description: 'Աճպարարի յուրաքանչյուր ներկայացում առանձնանում է բացառիկությամբ և մոգական միջավայրով։',
-        fullDescription: 'Աճպարարի յուրաքանչյուր ներկայացում առանձնանում է բացառիկությամբ և մոգական միջավայրով։',
+        title: { hy: 'Աճպարար', ru: 'Фокусник', en: 'Magician' },
+        description: { 
+          hy: 'Աճպարարի յուրաքանչյուր ներկայացում առանձնանում է բացառիկությամբ և մոգական միջավայրով։', 
+          ru: 'Каждое выступление фокусника отличается эксклюзивностью и магической атмосферой.', 
+          en: 'Each magician performance stands out for its exclusivity and magical environment.' 
+        },
+        fullDescription: { 
+          hy: 'Աճպարարի յուրաքանչյուր ներկայացում առանձնանում է բացառիկությամբ և մոգական միջավայրով։', 
+          ru: 'Каждое выступление фокусника отличается эксклюзивностью и магической атмосферой.', 
+          en: 'Each magician performance stands out for its exclusivity and magical environment.' 
+        },
         price: '60,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724345942719--0.8853509893461255image.webp&w=1920&q=75'
       },
@@ -112,41 +268,81 @@ export default function CarayutyunPage() {
     'Միջոցառումներ': [
       {
         id: 17,
-        title: 'Նշանադրության կազմակերպում',
-        description: 'Մեր ընկերությունը կազմակերպում է նշանադրության արարողություն, որը ստեղծում է կախարդական պահեր։',
-        fullDescription: 'Մեր ընկերությունը կազմակերպում է նշանադրության արարողություն, որը ստեղծում է կախարդական պահեր։',
+        title: { hy: 'Նշանադրության կազմակերպում', ru: 'Организация помолвки', en: 'Engagement Organization' },
+        description: { 
+          hy: 'Մեր ընկերությունը կազմակերպում է նշանադրության արարողություն, որը ստեղծում է կախարդական պահեր։', 
+          ru: 'Наша компания организует церемонию помолвки, создающую волшебные моменты.', 
+          en: 'Our company organizes engagement ceremonies that create magical moments.' 
+        },
+        fullDescription: { 
+          hy: 'Մեր ընկերությունը կազմակերպում է նշանադրության արարողություն, որը ստեղծում է կախարդական պահեր։', 
+          ru: 'Наша компания организует церемонию помолвки, создающую волшебные моменты.', 
+          en: 'Our company organizes engagement ceremonies that create magical moments.' 
+        },
         price: '500,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724354544378--0.6598089632874184image.webp&w=1920&q=75'
       },
       {
         id: 18,
-        title: 'Ծննդյան առիթների կազմակերպում',
-        description: 'Մենք մասնագիտացած ենք ստեղծելու անմոռանալի միջոցառումներ հոբելյարների համար:',
-        fullDescription: 'Մենք մասնագիտացած ենք ստեղծելու անմոռանալի միջոցառումներ հոբելյարների համար:',
+        title: { hy: 'Ծննդյան առիթների կազմակերպում', ru: 'Организация дней рождения', en: 'Birthday Party Organization' },
+        description: { 
+          hy: 'Մենք մասնագիտացած ենք ստեղծելու անմոռանալի միջոցառումներ հոբելյարների համար:', 
+          ru: 'Мы специализируемся на создании незабываемых мероприятий для юбиляров.', 
+          en: '我们专注于为庆祝者打造难忘的活动。' 
+        },
+        fullDescription: { 
+          hy: 'Մենք մասնագիտացած ենք ստեղծելու անմոռանալի միջոցառումներ հոբելյարների համար:', 
+          ru: 'Мы специализируемся на создании незабываемых мероприятий для юбиляров.', 
+          en: 'We specialize in creating unforgettable events for celebrants.' 
+        },
         price: '150,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724361248407--0.36711332876830927image.webp&w=1920&q=75'
       },
       {
         id: 19,
-        title: 'Հարսանյաց սենյակի ձևավորում',
-        description: 'Հարսանյաց սենյակի ձևավորման գործում Ձեզ կօգնի Մեր դիզայներների և ոճաբանների թիմը։',
-        fullDescription: 'Հարսանյաց սենյակի ձևավորման գործում Ձեզ կօգնի Մեր դիզայներների և ոճաբանների թիմը։',
+        title: { hy: 'Հարսանյաց սենյակի ձևավորում', ru: 'Оформление свадебной комнаты', en: 'Bridal Room Decoration' },
+        description: { 
+          hy: 'Հարսանյաց սենյակի ձևավորման գործում Ձեզ կօգնի Մեր դիզայներների և ոճաբանների թիմը։', 
+          ru: 'В оформлении свадебной комнаты вам поможет наша команда дизайнеров и стилистов.', 
+          en: 'Our team of designers and stylists will help you with the decoration of the bridal room.' 
+        },
+        fullDescription: { 
+          hy: 'Հարսանյաց սենյակի ձևավորման գործում Ձեզ կօգնի Մեր դիզայներների և ոճաբանների թիմը։', 
+          ru: 'В оформлении свадебной комнаты вам поможет наша команда дизайнеров и стилистов.', 
+          en: 'Our team of designers and stylists will help you with the decoration of the bridal room.' 
+        },
         price: '80,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724359541230--0.027714150656094505image.webp&w=1920&q=75'
       },
       {
         id: 20,
-        title: 'Ֆոտոզոնաների ձևավորում',
-        description: 'Մենք մասնագիտացած ենք լուսանկարչական գոտիների ստեղծման գործում։',
-        fullDescription: 'Մենք մասնագիտացած ենք լուսանկարչական գոտիների ստեղծման գործում։',
+        title: { hy: 'Ֆոտոզոնաների ձևավորում', ru: 'Оформление фотозон', en: 'Photo Zone Decoration' },
+        description: { 
+          hy: 'Մենք մասնագիտացած ենք լուսանկարչական գոտիների ստեղծման գործում։', 
+          ru: 'Мы специализируемся на создании фотозон.', 
+          en: 'We specialize in creating photo zones.' 
+        },
+        fullDescription: { 
+          hy: 'Մենք մասնագիտացած ենք լուսանկարչական գոտիների ստեղծման գործում։', 
+          ru: 'Мы специализируемся на создании фотозон.', 
+          en: 'We specialize in creating photo zones.' 
+        },
         price: '40,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724361086474--0.7968698807367636image.webp&w=1920&q=75'
       },
       {
         id: 21,
-        title: 'Գենդեր փարթի',
-        description: 'Մեր կրեատիվ թիմը պատրաստ է ամբողջությամբ կազմակերպելու այս գեղեցիկ օրը։',
-        fullDescription: 'Մեր կրեատիվ թիմը պատրաստ է ամբողջությամբ կազմակերպելու այս գեղեցիկ օրը։',
+        title: { hy: 'Գենդեր փարթի', ru: 'Гендер-пати', en: 'Gender Reveal Party' },
+        description: { 
+          hy: 'Մեր կրեատիվ թիմը պատրաստ է ամբողջությամբ կազմակերպելու այս գեղեցիկ օրը։', 
+          ru: 'Наша креативная команда готова полностью организовать этот прекрасный день.', 
+          en: 'Our creative team is ready to fully organize this beautiful day.' 
+        },
+        fullDescription: { 
+          hy: 'Մեր կրեատիվ թիմը պատրաստ է ամբողջությամբ կազմակերպելու այս գեղեցիկ օրը։', 
+          ru: 'Наша креативная команда готова полностью организовать этот прекрасный день.', 
+          en: 'Our creative team is ready to fully organize this beautiful day.' 
+        },
         price: '180,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1724362333688--0.9147879453964904image.webp&w=1920&q=75'
       },
@@ -154,41 +350,81 @@ export default function CarayutyunPage() {
     'Տեխնիկա': [
       {
         id: 22,
-        title: 'Ծանր ծուխ',
-        description: 'Լավագույն ծանր ծուխը, որը ձեր միջոցառումն կդարձնի էլ ավելի գեղեցիկ և հիշարժան։',
-        fullDescription: 'Լավագույն ծանր ծուխը, որը ձեր միջոցառումն կդարձնի էլ ավելի գեղեցիկ և հիշարժան։',
+        title: { hy: 'Ծանր ծուխ', ru: 'Тяжелый дым', en: 'Heavy Smoke' },
+        description: { 
+          hy: 'Լավագույն ծանր ծուխը, որը ձեր միջոցառումն կդարձնի էլ ավելի գեղեցիկ և հիշարժան։', 
+          ru: 'Лучший тяжелый дым, который сделает ваше мероприятие еще более красивым и запоминающимся.', 
+          en: 'The best heavy smoke that will make your event even more beautiful and memorable.' 
+        },
+        fullDescription: { 
+          hy: 'Լավագույն ծանր ծուխը, որը ձեր միջոցառումն կդարձնի էլ ավելի գեղեցիկ և հիշարժան։', 
+          ru: 'Лучший тяжелый дым, который сделает ваше мероприятие еще более красивым и запоминающимся.', 
+          en: 'The best heavy smoke that will make your event even more beautiful and memorable.' 
+        },
         price: '30,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1725722472736--0.09950637526125772image.webp&w=1920&q=75'
       },
       {
         id: 23,
-        title: 'Հրավառության ծառայություն',
-        description: 'Առաջարկում ենք փայլուն և անպայման հիշարժան հրավառություն։',
-        fullDescription: 'Առաջարկում ենք փայլուն և անպայման հիշարժան հրավառություն։',
+        title: { hy: 'Հրավառության ծառայություն', ru: 'Услуга фейерверков', en: 'Fireworks Service' },
+        description: { 
+          hy: 'Առաջարկում ենք փայլուն և անպայման հիշարժան հրավառություն։', 
+          ru: 'Предлагаем яркий и незабываемый фейерверк.', 
+          en: 'We offer a brilliant and unforgettable firework.' 
+        },
+        fullDescription: { 
+          hy: 'Առաջարկում ենք փայլուն և անպայման հիշարժան հրավառություն։', 
+          ru: 'Предлагаем яркий и незабываемый фейерверк.', 
+          en: 'We offer a brilliant and unforgettable firework.' 
+        },
         price: '30,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1725723065500--0.9235019901431423image.webp&w=1920&q=75'
       },
       {
         id: 24,
-        title: 'Սառը հրավառություն',
-        description: 'Անվտանգ և արտասովոր միջոցառման լուծում՝ առանց կրակի և ծխի վտանգի։',
-        fullDescription: 'Անվտանգ և արտասովոր միջոցառման լուծում՝ առանց կրակի և ծխի վտանգի։',
+        title: { hy: 'Սառը հրավառություն', ru: 'Холодный фейерверк', en: 'Cold Pyrotechnics' },
+        description: { 
+          hy: 'Անվտանգ և արտասովոր միջոցառման լուծում՝ առանց կրակի և ծխի վտանգի։', 
+          ru: 'Безопасное и необычное решение для мероприятия без опасности огня и дыма.', 
+          en: 'A safe and unusual event solution without the danger of fire and smoke.' 
+        },
+        fullDescription: { 
+          hy: 'Անվտանգ և արտասովոր միջոցառման լուծում՝ առանց կրակի և ծխի վտանգի։', 
+          ru: 'Безопасное и необычное решение для мероприятия без опасности огня и дыма.', 
+          en: 'A safe and unusual event solution without the danger of fire and smoke.' 
+        },
         price: '30,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1725723989251--0.9080294603522698image.webp&w=1920&q=75'
       },
       {
         id: 25,
-        title: 'Պրոյեկտոր',
-        description: 'Տրամադրում ենք տարբեր որակի և չափսերի պրոյեկտորներ՝ տեղադրմամբ։',
-        fullDescription: 'Տրամադրում ենք տարբեր որակի և չափսերի պրոյեկտորներ՝ տեղադրմամբ։',
+        title: { hy: 'Պրոյեկտոր', ru: 'Проектор', en: 'Projector' },
+        description: { 
+          hy: 'Տրամադրում ենք տարբեր որակի և չափսերի պրոյեկտորներ՝ տեղադրմամբ։', 
+          ru: 'Предоставляем проекторы разного качества и размеров с установкой.', 
+          en: 'We provide projectors of various quality and sizes with installation.' 
+        },
+        fullDescription: { 
+          hy: 'Տրամադրում ենք տարբեր որակի և չափսերի պրոյեկտորներ՝ տեղադրմամբ։', 
+          ru: 'Предоставляем проекторы разного качества и размеров с установкой.', 
+          en: 'We provide projectors of various quality and sizes with installation.' 
+        },
         price: '15,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726041202793--0.7905783613949644image.webp&w=1920&q=75'
       },
       {
         id: 26,
-        title: 'Նվագարկիչ',
-        description: 'Առաջարկում ենք բարձր որակի նվագարկիչների օրավարձով վարձակալության ծառայություն։',
-        fullDescription: 'Առաջարկում ենք բարձր որակի նվագարկիչների օրավարձով վարձակալության ծառայություն։',
+        title: { hy: 'Նվագարկիչ', ru: 'Аудиосистема / Колонка', en: 'Sound System' },
+        description: { 
+          hy: 'Առաջարկում ենք բարձր որակի նվագարկիչների օրավարձով վարձակալության ծառայություն։', 
+          ru: 'Предлагаем услугу аренды высококачественных колонок посуточно.', 
+          en: 'We offer high-quality sound system daily rental service.' 
+        },
+        fullDescription: { 
+          hy: 'Առաջարկում ենք բարձր որակի նվագարկիչների օրավարձով վարձակալության ծառայություն։', 
+          ru: 'Предлагаем услугу аренды высококачественных колонок посуточно.', 
+          en: 'We offer high-quality sound system daily rental service.' 
+        },
         price: '10,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726043750271--0.9652871581106086image.webp&w=1920&q=75'
       },
@@ -196,25 +432,49 @@ export default function CarayutyunPage() {
     'Օրավարձով գույք': [
       {
         id: 27,
-        title: 'Սպասք',
-        description: 'Տրամադրվում է տարբեր ձևի և միանման ամաններ, գդալներ, պատառաքաղներ։',
-        fullDescription: 'Տրամադրվում է տարբեր ձևի և միանման ամաններ, գդալներ, պատառաքաղներ։',
+        title: { hy: 'Սպասք', ru: 'Посуда', en: 'Tableware' },
+        description: { 
+          hy: 'Տրամադրվում է տարբեր ձևի և միանման ամաններ, գդալներ, պատառաքաղներ։', 
+          ru: 'Предоставляются одинаковые тарелки, ложки, вилки различной формы.', 
+          en: 'Various dishes, spoons, and forks are provided.' 
+        },
+        fullDescription: { 
+          hy: 'Տրամադրվում է տարբեր ձևի և միանման ամաններ, գդալներ, պատառաքաղներ։', 
+          ru: 'Предоставляются одинаковые тарелки, ложки, вилки различной формы.', 
+          en: 'Various dishes, spoons, and forks are provided.' 
+        },
         price: '100',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726042244507--0.7876617191172142image.webp&w=1920&q=75'
       },
       {
         id: 28,
-        title: 'Սեղան և աթոռներ',
-        description: 'Հնարավորություն է տալիս վարձակալել բարձր որակի սեղաններ և աթոռներ։',
-        fullDescription: 'Հնարավորություն է տալիս վարձակալել բարձր որակի սեղաններ և աթոռներ։',
+        title: { hy: 'Սեղան և աթոռներ', ru: 'Стол и стулья', en: 'Table and Chairs' },
+        description: { 
+          hy: 'Հնարավորություն է տալիս վարձակալել բարձր որակի սեղաններ և աթոռներ։', 
+          ru: 'Предоставляет возможность арендовать высококачественные столы и стулья.', 
+          en: 'Provides the opportunity to rent high quality tables and chairs.' 
+        },
+        fullDescription: { 
+          hy: 'Հնարավորություն է տալիս վարձակալել բարձր որակի սեղաններ և աթոռներ։', 
+          ru: 'Предоставляет возможность арендовать высококачественные столы и стулья.', 
+          en: 'Provides the opportunity to rent high quality tables and chairs.' 
+        },
         price: '5,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726042865918--0.08492032329777777image.webp&w=1920&q=75'
       },
       {
         id: 29,
-        title: 'Տենտ',
-        description: 'Հիանալի լուծում են պաշտպանվելու համար ցանկացած եղանակից։',
-        fullDescription: 'Հիանալի լուծում են պաշտպանվելու համար ցանկացած եղանակից։',
+        title: { hy: 'Տենտ', ru: 'Тент / Шатер', en: 'Tent' },
+        description: { 
+          hy: 'Հիանալի լուծում են պաշտպանվելու համար ցանկացած եղանակից։', 
+          ru: 'Отличное решение для защиты от любой погоды.', 
+          en: 'Great solution to protect from any weather.' 
+        },
+        fullDescription: { 
+          hy: 'Հիանալի լուծում են պաշտպանվելու համար ցանկացած եղանակից։', 
+          ru: 'Отличное решение для защиты от любой погоды.', 
+          en: 'Great solution to protect from any weather.' 
+        },
         price: '20,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726045237838--0.5117936535743877image.webp&w=1920&q=75'
       },
@@ -222,25 +482,49 @@ export default function CarayutyunPage() {
     'Նկարահանում': [
       {
         id: 6,
-        title: 'Ֆոտո Նկարահանում',
-        description: 'Մենք առաջարկում ենք պրոֆեսիոնալ ֆոտո նկարահանման ծառայություն...',
-        fullDescription: 'Մենք առաջարկում ենք պրոֆեսիոնալ ֆոտո նկարահանման ծառայություն փորձառու մասնագետների կողմից։',
+        title: { hy: 'Ֆոտո Նկարահանում', ru: 'Фотосъемка', en: 'Photo Shoot' },
+        description: { 
+          hy: 'Մենք առաջարկում ենք պրոֆեսիոնալ ֆոտո նկարահանման ծառայություն...', 
+          ru: 'Мы предлагаем профессиональные услуги фотосъемки...', 
+          en: 'We offer professional photo shoot services...' 
+        },
+        fullDescription: { 
+          hy: 'Մենք առաջարկում ենք պրոֆեսիոնալ ֆոտո նկարահանման ծառայություն փորձառու մասնագետների կողմից։', 
+          ru: 'Мы предлагаем профессиональные услуги фотосъемки опыными специалистами.', 
+          en: 'We offer professional photo shoot services by experienced specialists.' 
+        },
         price: '20,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726045632835--0.6404655108118316image.webp&w=1920&q=75'
       },
       {
         id: 7,
-        title: 'Վիդեո Նկարահանում',
-        description: 'Ձեր տեսանյութերը կստանան բարձր որակ և պրոֆեսիոնալ տեսք...',
-        fullDescription: 'Ձեր տեսանյութերը կստանան բարձր որակ և պրոֆեսիոնալ տեսք նորագույն տեխնիկայի միջոցով։',
+        title: { hy: 'Վիդեո Նկարահանում', ru: 'Видеосъемка', en: 'Video Recording' },
+        description: { 
+          hy: 'Ձեր տեսանյութերը կստանան բարձր որակ և պրոֆեսիոնալ տեսք...', 
+          ru: 'Ваши видео получат высокое качество и профессиональный вид...', 
+          en: 'Your videos will get high quality and a professional look...' 
+        },
+        fullDescription: { 
+          hy: 'Ձեր տեսանյութերը կստանան բարձր որակ և պրոֆեսիոնալ տեսք նորագույն տեխնիկայի միջոցով։', 
+          ru: 'Ваши видео получат высокое качество и профессиональный вид с помощью новейшей техники.', 
+          en: 'Your videos will get high quality and a professional look using the latest equipment.' 
+        },
         price: '35,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726045956349--0.40971954076083006image.webp&w=1920&q=75'
       },
       {
         id: 8,
-        title: 'Դրոնով Նկարահանում',
-        description: 'Ապահովեք ձեր նախագծերի անկրկնելի տեսարանները մեր պրոֆեսիոնալ դրոններով...',
-        fullDescription: 'Ապահովեք ձեր նախագծերի անկրկնելի տեսարանները մեր պրոֆեսիոնալ դրոններով։',
+        title: { hy: 'Դրոնով Նկարահանում', ru: 'Съемка с дрона', en: 'Drone Filming' },
+        description: { 
+          hy: 'Ապահովեք ձեր նախագծերի անկրկնելի տեսարանները մեր պրոֆեսիոնալ դրոններով...', 
+          ru: 'Обеспечьте уникальные виды ваших проектов с нашими профессиональными дронами...', 
+          en: 'Ensure unique views of your projects with our professional drones...' 
+        },
+        fullDescription: { 
+          hy: 'Ապահովեք ձեր նախագծերի անկրկնելի տեսարանները մեր պրոֆեսիոնալ դրոններով։', 
+          ru: 'Обеспечьте уникальные виды ваших проектов с нашими профессиональными дронами.', 
+          en: 'Ensure unique views of your projects with our professional drones.' 
+        },
         price: '25,000',
         image: 'https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1726046177472--0.6775833503340363image.webp&w=1920&q=75'
       }
@@ -248,9 +532,17 @@ export default function CarayutyunPage() {
     'Ուղևորափոխադրում': [
       {
         id: 9,
-        title: 'Ուղևորափոխադրում',
-        description: 'Մենք տրամադրում ենք բարձրակարգ փոխադրամիջոցներ՝ ապահովելով Ձեր հարմարավետությունը...',
-        fullDescription: 'Մենք տրամադրում ենք բարձրակարգ փոխադրամիջոցներ՝ ապահովելով Ձեր հարմարավետությունն ու անվտանգությունը։',
+        title: { hy: 'Ուղևորափոխադրում', ru: 'Пассажироперевозки', en: 'Transportation' },
+        description: { 
+          hy: 'Մենք տրամադրում ենք բարձրակարգ փոխադրամիջոցներ՝ ապահովելով Ձեր հարմարավետությունը...', 
+          ru: 'Мы предоставляем первоклассный транспорт, обеспечивая ваш комфорт...', 
+          en: 'We provide top-class vehicles ensuring your comfort...' 
+        },
+        fullDescription: { 
+          hy: 'Մենք տրամադրում ենք բարձրակարգ փոխադրամիջոցներ՝ ապահովելով Ձեր հարմարավետությունն ու անվտանգությունը։', 
+          ru: 'Мы предоставляем первоклассный транспорт, обеспечивая ваш комфорт и безопасность.', 
+          en: 'We provide top-class vehicles, ensuring your comfort and safety.' 
+        },
         price: '20,000',
         image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&q=80'
       }
@@ -271,11 +563,11 @@ export default function CarayutyunPage() {
           </button>
 
           <div className="flex items-center gap-4 overflow-x-auto no-scrollbar flex-1 scroll-smooth">
-            {categories.map((cat) => (
+            {t.categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveTab(cat.id)}
-                className={`flex items-center flex-col sm:flex-row gap-2 px-5 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+                className={`flex items-center flex-col sm:flex-row gap-2 px-5 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                   activeTab === cat.id
                     ? 'bg-[#fff7ed] text-[#fca34d] border border-[#fca34d]/30 shadow-sm'
                     : 'bg-white text-gray-600 border border-transparent hover:border-gray-200'
@@ -299,16 +591,16 @@ export default function CarayutyunPage() {
                 <div className="h-52 w-full rounded-[1.8rem] overflow-hidden relative shadow-sm">
                   <img
                     src={service.image}
-                    alt={service.title}
+                    alt={service.title[language] || service.title.hy}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
 
                 <div className="pt-4 px-2 pb-2 flex flex-col flex-1 justify-between">
                   <div>
-                    <h3 className="font-black text-lg text-[#1a202c] mb-2">{service.title}</h3>
+                    <h3 className="font-black text-lg text-[#1a202c] mb-2">{service.title[language] || service.title.hy}</h3>
                     <p className="text-xs text-gray-500 leading-relaxed text-justify line-clamp-3">
-                      {service.description}
+                      {service.description[language] || service.description.hy}
                     </p>
                   </div>
 
@@ -319,9 +611,9 @@ export default function CarayutyunPage() {
 
                     <button
                       onClick={() => setSelectedService(service)}
-                      className="border border-gray-200 text-gray-700 hover:bg-[#1a202c] hover:text-white hover:border-[#1a202c] text-[11px] font-bold px-5 py-2 rounded-full transition-all duration-200"
+                      className="border border-gray-200 text-gray-700 hover:bg-[#1a202c] hover:text-white hover:border-[#1a202c] text-[11px] font-bold px-5 py-2 rounded-full transition-all duration-200 cursor-pointer"
                     >
-                      Ամրագրել
+                      {t.bookBtn}
                     </button>
                   </div>
                 </div>
@@ -330,7 +622,7 @@ export default function CarayutyunPage() {
           </div>
         ) : (
           <div className="text-center py-20 text-gray-400 text-sm">
-            Այս կատեգորիայում ծառայություններ չկան
+            {t.noServices}
           </div>
         )}
       </div>
@@ -343,10 +635,10 @@ export default function CarayutyunPage() {
         >
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 pb-4">
-              <h2 className="text-xl font-black text-[#1a202c]">{selectedService.title}</h2>
+              <h2 className="text-xl font-black text-[#1a202c]">{selectedService.title[language] || selectedService.title.hy}</h2>
               <button
                 onClick={() => setSelectedService(null)}
-                className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+                className="text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -356,7 +648,7 @@ export default function CarayutyunPage() {
 
             <div className="px-6 pb-4">
               <p className="text-gray-600 leading-relaxed text-sm">
-                {selectedService.fullDescription || selectedService.description}
+                {selectedService.fullDescription[language] || selectedService.fullDescription.hy || selectedService.description[language] || selectedService.description.hy}
               </p>
             </div>
 
@@ -367,12 +659,12 @@ export default function CarayutyunPage() {
 
               <button
                 onClick={() => {
-                  alert(`Ամրագրվել է՝ ${selectedService.title}`);
+                  alert(`Ամրագրվել է՝ ${selectedService.title[language] || selectedService.title.hy}`);
                   setSelectedService(null);
                 }}
-                className="bg-[#fca34d] hover:bg-[#f59332] text-white font-black px-8 py-3 rounded-full transition-all duration-200 shadow-sm"
+                className="bg-[#fca34d] hover:bg-[#f59332] text-white font-black px-8 py-3 rounded-full transition-all duration-200 shadow-sm cursor-pointer"
               >
-                Ամրագրել
+                {t.bookBtn}
               </button>
             </div>
           </div>
@@ -401,19 +693,19 @@ export default function CarayutyunPage() {
             className="font-bold tracking-wide m-0 text-white"
             style={{ fontSize: '32px', marginBottom: '20px' }}
           >
-            ՏԵՂԱԴՐԵԼ ՀԱՅՏԱՐԱՐՈՒԹՅՈՒՆ
+            {t.listingTitle}
           </h2>
           <p 
             className="m-0 font-light"
             style={{ fontSize: '15px', color: '#e2e8f0', marginBottom: '40px' }}
           >
-            Մուտքագրեք Ձեր տվյալները նշված դաշտերում և մենք կկապնվենք Ձեզ հետ
+            {t.listingSubtitle}
           </p>
           
           <form className="flex gap-4 items-center flex-wrap" onSubmit={(e) => e.preventDefault()}>
             <input 
               type="text" 
-              placeholder="Անուն Ազգանուն" 
+              placeholder={t.namePlaceholder} 
               className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60" 
               style={{
                 minWidth: '200px',
@@ -424,7 +716,7 @@ export default function CarayutyunPage() {
             />
             <input 
               type="tel" 
-              placeholder="Հեռախոսահամար" 
+              placeholder={t.phonePlaceholder} 
               className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60" 
               style={{
                 minWidth: '200px',
@@ -435,7 +727,7 @@ export default function CarayutyunPage() {
             />
             <input 
               type="email" 
-              placeholder="Էլ. հասցե" 
+              placeholder={t.emailPlaceholder} 
               className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60" 
               style={{
                 minWidth: '200px',
@@ -452,7 +744,7 @@ export default function CarayutyunPage() {
                 fontSize: '15px'
               }}
             >
-              Ուղարկել
+              {t.sendBtn}
             </button>
           </form>
         </div>
@@ -474,7 +766,7 @@ export default function CarayutyunPage() {
             className="font-bold tracking-widest text-white"
             style={{ fontSize: '26px', marginBottom: '40px' }}
           >
-            ԿՈՆՏԱԿՏՆԵՐ
+            {t.contactsTitle}
           </h2>
           
           <div 
@@ -503,7 +795,7 @@ export default function CarayutyunPage() {
 
             <div className="flex items-center text-slate-300" style={{ gap: '8px', fontSize: '13px' }}>
               <svg className="text-white opacity-80" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span>ԹՈՒՄԱՆՅԱՆ 5</span>
+              <span>{t.address}</span>
             </div>
           </div>
 
@@ -512,14 +804,14 @@ export default function CarayutyunPage() {
             className="block no-underline text-slate-400 hover:text-white cursor-pointer transition-colors" 
             style={{ fontSize: '13px', marginBottom: '35px' }}
           >
-            Գաղտնիության քաղաքականություն
+            {t.privacyPolicy}
           </Link>
 
           <p 
             className="text-slate-500 m-0 tracking-wide" 
             style={{ fontSize: '12px' }}
           >
-            Ամառանոց ՍՊԸ  |  Amaranoc LLC  |  Амараноц ООО
+            {t.companyText}
           </p>
         </div>
       </footer>

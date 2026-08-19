@@ -1,9 +1,36 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useLanguageStore } from './useLanguageStore';
+import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 export default function NavLinks() {
   const location = useLocation();
+  
+  // Վերցնում ենք ընթացիկ լեզուն store-ից
+  const { language } = useLanguageStore();
+
+  // Բազմալեզու բառարան մենյուի համար
+  const translations = {
+    hy: {
+      home: "Գլխավոր",
+      discounts: "Զեղչեր",
+      services: "Ծառայություններ",
+      about: "Մեր մասին"
+    },
+    ru: {
+      home: "Главная",
+      discounts: "Скидки",
+      services: "Услуги",
+      about: "О нас"
+    },
+    en: {
+      home: "Home",
+      discounts: "Discounts",
+      services: "Services",
+      about: "About Us"
+    }
+  };
+
+  const t = translations[language] || translations.hy;
 
   return (
     <>
@@ -34,7 +61,7 @@ export default function NavLinks() {
             location.pathname === '/' ? 'text-black' : 'text-[#222222] hover:text-black'
           }`}
         >
-          Գլխավոր
+          {t.home}
           {location.pathname === '/' && (
             <span className="absolute bottom-0 left-0 w-full rounded-sm" style={{ height: '3px', backgroundColor: '#dfb15b' }} />
           )}
@@ -46,7 +73,7 @@ export default function NavLinks() {
             location.pathname === '/zexcher' ? 'text-black font-semibold' : 'text-[#222222] hover:text-black'
           }`}
         >
-          Զեղչեր
+          {t.discounts}
           {location.pathname === '/zexcher' && (
             <span className="absolute bottom-0 left-0 w-full rounded-sm" style={{ height: '3px', backgroundColor: '#dfb15b' }} />
           )}
@@ -58,7 +85,7 @@ export default function NavLinks() {
             location.pathname === '/carayutyun' ? 'text-black font-semibold' : 'text-[#222222] hover:text-black'
           }`}
         >
-          Ծառայություններ
+          {t.services}
           {location.pathname === '/carayutyun' && (
             <span className="absolute bottom-0 left-0 w-full rounded-sm" style={{ height: '3px', backgroundColor: '#dfb15b' }} />
           )}
@@ -70,7 +97,7 @@ export default function NavLinks() {
             location.pathname === '/mermasin' ? 'text-black font-semibold' : 'text-[#222222] hover:text-black'
           }`}
         >
-          Մեր մասին
+          {t.about}
           {location.pathname === '/mermasin' && (
             <span className="absolute bottom-0 left-0 w-full rounded-sm" style={{ height: '3px', backgroundColor: '#dfb15b' }} />
           )}

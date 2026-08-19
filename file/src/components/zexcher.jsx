@@ -10,6 +10,112 @@ export default function CombinedPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGiftAmount, setSelectedGiftAmount] = useState('80,000 ֏');
 
+  // Ներմուծում ենք լեզվի կառավարումը
+  const { language } = useLanguageStore();
+
+  // Բազմալեզու տեքստերի բառարան
+  const t = {
+    hy: {
+      specialDiscounts: "Հատուկ Զեղչեր",
+      discountTitle1: "Զեղչ կախված ամրագրման օրերի քանակից",
+      discountDesc1: "Ստացիր 5-15% զեղչ կատարելով ամրագրում 5-ից մինչև 20 օր:",
+      discountTitle2: "Ամենահայտնի Reel-ը սոցիալական հարթակում",
+      discountDesc2: "Վիդեո տարբերակով ներկայացրու քո լավագույն օրերից մեկը amaranoc.am-ի առանձնատներից մեկում և ստացիր 10% զեղչ։",
+      discountTitle3: "Ավելացրու 5% զեղչ քո յուրաքանչյուր 3-րդ այցի համար",
+      discountDesc3: "Իրականացրու բազմաթիվ առաջադրանքներ և յուրաքանչյուր 3-րդ ամրագրման համար ստացիր 5% զեղչ։",
+      giftCardHeading1: "Պատվիրի՛ր",
+      giftCardHeading2: "Նվեր Քարտ",
+      giftCardHeading3: "Քո կամ ընկերներիդ համար",
+      giftCardDesc: "Բաց մի թող մեր բացառիկ զեղչի քարտերը: Եթե պլանավորում ես քո հաջորդ արձակուրդը ընկերներիդ կամ ընտանիքիդ անդամների հետ, մեր զեղչային քարտերը առաջարկում են անգերազանցելի խնայողություններ ամառանոցների և ծառայությունների լայն տեսականիով: Ընտրիր զեղչի չափը քարտի վրա:",
+      orderBtn: "Պատվիրել",
+      hotOffers: "Թեժ Առաջարկներ",
+      currencyLabel: "Տարադրամ",
+      persons: "հոգի",
+      showMore: "Ցուցադրել ավելին",
+      modalTitle: "Նվեր քարտ",
+      modalDesc: "Ուղարկեք նվեր քարտի գնման հայտ՝ մուտքագրելով Ձեր անունը և հեռախոսահամարը:",
+      namePlaceholder: "Անուն",
+      phonePlaceholder: "Հեռախոսահամար",
+      confirmBtn: "Հաստատել",
+      addListingTitle: "ՏԵՂԱԴՐԵԼ ՀԱՅՏԱՐԱՐՈՒԹՅՈՒՆ",
+      addListingDesc: "Մուտքագրեք Ձեր տվյալները նշված դաշտերում և մենք կկապնվենք Ձեզ հետ",
+      fullNamePlaceholder: "Անուն Ազգանուն",
+      emailPlaceholder: "Էլ. հասցե",
+      sendBtn: "Ուղարկել",
+      contactsTitle: "ԿՈՆՏԱԿՏՆԵՐ",
+      address: "ԹՈՒՄԱՆՅԱՆ 5",
+      privacyPolicy: "Գաղտնիության քաղաքականություն",
+      copyright: "Ամառանոց ՍՊԸ  |  Amaranoc LLC  |  Амараноц ООО"
+    },
+    ru: {
+      specialDiscounts: "Специальные Скидки",
+      discountTitle1: "Скидка в зависимости от количества дней бронирования",
+      discountDesc1: "Получите скидку 5-15% при бронировании от 5 до 20 дней:",
+      discountTitle2: "Самый популярный Reel в соцсетях",
+      discountDesc2: "Представьте в видео один из ваших лучших дней в одном из особняков amaranoc.am и получите скидку 10%.",
+      discountTitle3: "Добавьте скидку 5% на каждое 3-е посещение",
+      discountDesc3: "Выполняйте различные задания и получайте скидку 5% на каждое 3-е бронирование.",
+      giftCardHeading1: "Закажите",
+      giftCardHeading2: "Подарочную Карту",
+      giftCardHeading3: "Для себя или друзей",
+      giftCardDesc: "Не упустите наши эксклюзивные дисконтные карты. Если вы планируете следующий отдых с друзьями или семьей, наши карты предлагают непревзойденную экономию на дачи и широкий спектр услуг. Выберите сумму скидки на карте.",
+      orderBtn: "Заказать",
+      hotOffers: "Горячие Предложения",
+      currencyLabel: "Валюта",
+      persons: "чел.",
+      showMore: "Показать больше",
+      modalTitle: "Подарочная карта",
+      modalDesc: "Отправьте заявку на покупку подарочной карты, введя свое имя и номер телефона.",
+      namePlaceholder: "Имя",
+      phonePlaceholder: "Номер телефона",
+      confirmBtn: "Подтвердить",
+      addListingTitle: "РАЗМЕСТИТЬ ОБЪЯВЛЕНИЕ",
+      addListingDesc: "Введите ваши данные в указанные поля, и мы свяжемся с вами",
+      fullNamePlaceholder: "Имя Фамилия",
+      emailPlaceholder: "Эл. адрес",
+      sendBtn: "Отправить",
+      contactsTitle: "КОНТАКТЫ",
+      address: "ТУМАНЯН 5",
+      privacyPolicy: "Политика конфиденциальности",
+      copyright: "Амараноц ООО  |  Amaranoc LLC  |  Амараноц ООО"
+    },
+    en: {
+      specialDiscounts: "Special Discounts",
+      discountTitle1: "Discount based on the number of booking days",
+      discountDesc1: "Get a 5-15% discount by booking from 5 to 20 days:",
+      discountTitle2: "The most popular Reel on social media",
+      discountDesc2: "Present one of your best days in a video at one of amaranoc.am villas and get a 10% discount.",
+      discountTitle3: "Add a 5% discount for every 3rd visit",
+      discountDesc3: "Complete various tasks and get a 5% discount for every 3rd booking.",
+      giftCardHeading1: "Order a",
+      giftCardHeading2: "Gift Card",
+      giftCardHeading3: "For You or Your Friends",
+      giftCardDesc: "Don't miss our exclusive discount cards. If you are planning your next vacation with friends or family, our cards offer unbeatable savings on country houses and services. Choose the discount amount on the card.",
+      orderBtn: "Order",
+      hotOffers: "Hot Offers",
+      currencyLabel: "Currency",
+      persons: "persons",
+      showMore: "Show More",
+      modalTitle: "Gift Card",
+      modalDesc: "Send a gift card purchase request by entering your name and phone number.",
+      namePlaceholder: "Name",
+      phonePlaceholder: "Phone number",
+      confirmBtn: "Confirm",
+      addListingTitle: "ADD A LISTING",
+      addListingDesc: "Enter your details in the specified fields and we will contact you",
+      fullNamePlaceholder: "Full Name",
+      emailPlaceholder: "Email",
+      sendBtn: "Send",
+      contactsTitle: "CONTACTS",
+      address: "TUMANYAN 5",
+      privacyPolicy: "Privacy Policy",
+      copyright: "Amaranoc LLC  |  Амараноц ООО  |  Ամառանոց ՍՊԸ"
+    }
+  };
+
+  // Ընտրում ենք ընթացիկ լեզվի բառարանը (եթե չգտնվի, կվերցնի հայերենը)
+  const currentText = t[language] || t.hy;
+
   // Փոխարժեքներ
   const exchangeRates = {
     AMD: 1,
@@ -79,7 +185,7 @@ export default function CombinedPage() {
         <div className="flex items-center justify-center gap-4 mb-8">
           <div className="flex-1 h-[1px] bg-gray-300 max-w-[200px] hidden sm:block"></div>
           <h2 className="text-3xl sm:text-4xl font-black text-[#1a202c] tracking-wide uppercase text-center">
-            Հատուկ Զեղչեր
+            {currentText.specialDiscounts}
           </h2>
           <div className="flex-1 h-[1px] bg-gray-300 max-w-[200px] hidden sm:block"></div>
         </div>
@@ -87,9 +193,9 @@ export default function CombinedPage() {
         {/* ԶԵՂՉԻ ՔԱՐՏԵՐ */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {[
-            { discount: "-15%", title: "Զեղչ կախված ամրագրման օրերի քանակից", desc: "Ստացիր 5-15% զեղչ կատարելով ամրագրում 5-ից մինչև 20 օր:", bg: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
-            { discount: "-10%", title: "Ամենահայտնի Reel-ը սոցիալական հարթակում", desc: "Վիդեո տարբերակով ներկայացրու քո լավագույն օրերից մեկը amaranoc.am-ի առանձնատներից մեկում և ստացիր 10% զեղչ։", bg: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" },
-            { discount: "-5%", title: "Ավելացրու 5% զեղչ քո յուրաքանչյուր 3-րդ այցի համար", desc: "Իրականացրու բազմաթիվ առաջադրանքներ և յուրաքանչյուր 3-րդ ամրագրման համար ստացիր 5% զեղչ։", bg: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80" }
+            { discount: "-15%", title: currentText.discountTitle1, desc: currentText.discountDesc1, bg: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+            { discount: "-10%", title: currentText.discountTitle2, desc: currentText.discountDesc2, bg: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" },
+            { discount: "-5%", title: currentText.discountTitle3, desc: currentText.discountDesc3, bg: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80" }
           ].map((card, i) => (
             <div key={i} className="relative h-64 rounded-3xl overflow-hidden shadow-md bg-cover bg-center flex flex-col justify-end p-5 text-white cursor-pointer" style={{ backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.3)), url("${card.bg}")` }}>
               <div className="absolute top-4 left-5 text-4xl sm:text-5xl font-black text-white/90">{card.discount}</div>
@@ -105,10 +211,10 @@ export default function CombinedPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-gray-50/50 rounded-3xl p-6 sm:p-10 border border-gray-100 mb-12">
           <div className="lg:col-span-5">
             <h2 className="text-3xl font-black text-[#1a202c] mb-4 uppercase tracking-wide leading-tight">
-              Պատվիրի՛ր <span className="text-[#fca34d]">Նվեր Քարտ</span> <br /> Քո կամ ընկերներիդ համար
+              {currentText.giftCardHeading1} <span className="text-[#fca34d]">{currentText.giftCardHeading2}</span> <br /> {currentText.giftCardHeading3}
             </h2>
             <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mobile-font-small">
-              Բաց մի թող մեր բացառիկ զեղչի քարտերը: Եթե պլանավորում ես քո հաջորդ արձակուրդը ընկերներիդ կամ ընտանիքիդ անդամների հետ, մեր զեղչային քարտերը առաջարկում են անգերազանցելի խնայողություններ ամառանոցների և ծառայությունների լայն տեսականիով: Ընտրիր զեղչի չափը քարտի վրա:
+              {currentText.giftCardDesc}
             </p>
           </div>
 
@@ -136,7 +242,7 @@ export default function CombinedPage() {
                 onClick={() => setIsModalOpen(true)}
                 className="bg-[#fca34d] hover:bg-[#1a202c] text-white text-xs font-bold px-8 py-2.5 rounded-full shadow-lg transition-all transform active:scale-95"
               >
-                Պատվիրել
+                {currentText.orderBtn}
               </button>
             </div>
           </div>
@@ -146,7 +252,7 @@ export default function CombinedPage() {
         <div className="flex items-center justify-center gap-4 mb-8">
           <div className="flex-1 h-[1px] bg-gray-300 max-w-[300px] hidden sm:block"></div>
           <h2 className="text-3xl font-black text-[#1a202c] tracking-wide uppercase text-center whitespace-nowrap">
-            Թեժ Առաջարկներ
+            {currentText.hotOffers}
           </h2>
           <div className="flex-1 h-[1px] bg-gray-300 max-w-[300px] hidden sm:block"></div>
         </div>
@@ -154,7 +260,7 @@ export default function CombinedPage() {
         {/* ՖԻԼՏՐԻ ՊԱՆԵԼ */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex flex-col gap-2">
-            <span className="text-xs font-bold text-gray-500">Տարադրամ</span>
+            <span className="text-xs font-bold text-gray-500">{currentText.currencyLabel}</span>
             <div className="flex items-center gap-2">
               {['AMD', 'USD', 'EUR', 'RUB'].map((code) => (
                 <button key={code} onClick={() => setCurrency(code)} className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all border ${currency === code ? 'bg-[#111827] text-white' : 'bg-white text-gray-700 border-gray-200'}`}>
@@ -194,7 +300,7 @@ export default function CombinedPage() {
               <div className="p-4 flex flex-col gap-3 flex-1 justify-between">
                 <div className="flex items-center justify-between text-xs text-gray-500 font-medium">
                   <div className="flex items-center gap-1"><span>{house.location}</span></div>
-                  <div className="flex items-center gap-1"><span>{house.capacity} հոգի</span></div>
+                  <div className="flex items-center gap-1"><span>{house.capacity} {currentText.persons}</span></div>
                 </div>
                 <div className="flex items-center justify-between mt-1">
                   <div className="flex items-center gap-1 font-black text-base text-[#111827]"><span>{formatPrice(house.priceValue)}</span></div>
@@ -211,7 +317,7 @@ export default function CombinedPage() {
               onClick={handleShowMore}
               className="bg-[#fca34d] hover:bg-[#e5923c] text-white font-bold text-sm px-10 py-3 rounded-full shadow-md hover:shadow-lg transition-all transform active:scale-95"
             >
-              Ցուցադրել ավելին
+              {currentText.showMore}
             </button>
           </div>
         )}
@@ -228,19 +334,19 @@ export default function CombinedPage() {
             >
               ✕
             </button>
-            <h2 className="text-xl font-black text-[#1a202c] mb-3">Նվեր քարտ</h2>
+            <h2 className="text-xl font-black text-[#1a202c] mb-3">{currentText.modalTitle}</h2>
             <p className="text-xs sm:text-sm text-gray-500 leading-relaxed mb-6 mobile-font-small">
-              Ուղարկեք նվեր քարտի գնման հայտ՝ մուտքագրելով Ձեր անունը և հեռախոսահամարը:
+              {currentText.modalDesc}
             </p>
             <div className="flex flex-col gap-4 mb-6">
               <input 
                 type="text" 
-                placeholder="Անուն" 
+                placeholder={currentText.namePlaceholder} 
                 className="w-full border border-gray-200 rounded-xl p-3.5 text-sm outline-none focus:border-[#fca34d] transition-all bg-gray-50/30" 
               />
               <div className="flex items-center border border-gray-200 rounded-xl p-3.5 bg-gray-50/30 focus-within:border-[#fca34d] transition-all">
                 <span className="text-sm mr-2 flex items-center gap-1 text-gray-600 font-medium">🇦🇲 +374</span>
-                <input type="tel" placeholder="Հեռախոսահամար" className="w-full text-sm outline-none bg-transparent" />
+                <input type="tel" placeholder={currentText.phonePlaceholder} className="w-full text-sm outline-none bg-transparent" />
               </div>
             </div>
             <div className="flex justify-between items-center pt-2 border-t border-gray-100">
@@ -251,7 +357,7 @@ export default function CombinedPage() {
                 onClick={() => setIsModalOpen(false)}
                 className="bg-[#fca34d] hover:bg-[#e5923c] text-white font-bold text-sm px-8 py-3 rounded-xl shadow-md hover:shadow-lg transition-all transform active:scale-95"
               >
-                Հաստատել
+                {currentText.confirmBtn}
               </button>
             </div>
           </div>
@@ -280,19 +386,19 @@ export default function CombinedPage() {
             className="font-bold tracking-wide m-0 text-white"
             style={{ fontSize: '32px', marginBottom: '20px' }}
           >
-            ՏԵՂԱԴՐԵԼ ՀԱՅՏԱՐԱՐՈՒԹՅՈՒՆ
+            {currentText.addListingTitle}
           </h2>
           <p 
             className="m-0 font-light"
             style={{ fontSize: '15px', color: '#e2e8f0', marginBottom: '40px' }}
           >
-            Մուտքագրեք Ձեր տվյալները նշված դաշտերում և մենք կկապնվենք Ձեզ հետ
+            {currentText.addListingDesc}
           </p>
           
           <form className="flex gap-4 items-center flex-wrap" onSubmit={(e) => e.preventDefault()}>
             <input 
               type="text" 
-              placeholder="Անուն Ազգանուն" 
+              placeholder={currentText.fullNamePlaceholder} 
               className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60" 
               style={{
                 minWidth: '200px',
@@ -303,7 +409,7 @@ export default function CombinedPage() {
             />
             <input 
               type="tel" 
-              placeholder="Հեռախոսահամար" 
+              placeholder={currentText.phonePlaceholder} 
               className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60" 
               style={{
                 minWidth: '200px',
@@ -314,7 +420,7 @@ export default function CombinedPage() {
             />
             <input 
               type="email" 
-              placeholder="Էլ. հասցե" 
+              placeholder={currentText.emailPlaceholder} 
               className="flex-1 bg-transparent rounded-full text-white outline-none focus:border-white transition-colors placeholder:text-white/60" 
               style={{
                 minWidth: '200px',
@@ -331,7 +437,7 @@ export default function CombinedPage() {
                 fontSize: '15px'
               }}
             >
-              Ուղարկել
+              {currentText.sendBtn}
             </button>
           </form>
         </div>
@@ -353,7 +459,7 @@ export default function CombinedPage() {
             className="font-bold tracking-widest text-white"
             style={{ fontSize: '26px', marginBottom: '40px' }}
           >
-            ԿՈՆՏԱԿՏՆԵՐ
+            {currentText.contactsTitle}
           </h2>
           
           <div 
@@ -382,7 +488,7 @@ export default function CombinedPage() {
 
             <div className="flex items-center text-slate-300" style={{ gap: '8px', fontSize: '13px' }}>
               <svg className="text-white opacity-80" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span>ԹՈՒՄԱՆՅԱՆ 5</span>
+              <span>{currentText.address}</span>
             </div>
           </div>
 
@@ -391,14 +497,14 @@ export default function CombinedPage() {
             className="block no-underline text-slate-400 hover:text-white cursor-pointer transition-colors" 
             style={{ fontSize: '13px', marginBottom: '35px' }}
           >
-            Գաղտնիության քաղաքականություն
+            {currentText.privacyPolicy}
           </Link>
 
           <p  
             className="text-slate-500 m-0 tracking-wide" 
             style={{ fontSize: '12px' }}
           >
-            Ամառանոց ՍՊԸ  |  Amaranoc LLC  |  Амараноц ООО
+            {currentText.copyright}
           </p>
         </div>
       </footer>

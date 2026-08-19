@@ -1,8 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useLanguageStore } from './useLanguageStore';
+import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 export default function Footer() {
+  // Ստանում ենք ընթացիկ լեզուն store-ից
+  const { language } = useLanguageStore();
+
+  // Բազմալեզու բառարան ֆուտերի համար
+  const translations = {
+    hy: {
+      contactsTitle: "ԿՈՆՏԱԿՏՆԵՐ",
+      address: "ԹՈՒՄԱՆՅԱՆ 5",
+      privacyPolicy: "Գաղտնիության քաղաքականություն",
+    },
+    ru: {
+      contactsTitle: "КОНТАКТЫ",
+      address: "УЛ. ТУМАНЯНА 5",
+      privacyPolicy: "Политика конфиденциальности",
+    },
+    en: {
+      contactsTitle: "CONTACTS",
+      address: "5 TUMANYAN ST.",
+      privacyPolicy: "Privacy Policy",
+    }
+  };
+
+  const t = translations[language] || translations.hy;
+
   return (
     <footer 
       className="absolute text-white text-center font-sans bg-no-repeat"
@@ -22,9 +46,9 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto">
         <h2 
           className="font-bold tracking-widest text-white"
-          style={{ fontSize: '26px', marginBottom: '40px', color: 'white',  }}
+          style={{ fontSize: '26px', marginBottom: '40px', color: 'white' }}
         >
-          ԿՈՆՏԱԿՏՆԵՐ
+          {t.contactsTitle}
         </h2>
         
         <div 
@@ -53,7 +77,7 @@ export default function Footer() {
 
           <div className="flex items-center text-slate-300" style={{ gap: '8px', fontSize: '13px' }}>
             <svg className="text-white opacity-80" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>ԹՈՒՄԱՆՅԱՆ 5</span>
+            <span>{t.address}</span>
           </div>
         </div>
 
@@ -62,7 +86,7 @@ export default function Footer() {
           className="block no-underline text-slate-400 hover:text-white cursor-pointer transition-colors" 
           style={{ fontSize: '13px', marginBottom: '35px' }}
         >
-          Գաղտնիության քաղաքականություն
+          {t.privacyPolicy}
         </Link>
 
         <p 

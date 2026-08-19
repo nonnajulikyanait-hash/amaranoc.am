@@ -5,9 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { db } from "../firebase";
-import { ref, set, onValue, remove } from "firebase/database";
-import { onDisconnect } from "firebase/database";
-import { useLanguageStore } from './useLanguageStore';
+import { ref, set, onValue, remove, onDisconnect } from "firebase/database";
 
 const createCustomIcon = (imageUrl) => {
   return L.divIcon({
@@ -31,7 +29,8 @@ const createCustomIcon = (imageUrl) => {
 
 export const useCategoryStore = create((setStore) => ({
   activeCategory: null,
-  setActiveCategory: (category) => setStore((state) => ({ activeCategory: state.activeCategory === category ? null : category })),
+  setActiveCategory: (category) => 
+    setStore((state) => ({ activeCategory: state.activeCategory === category ? null : category })),
 }));
 
 const categories = [
@@ -79,37 +78,32 @@ export default function Buttons() {
     return id;
   });
 
-  const userPhotoUrl = "https://lh3.googleusercontent.com/a/ACg8ocI...ՁԵՐ_ՆԿԱՐԻ_ՀՂՈՒՄԸ_ԱՅՍՏԵՂ..."; 
+  const userPhotoUrl = "https://via.placeholder.com/40"; 
 
   useEffect(() => {
     const usersRef = ref(db, 'locations/users');
     const unsub = onValue(usersRef, (snapshot) => {
       const data = snapshot.val();
-      if (data) {
-        setUsersLocations(data);
-      } else {
-        setUsersLocations({});
-      }
+      setUsersLocations(data || {});
     });
 
     return () => unsub();
   }, []);
-
 
   const handleOpenMap = () => {
     setIsMapOpen(true);
 
     if (navigator.geolocation) {
       const userRef = ref(db, `locations/users/${myUserId}`);
-      
-
       onDisconnect(userRef).remove();
 
       watchIdRef.current = navigator.geolocation.watchPosition(
         (pos) => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          set(userRef, { lat, lon, updatedAt: Date.now() });
+          set(userRef, { 
+            lat: pos.coords.latitude, 
+            lon: pos.coords.longitude, 
+            updatedAt: Date.now() 
+          });
         },
         (err) => console.error("Tracking error:", err),
         { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
@@ -123,15 +117,13 @@ export default function Buttons() {
       navigator.geolocation.clearWatch(watchIdRef.current);
       watchIdRef.current = null;
     }
-   
     remove(ref(db, `locations/users/${myUserId}`));
   };
 
   const customIcon = createCustomIcon(userPhotoUrl);
-  
-  
   const allUserEntries = Object.entries(usersLocations);
   const myCurrentData = usersLocations[myUserId];
+  
   const centerPoint = myCurrentData 
     ? [myCurrentData.lat, myCurrentData.lon] 
     : (allUserEntries.length > 0 ? [allUserEntries[0][1].lat, allUserEntries[0][1].lon] : null);
@@ -152,7 +144,11 @@ export default function Buttons() {
           <button onClick={() => scrollRef.current?.scrollBy({ left: -200, behavior: "smooth" })} className="w-9 h-9 border rounded-full">{"<"}</button>
           <div ref={scrollRef} className="flex-1 overflow-x-auto scrollbar-none flex items-center gap-8">
             {categories.map((cat) => (
-              <button key={cat.name} onClick={() => setActiveCategory(cat.name)} className={`flex flex-col items-center gap-2 ${activeCategory === cat.name ? 'text-black' : 'text-gray-500'}`}>
+              <button 
+                key={cat.name} 
+                onClick={() => setActiveCategory(cat.name)} 
+                className={`flex flex-col items-center gap-2 ${activeCategory === cat.name ? 'text-black border-b-2 border-black pb-1' : 'text-gray-500'}`}
+              >
                 {cat.icon}
                 <span className="text-sm whitespace-nowrap">{cat.name}</span>
               </button>
@@ -176,7 +172,6 @@ export default function Buttons() {
                 <MapContainer center={centerPoint} zoom={15} style={{ height: '100%', width: '100%' }}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   
-                   
                   {allUserEntries.map(([uid, loc]) => (
                     <Marker key={uid} position={[loc.lat, loc.lon]} icon={customIcon}>
                       <Popup>{uid === myUserId ? "Իմ լոկացիան" : `Օգտատեր (${uid.slice(0, 6)})`}</Popup>
@@ -186,7 +181,7 @@ export default function Buttons() {
                   <MapUpdater center={centerPoint} />
                 </MapContainer>
               ) : (
-                <div className="flex items-center justify-center h-full text-gray-500">
+                <div className="flex items-center justify-center h-full text-gray-500 p-4 text-center">
                   Ստացվում է լոկացիաները... Համոզվեք, որ թույլատրել եք լոկացիան։
                 </div>
               )}

@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import useFavouritesStore from "../UseFavourites.js";
 import { useCategoryStore } from './buttons.jsx';
 import { itemsData } from '../data';
-import { useLanguageStore } from './useLanguageStore';
+import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 const fmt = (n) => n.toLocaleString('hy-AM');
 
-function Modal({ item, onClose }) {
+function Modal({ item, onClose, t }) {
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[1000] p-4" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto">
@@ -24,11 +24,11 @@ function Modal({ item, onClose }) {
             <button onClick={onClose} className="p-2 text-2xl">×</button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 text-sm text-gray-500">
-            <p>👥 {item.capacity} հոգի</p>
+            <p>👥 {item.capacity} {t.persons}</p>
             <p>🏠 {item.category}</p>
           </div>
           <div className="mt-6 text-2xl font-bold text-[#fca34d]">{fmt(item.price)} ֏</div>
-          <Link to={`/nkar/${item.id}`} className="mt-4 block w-full text-center py-3 bg-[#fca34d] text-white font-bold rounded-xl">Ամրագրել</Link>
+          <Link to={`/nkar/${item.id}`} className="mt-4 block w-full text-center py-3 bg-[#fca34d] text-white font-bold rounded-xl">{t.book}</Link>
         </div>
       </div>
     </div>
@@ -39,11 +39,36 @@ export default function Nkarner() {
   const [selectedLocs, setSelectedLocs] = useState([]);
   const [modalItem, setModalItem] = useState(null);
   
-  // Zustand store-ից վերցնում ենք ֆավորիտների ցանկը, թարմացնող ֆունկցիան և ֆավորիտների քանակը
+  // Zustand store-ից վերցնում ենք ֆավորիտների ցանկը և ֆունկցիաները
   const favourites = useFavouritesStore((state) => state.favourites || state.favorites || []);
   const toggleFavourite = useFavouritesStore((state) => state.toggleFavourite || state.toggleFavorite || state.addFavourite);
   
   const activeCategory = useCategoryStore((state) => state.activeCategory);
+  
+  // Ներմուծում ենք լեզվի վիճակը
+  const { language } = useLanguageStore();
+
+  // Բազմալեզու տեքստեր
+  const translations = {
+    hy: {
+      locationTitle: "Վայր",
+      persons: "հոգի",
+      book: "Ամրագրել"
+    },
+    ru: {
+      locationTitle: "Место",
+      persons: "чел.",
+      book: "Забронировать"
+    },
+    en: {
+      locationTitle: "Location",
+      persons: "persons",
+      book: "Book Now"
+    }
+  };
+
+  const t = translations[language] || translations.hy;
+
   const allLocations = useMemo(() => [...new Set(itemsData.map((i) => i.title))].sort(), []);
 
   // Ստուգում ենք՝ տվյալ իդ-ով ապրանքը ֆավորիտներում կա, թե ոչ
@@ -67,7 +92,7 @@ export default function Nkarner() {
   return (
     <div className="w-full max-w-6xl mx-auto py-6 px-4 mt-16 flex flex-col md:flex-row gap-6">
       <aside className="w-full md:w-[220px] shrink-0">
-        <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">Վայր</h3>
+        <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">{t.locationTitle}</h3>
         <div className="flex flex-wrap md:flex-col gap-2">
           {allLocations.map((loc) => (
             <label key={loc} className="flex items-center gap-2 text-sm text-[#2d3748] cursor-pointer hover:text-[#fca34d]">
@@ -123,7 +148,7 @@ export default function Nkarner() {
         </div>
       </main>
 
-      {modalItem && <Modal item={modalItem} onClose={() => setModalItem(null)} />}
+      {modalItem && <Modal item={modalItem} onClose={() => setModalItem(null)} t={t} />}
     </div>
   );
 }
