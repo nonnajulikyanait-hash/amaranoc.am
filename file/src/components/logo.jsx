@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useFavouritesStore from "../UseFavourites.js";
 import { useCategoryStore } from './buttons.jsx';
+import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 export default function Logo() {
-  // Վերցնում ենք ֆավորիտների զանգվածը և հաշվում երկարությունը
   const favourites = useFavouritesStore((state) => state.favourites || []);
   const favoritesCount = favourites.length;
-
   const setActiveCategory = useCategoryStore((state) => state.setActiveCategory);
+
+  // Լեզվի հետ կապված վիճակներ
+  const { language, setLanguage } = useLanguageStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Փակել մենյուն, երբ սեղմում ենք դրսում
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -44,7 +59,7 @@ export default function Logo() {
           >
             <input 
               type="text" 
-              placeholder="Որոնել..." 
+              placeholder={language === 'hy' ? "Որոնել..." : language === 'ru' ? "Поиск..." : "Search..."} 
               className="w-full bg-transparent border-none outline-none text-xs sm:text-sm pr-2"
             />
             <button className="text-gray-500 hover:text-gray-700 p-1 flex items-center justify-center">
@@ -52,12 +67,38 @@ export default function Logo() {
             </button>
           </div>
 
-          {/* Լեզվի ընտրություն */}
-          <img 
-            src="https://amaranoc.am/images/header/globus.svg" 
-            className="w-5 h-5 cursor-pointer hidden sm:block" 
-            alt="Language"
-          />
+          {/* Լեզվի ընտրության բլոկ (Dropdown) */}
+          <div className="relative" ref={dropdownRef}>
+            <img 
+              src="https://amaranoc.am/images/header/globus.svg" 
+              className="w-5 h-5 cursor-pointer hidden sm:block hover:opacity-70 transition-opacity" 
+              alt="Language"
+              onClick={() => setIsOpen(!isOpen)}
+            />
+            
+            {isOpen && (
+              <div className="absolute right-0 mt-2 w-28 bg-gray-800 text-white rounded-lg shadow-lg overflow-hidden z-50 text-sm">
+                <button 
+                  onClick={() => { setLanguage('hy'); setIsOpen(false); }}
+                  className={`w-full text-left px-4 py-2 hover:bg-gray-700 transition-colors ${language === 'hy' ? 'bg-gray-700 font-bold' : ''}`}
+                >
+                  հայ
+                </button>
+                <button 
+                  onClick={() => { setLanguage('ru'); setIsOpen(false); }}
+                  className={`w-full text-left px-4 py-2 hover:bg-gray-700 transition-colors ${language === 'ru' ? 'bg-gray-700 font-bold' : ''}`}
+                >
+                  рус
+                </button>
+                <button 
+                  onClick={() => { setLanguage('en'); setIsOpen(false); }}
+                  className={`w-full text-left px-4 py-2 hover:bg-gray-700 transition-colors ${language === 'en' ? 'bg-gray-700 font-bold' : ''}`}
+                >
+                  eng
+                </button>
+              </div>
+            )}
+          </div>
           
           {/* Անձնական էջի հղում */}
           <Link to="/grancvel" className="flex items-center">

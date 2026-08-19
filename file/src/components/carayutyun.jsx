@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguageStore } from './useLanguageStore';
 
 export default function CarayutyunPage() {
   const [activeTab, setActiveTab] = useState('Սպասարկում');

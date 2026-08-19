@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguageStore } from './useLanguageStore';
 
 export default function Grancvel() {
   return (

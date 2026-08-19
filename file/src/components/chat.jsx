@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebase'; 
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
+import { useLanguageStore } from './useLanguageStore';
 
 export default function Chat() {
   const [isOpen, setIsOpen] = useState(false);

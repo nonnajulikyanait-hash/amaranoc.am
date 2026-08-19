@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguageStore } from './useLanguageStore';
 
 export default function Gaxtniutyun() {
   return (

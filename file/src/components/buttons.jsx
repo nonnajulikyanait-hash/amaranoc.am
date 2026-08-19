@@ -7,6 +7,7 @@ import L from 'leaflet';
 import { db } from "../firebase";
 import { ref, set, onValue, remove } from "firebase/database";
 import { onDisconnect } from "firebase/database";
+import { useLanguageStore } from './useLanguageStore';
 
 const createCustomIcon = (imageUrl) => {
   return L.divIcon({

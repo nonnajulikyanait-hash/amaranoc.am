@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguageStore } from './useLanguageStore';
 
 // ----------------------------------------------------
 // 1. FILTER SIDEBAR COMPONENT
