@@ -449,4 +449,64 @@ export const itemsData = [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785245730771--0.8468445348040017image_optimized.webp&w=3840&q=75"
     ] 
   },
+  { 
+    id: 31, 
+    title: "Երևան", 
+    capacity: 50, 
+    price: 100000, 
+    category: "frame houses", 
+    img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1755251691335--0.4407905322225374image_optimized.webp&w=3840&q=75", 
+    images: [
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1755251691335--0.4407905322225374image_optimized.webp&w=3840&q=75",
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1755251691322--0.045349835777032554image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1755251691339--0.4432736682682734image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1755251691345--0.685376367926583image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1755251691364--0.37116115392172433image_optimized.webp&w=3840&q=75"
+    ] 
+  },
+  { 
+    id: 32, 
+    title: "Զովունի", 
+    capacity: 45, 
+    price: 45000, 
+    category: "frame houses", 
+    img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1768462122747--0.8351581567261519image_optimized.webp&w=3840&q=75", 
+    images: [
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1768462122747--0.8351581567261519image_optimized.webp&w=3840&q=75",
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1768462122760--0.18417856150971246image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1768462122809--0.12102578769788841image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1768462122827--0.3488225231734421image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1768462122862--0.565190892214783image_optimized.webp&w=3840&q=75"
+    ] 
+  },
+  { 
+    id: 33, 
+    title: "Աշտարակ", 
+    capacity: 50, 
+    price: 60000, 
+    category: "Առանձնատներ", 
+    img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785069960064--0.8872386365116991image_optimized.webp&w=3840&q=75", 
+    images: [
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785069960064--0.8872386365116991image_optimized.webp&w=3840&q=75",
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785069996828--0.2044011471959053image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785069996984--0.32101827963257135image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785069996885--0.1852908075560522image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785069996910--0.5938656772737694image_optimized.webp&w=3840&q=75"
+    ] 
+  },
+  { 
+    id: 34, 
+    title: "Դիլիջան", 
+    capacity: 50, 
+    price: 69000, 
+    category: "Առանձնատներ", 
+    img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1784803125153--0.7872134415969816image_optimized.webp&w=3840&q=75", 
+    images: [
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1784803125153--0.7872134415969816image_optimized.webp&w=3840&q=75",
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1784803301171--0.7100313492698134image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1784803301132--0.6040551671965286image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1784803301213--0.20391301071368684image_optimized.webp&w=3840&q=75", 
+      "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1784803125279--0.6424979360672078image_optimized.webp&w=3840&q=75", 
+    ] 
+  }
 ]
