@@ -1,20 +1,10 @@
-import { create } from 'zustand';
-
-export const useLanguageStore = create((set) => ({
-  language: localStorage.getItem('app_lang') || 'hy', // Սկզբնականը հայերենն է
-  setLanguage: (lang) => {
-    localStorage.setItem('app_lang', lang);
-    set({ language: lang });
-  },
-}));
-
 export const itemsData = [
   { 
     id: 1, 
-    title: { hy: "Դիլիջան", en: "Dilijan", ru: "Дилижан" }, 
+    title: "Դիլիջան", 
     capacity: 20, 
     price: 75000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1778744544176--0.9742892469611801image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1778744544176--0.9742892469611801image_optimized.webp&w=3840&q=75",
@@ -26,10 +16,10 @@ export const itemsData = [
   },
   { 
     id: 2, 
-    title: { hy: "Նոր Հաճն", en: "Nor Hachn", ru: "Нор Начн" }, 
+    title: "Նոր Հաճն", 
     capacity: 25, 
     price: 140000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1772031992147--0.08273550679993247image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1772031992147--0.08273550679993247image.webp&w=1920&q=75",
@@ -41,10 +31,10 @@ export const itemsData = [
   },
   { 
     id: 3, 
-    title: { hy: "Ապարան", en: "Aparan", ru: "Апаран" }, 
+    title: "Ապարան", 
     capacity: 32, 
     price: 250000, 
-    category: { hy: "Փակ լողավազան", en: "Indoor pool", ru: "Крытый бассейн" }, 
+    category: "Փակ լողավազան", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1753798511041--0.09397230687990277image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1753798511041--0.09397230687990277image.webp&w=1920&q=75",
@@ -56,10 +46,10 @@ export const itemsData = [
   },
   { 
     id: 4, 
-    title: { hy: "Օհանավան", en: "Ohanavan", ru: "Оганаван" }, 
+    title: "Օհանավան", 
     capacity: 40, 
     price: 80000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1768380706620--0.5416288751044531image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1768380706620--0.5416288751044531image.webp&w=1920&q=75",
@@ -71,10 +61,10 @@ export const itemsData = [
   },
   { 
     id: 5, 
-    title: { hy: "Աշտարակ", en: "Ashtarak", ru: "Аштарак" }, 
+    title: "Աշտարակ", 
     capacity: 25, 
     price: 80000, 
-    category: { hy: "Փակ լողավազան", en: "Indoor pool", ru: "Крытый бассейн" }, 
+    category: "Փակ լողավազան", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1762686772282--0.7753343924665224image_optimized.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1762686772282--0.7753343924665224image_optimized.webp&w=1920&q=75",
@@ -86,10 +76,10 @@ export const itemsData = [
   },
   { 
     id: 6, 
-    title: { hy: "Բջնի", en: "Bjni", ru: "Бжни" }, 
+    title: "Բջնի", 
     capacity: 6, 
     price: 45000, 
-    category: { hy: "A-Frame տնակներ", en: "Frame houses", ru: "A-frame дома" }, 
+    category: "Frame houses", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1759149473223--0.33907271602966693image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1759149473223--0.33907271602966693image.webp&w=1920&q=75",
@@ -101,10 +91,10 @@ export const itemsData = [
   },
   { 
     id: 7, 
-    title: { hy: "Ծաղկաձոր", en: "Tsaghkadzor", ru: "Цахкадзор" }, 
+    title: "Ծաղկաձոր", 
     capacity: 6, 
     price: 40000, 
-    category: { hy: "Լճի ափին", en: "By the lake", ru: "На берегу озера" }, 
+    category: "Լճի ափին", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1762850175455--0.6550219483737489image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1762850175455--0.6550219483737489image.webp&w=1920&q=75",
@@ -116,10 +106,10 @@ export const itemsData = [
   },
   { 
     id: 8, 
-    title: { hy: "Ծաղկաձոր", en: "Tsaghkadzor", ru: "Цахкадзор" }, 
+    title: "Ծաղկաձոր", 
     capacity: 20, 
     price: 80000, 
-    category: { hy: "A-Frame տնակներ", en: "Frame houses", ru: "A-frame дома" }, 
+    category: "Frame houses", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1774603454003--0.8626553444149481image.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1774603454003--0.8626553444149481image.webp&w=3840&q=75",
@@ -131,10 +121,10 @@ export const itemsData = [
   },
   { 
     id: 9, 
-    title: { hy: "Արզնի", en: "Arzni", ru: "Арзни" }, 
+    title: "Արզնի", 
     capacity: 25, 
     price: 110000, 
-    category: { hy: "Շքեղ տեսարան", en: "Scenic view", ru: "Красивый вид" }, 
+    category: "Շքեղ տեսարան", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1772096919031--0.050258973710116006image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1772096919031--0.050258973710116006image_optimized.webp&w=3840&q=75",
@@ -146,10 +136,10 @@ export const itemsData = [
   },
   { 
     id: 10, 
-    title: { hy: "Աշտարակ", en: "Ashtarak", ru: "Аштарак" }, 
+    title: "Աշտարակ", 
     capacity: 50, 
     price: 100000, 
-    category: { hy: "Տաղավար", en: "Pavilion", ru: "Беседка" }, 
+    category: "Տաղավար", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785248529023--0.4248381227208671image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785248529023--0.4248381227208671image_optimized.webp&w=3840&q=75",
@@ -161,10 +151,10 @@ export const itemsData = [
   },
   { 
     id: 11, 
-    title: { hy: "Բջնի", en: "Bjni", ru: "Бжни" }, 
+    title: "Բջնի", 
     capacity: 35, 
     price: 70000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780584030566--0.16507992429368068image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780584030566--0.16507992429368068image.webp&w=1920&q=75",
@@ -176,10 +166,10 @@ export const itemsData = [
   },
   { 
     id: 12, 
-    title: { hy: "Դսեղ", en: "Dsegh", ru: "Дсех" }, 
+    title: "Դսեղ", 
     capacity: 6, 
     price: 30000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780579836142--0.35994453056674125image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780579836142--0.35994453056674125image.webp&w=1920&q=75",
@@ -191,10 +181,10 @@ export const itemsData = [
   },
   { 
     id: 13, 
-    title: { hy: "Երևան", en: "Yerevan", ru: "Ереван" }, 
+    title: "Երևան", 
     capacity: 30, 
     price: 80000, 
-    category: { hy: "A-Frame տնակներ", en: "Frame houses", ru: "A-frame дома" }, 
+    category: "Frame houses", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1783777341825--0.375132590156394image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1783777341825--0.375132590156394image_optimized.webp&w=3840&q=75",
@@ -206,10 +196,10 @@ export const itemsData = [
   },
   { 
     id: 14, 
-    title: { hy: "Ձորաղբյուր", en: "Dzoraghbyur", ru: "Дзорагбюр" }, 
+    title: "Ձորաղբյուր", 
     capacity: 60, 
     price: 100000, 
-    category: { hy: "Տաղավար", en: "Pavilion", ru: "Беседка" }, 
+    category: "Տաղավար", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780571641642--0.5264571544763701image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780571641642--0.5264571544763701image.webp&w=1920&q=75",
@@ -221,10 +211,10 @@ export const itemsData = [
   },
   { 
     id: 15, 
-    title: { hy: "Երևան", en: "Yerevan", ru: "Ереван" }, 
+    title: "Երևան", 
     capacity: 50, 
     price: 100000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1775037450852--0.7556874376523661image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1775037450852--0.7556874376523661image_optimized.webp&w=3840&q=75",
@@ -236,10 +226,10 @@ export const itemsData = [
   },
   { 
     id: 16, 
-    title: { hy: "Բազմաղբյուր", en: "Bazmaghbyur", ru: "Базмахбюр" }, 
+    title: "Բազմաղբյուր", 
     capacity: 30, 
     price: 60000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780490099610--0.39916955699536416image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780490099610--0.39916955699536416image.webp&w=1920&q=75",
@@ -251,10 +241,10 @@ export const itemsData = [
   },
   { 
     id: 17, 
-    title: { hy: "Մրգաշեն", en: "Mrgashen", ru: "Мргашен" }, 
+    title: "Մրգաշեն", 
     capacity: 25, 
     price: 60000, 
-    category: { hy: "Փակ լողավազան", en: "Indoor pool", ru: "Крытый бассейн" }, 
+    category: "Փակ լողավազան", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1780488408453--0.5351027738256924image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1780488408453--0.5351027738256924image_optimized.webp&w=3840&q=75",
@@ -266,10 +256,10 @@ export const itemsData = [
   },
   { 
     id: 18, 
-    title: { hy: "Աշտարակ", en: "Ashtarak", ru: "Аштарак" }, 
+    title: "Աշտարակ", 
     capacity: 30, 
     price: 50000, 
-    category: { hy: "Աղմուկից հեռու", en: "Quiet location", ru: "Вдали от шума" }, 
+    category: "Աղմուկից հեռու", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1782737280538--0.3123466175482099image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1782737280538--0.3123466175482099image_optimized.webp&w=3840&q=75",
@@ -281,10 +271,10 @@ export const itemsData = [
   },
   { 
     id: 19, 
-    title: { hy: "Երևան", en: "Yerevan", ru: "Ереван" }, 
+    title: "Երևան", 
     capacity: 35, 
     price: 100000, 
-    category: { hy: "Շքեղ տեսարան", en: "Scenic view", ru: "Красивый вид" }, 
+    category: "Շքեղ տեսարան", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1786190791610--0.03127877888985808image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1786190791610--0.03127877888985808image_optimized.webp&w=3840&q=75",
@@ -296,10 +286,10 @@ export const itemsData = [
   },
   { 
     id: 20, 
-    title: { hy: "Աշտարակ", en: "Ashtarak", ru: "Аштарак" }, 
+    title: "Աշտարակ", 
     capacity: 50, 
     price: 70000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1781438610149--0.14500641475935838image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1781438610149--0.14500641475935838image_optimized.webp&w=3840&q=75",
@@ -311,10 +301,10 @@ export const itemsData = [
   },
   { 
     id: 21, 
-    title: { hy: "Էջմիածին", en: "Ejmiatsin", ru: "Эчмиадзин" }, 
+    title: "Էջմիածին", 
     capacity: 50, 
     price: 80000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780394902080--0.26123839973865315image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780394902080--0.26123839973865315image.webp&w=1920&q=75",
@@ -326,10 +316,10 @@ export const itemsData = [
   },
   { 
     id: 22, 
-    title: { hy: "Զովունի", en: "Zovuni", ru: "Зовуни" }, 
+    title: "Զովունի", 
     capacity: 25, 
     price: 80000, 
-    category: { hy: "Տաղավար", en: "Pavilion", ru: "Беседка" }, 
+    category: "Տաղավար", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1786278623379--0.5559303069028503image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1786278623379--0.5559303069028503image_optimized.webp&w=3840&q=75",
@@ -341,10 +331,10 @@ export const itemsData = [
   },
   { 
     id: 23, 
-    title: { hy: "Զովունի", en: "Zovuni", ru: "Зовуни" }, 
+    title: "Զովունի", 
     capacity: 40, 
     price: 75000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1777381598169--0.08685427028372361image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1777381598169--0.08685427028372361image_optimized.webp&w=3840&q=75",
@@ -356,10 +346,10 @@ export const itemsData = [
   },
   { 
     id: 24, 
-    title: { hy: "Աշտարակ", en: "Ashtarak", ru: "Аштарак" }, 
+    title: "Աշտարակ", 
     capacity: 50, 
     price: 90000, 
-    category: { hy: "Դիզայն", en: "Design", ru: "Дизайн" }, 
+    category: "Դիզայն", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1766753068454--0.4833220196831416image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1766753068454--0.4833220196831416image_optimized.webp&w=3840&q=75",
@@ -371,10 +361,10 @@ export const itemsData = [
   },
   { 
     id: 25, 
-    title: { hy: "Պտղնի", en: "Ptghni", ru: "Птгни" }, 
+    title: "Պտղնի", 
     capacity: 50, 
     price: 80000, 
-    category: { hy: "Նոր", en: "New", ru: "Новый" }, 
+    category: "Նոր", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780150028365--0.9813322482667413image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780150028365--0.9813322482667413image.webp&w=1920&q=75",
@@ -386,10 +376,10 @@ export const itemsData = [
   },
   { 
     id: 26, 
-    title: { hy: "Էջմիածին", en: "Ejmiatsin", ru: "Эчмиадзин" }, 
+    title: "Էջմիածին", 
     capacity: 30, 
     price: 90000, 
-    category: { hy: "Բնակարաններ", en: "Apartments", ru: "Квартиры" }, 
+    category: "Բնակարաններ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1753101120050--0.7436553007602844image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1753101120050--0.7436553007602844image_optimized.webp&w=3840&q=75",
@@ -401,10 +391,10 @@ export const itemsData = [
   },
   { 
     id: 27, 
-    title: { hy: "Ջերմուկ", en: "Jermuk", ru: "Джермук" }, 
+    title: "Ջերմուկ", 
     capacity: 9, 
     price: 40000, 
-    category: { hy: "Առանձնատներ", en: "Houses", ru: "Дома" }, 
+    category: "Առանձնատներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780147361149--0.3288212813557818image.webp&w=1920&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2Fcompressed_images%2Fcompressed_1780147361149--0.3288212813557818image.webp&w=1920&q=75",
@@ -416,10 +406,10 @@ export const itemsData = [
   },
   { 
     id: 28, 
-    title: { hy: "Աշտարակ", en: "Ashtarak", ru: "Аштарак" }, 
+    title: "Աշտարակ", 
     capacity: 6, 
     price: 60000, 
-    category: { hy: "A-Frame տնակներ", en: "Frame houses", ru: "A-frame дома" }, 
+    category: "Frame houses", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1773747801239--0.1587540854637599image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1773747801239--0.1587540854637599image_optimized.webp&w=3840&q=75",
@@ -431,10 +421,10 @@ export const itemsData = [
   },
   { 
     id: 29, 
-    title: { hy: "Գառնի", en: "Garni", ru: "Гарни" }, 
+    title: "Գառնի", 
     capacity: 40, 
     price: 45000, 
-    category: { hy: "Տնակներ", en: "Cabins", ru: "Домики" }, 
+    category: "Տնակներ", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1775558484173--0.3606161648706505image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1775558484173--0.3606161648706505image_optimized.webp&w=3840&q=75",
@@ -446,10 +436,10 @@ export const itemsData = [
   },
   { 
     id: 30, 
-    title: { hy: "Ստեփանավան", en: "Stepanavan", ru: "Степанаван" }, 
+    title: "Ստեփանավան", 
     capacity: 30, 
     price: 50000, 
-    category: { hy: "A-Frame տնակներ", en: "Frame houses", ru: "A-frame дома" }, 
+    category: "frame houses", 
     img: "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785245730677--0.41615391662944745image_optimized.webp&w=3840&q=75", 
     images: [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785245730677--0.41615391662944745image_optimized.webp&w=3840&q=75",
@@ -459,4 +449,4 @@ export const itemsData = [
       "https://amaranoc.am/_next/image?url=https%3A%2F%2Fapi.amaranoc.am%2F1785245730771--0.8468445348040017image_optimized.webp&w=3840&q=75"
     ] 
   },
-];
+]
