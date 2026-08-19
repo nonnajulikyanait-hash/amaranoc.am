@@ -3,7 +3,7 @@ import { db, auth } from '../firebase';
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
 import { useLanguageStore } from '../useLanguageStore';
-import AgoraCall from './AgoraCall'; // Ներմուծում ենք մեր Agora զանգի ֆայլը
+import AgoraCall from './agoracall'; // Ներմուծում ենք մեր Agora զանգի ֆայլը
 
 export default function Chat() {
   const { language } = useLanguageStore(); 

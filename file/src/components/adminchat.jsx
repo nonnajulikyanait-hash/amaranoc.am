@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../firebase'; 
 import { collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { useLanguageStore } from '../useLanguageStore';
-import AgoraCall from './AgoraCall'; // Ներմուծում ենք Agora զանգի կոմպոնենտը
+import AgoraCall from './agoracall'; // Ներմուծում ենք Agora զանգի կոմպոնենտը
 
 export default function AdminChat() {
   const [message, setMessage] = useState('');
