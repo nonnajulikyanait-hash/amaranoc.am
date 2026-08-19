@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import useFavouritesStore from "../UseFavourites.js";
 import { useCategoryStore } from './buttons.jsx';
 import { itemsData } from '../data';
-import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
+import { useLanguageStore } from '../useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 const fmt = (n) => n.toLocaleString('hy-AM');
 

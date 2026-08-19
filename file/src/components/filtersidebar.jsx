@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
+import { useLanguageStore } from '../useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 // ----------------------------------------------------
 // 1. FILTER SIDEBAR COMPONENT

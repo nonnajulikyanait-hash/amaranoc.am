@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebase'; 
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
-import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
+import { useLanguageStore } from '../useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 export default function Chat() {
   const { language } = useLanguageStore(); // Ստանում ենք ընթացիկ լեզուն

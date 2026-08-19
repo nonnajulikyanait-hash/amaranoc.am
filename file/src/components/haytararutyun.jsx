@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
+import { useLanguageStore } from '../useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 export default function CreateListingForm() {
   // Լեզվի ստացումը store-ից

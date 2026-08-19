@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { itemsData } from '../data';
-import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
+import { useLanguageStore } from '../useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 export default function HouseDetail() {
   const { id } = useParams();

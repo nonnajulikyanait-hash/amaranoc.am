@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useFavouritesStore from "../UseFavourites.js";
 import { useCategoryStore } from './buttons.jsx';
-import { useLanguageStore } from './useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
+import { useLanguageStore } from '../useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
 
 export default function Logo() {
   const favourites = useFavouritesStore((state) => state.favourites || []);
