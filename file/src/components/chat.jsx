@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebase'; 
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
-import { useLanguageStore } from '../useLanguageStore'; // Ներմուծում ենք լեզվի store-ը
+import { useLanguageStore } from '../useLanguageStore';
+import AgoraCall from './AgoraCall'; // Ներմուծում ենք մեր Agora զանգի ֆայլը
 
 export default function Chat() {
-  const { language } = useLanguageStore(); // Ստանում ենք ընթացիկ լեզուն
+  const { language } = useLanguageStore(); 
 
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(null); 
+  const [activeCall, setActiveCall] = useState(null); // Ավելացրեցինք զանգի state-ը ('video', 'audio' կամ null)
 
   const provider = new GoogleAuthProvider();
   const chatId = "room_admin_and_user_1"; 
 
-  // Բազմալեզու բառարան չատի համար
   const translations = {
     hy: {
       supportTitle: "Աջակցություն",
@@ -105,15 +106,16 @@ export default function Chat() {
           <div className="bg-[#2d3748] text-white px-4 py-3 text-sm font-bold flex justify-between items-center">
             <span>{t.supportTitle}</span>
             <div className="flex gap-3">
+              {/* Այստեղ փոխեցինք Google Meet-ը Agora-յի զանգի վրա */}
               <button 
-                onClick={() => window.open("https://meet.google.com/new", "_blank")}
+                onClick={() => setActiveCall('audio')}
                 className="hover:text-[#fca34d] transition-colors"
                 title={t.voiceCall}
               >
                 📞
               </button>
               <button 
-                onClick={() => window.open("https://meet.google.com/new", "_blank")}
+                onClick={() => setActiveCall('video')}
                 className="hover:text-[#fca34d] transition-colors"
                 title={t.videoCall}
               >
@@ -132,7 +134,17 @@ export default function Chat() {
                  {t.googleLogin}
               </button>
             </div> 
+          ) : activeCall ? (
+            /* Եթե զանգը ակտիվ է, ցույց ենք տալիս Agora զանգի պատուհանը */
+            <div className="flex-1 p-2 bg-gray-900">
+              <AgoraCall 
+                channelName={chatId} 
+                callType={activeCall} 
+                onLeave={() => setActiveCall(null)} 
+              />
+            </div>
           ) : (
+            /* Հակառակ դեպքում սովորական չատն է */
             <>
               <div className="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col gap-2">
                 {messages.map(msg => (
